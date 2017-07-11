@@ -1,0 +1,22 @@
+cmake_minimum_required (VERSION 3.3)
+
+project (BolderGameEngine)
+
+set_property (GLOBAL PROPERTY USE_FOLDERS ON)
+
+set (CMAKE_CXX_STANDARD 14)
+set (CMAKE_CXX_STANDARD_REQUIRED ON)
+
+option(BOLDER_WITH_TESTS "Build tests of Bolder Game Engine" ON)
+
+add_subdirectory (third_party EXCLUDE_FROM_ALL)
+add_subdirectory (lib)
+add_subdirectory (demo)
+
+# Documents
+if (CMAKE_BUILD_TYPE MATCHES "^[Rr]elease")
+    include(scripts/cmake/doxygen.cmake)
+endif ()
+
+
+enable_testing ()

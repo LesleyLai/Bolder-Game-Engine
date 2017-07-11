@@ -1,0 +1,9 @@
+# bin folder
+bin
+
+# User project settings
+CMakeLists.txt.user
+
+# Qt Creator backups
+*.autosave
+CMakeFiles
