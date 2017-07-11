@@ -1,0 +1,50 @@
+* STARTED [#A] logger
+** DONE Logging with stream-like interface
+** DONE Logging policies classes
+** STARTED Documents
+** TODO Asynchronous logging support
+* TODO [#A] Exception hierarchy
+* TODO Assertion
+* TODO [#A] String utilities
+* TODO Math libraries
+** TODO [#A] Radian/degree classes for angles
+** TODO [#A] Safe <cmath> wrapper with error handling and radian/degree support
+** TODO Mathematical constants
+** TODO Fixed-size vectors
+- dot
+- cross
+- magnitude
+- normalize
+- algebraic operations
+** TODO [#C] Fixed-size metrics
+- transpose
+- determinant
+- inverse
+- product
+** TODO [#C] Quaternions
+** TODO [#C] Graphics functions
+- projection matrices
+- camera matrices
+- rotation, scale, translation, transform matrices
+- decompose transform matrix
+** TODO [#C] Geometric
+Point, line, triangle, sphere, AABB, OABB, capsule, etc
+Distance/intersection
+* TODO [#A] Platform layer
+** TODO Platform independent OS interface
+*** Platform detection
+*** Window system wrapper
+** TODO Windows/Linux implementation of the OS interface
+*** TODO Windows
+*** TODO Linux
+* TODO [#C] Scene Graphs
+* TODO [#C] utf-8 support
+* TODO Core Engine
+** TODO Communication mechanisms between systems
+** TODO Task runner
+** TODO Module startup/shutdown mechanisms
+** TODO Game Loop
+** TODO  [#C] Graphics wrapper
+*** TODO Vulkan setup
+*** TODO Draw triangles and lines
+** TODO [#C] Entity system

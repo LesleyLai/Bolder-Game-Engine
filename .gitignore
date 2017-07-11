@@ -1,6 +1,9 @@
 # bin folder
 bin
 
+# docs folder
+docs
+
 # User project settings
 CMakeLists.txt.user
 
