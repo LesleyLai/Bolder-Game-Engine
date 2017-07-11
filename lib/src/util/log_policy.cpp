@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdexcept>
 #include "util/log_policy.hpp"
 
 using namespace bolder;

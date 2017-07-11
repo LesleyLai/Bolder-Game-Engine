@@ -16,6 +16,7 @@ file (GLOB TEST_SOURCE_FILES "${TEST_SRC_PATH}/*.cpp")
 
 #set target executable
 add_executable (${TEST_APP_NAME} ${TEST_SOURCE_FILES})
+add_dependencies(${TEST_APP_NAME} doctest)
 
 add_test(NAME GameEngineTest COMMAND ${TEST_APP_NAME})
 

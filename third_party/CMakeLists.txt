@@ -5,11 +5,28 @@ find_package(Git REQUIRED)
 #configure directories
 set (THIRD_PARTY_MODULE_PATH "${PROJECT_SOURCE_DIR}/third_party")
 
-# Doctest
-set(DOCTEST_INCLUDE_DIR "${THIRD_PARTY_MODULE_PATH}/doctest")
+# Unit test framework
+if(BOLDER_WITH_TESTS)
+    ExternalProject_Add(
+        doctest
+        PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/doctest
+        GIT_REPOSITORY https://github.com/onqtam/doctest.git
+        TIMEOUT 10
+        UPDATE_COMMAND ${GIT_EXECUTABLE} pull
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ""
+        INSTALL_COMMAND ""
+        LOG_DOWNLOAD ON
+        )
 
-#set variables for tests
-set (TEST_THIRD_PARTY_INCLUDE_PATH ${DOCTEST_INCLUDE_DIR})
+    # Expose required variable (DOCTEST_INCLUDE_DIR) to parent scope
+    ExternalProject_Get_Property(doctest source_dir)
+    set(DOCTEST_INCLUDE_DIR ${source_dir}/doctest CACHE INTERNAL
+        "Path to include folder for doctest")
 
-#export vars
-set (TEST_THIRD_PARTY_INCLUDE_PATH ${TEST_THIRD_PARTY_INCLUDE_PATH} PARENT_SCOPE)
+    #set variables for tests
+    set (TEST_THIRD_PARTY_INCLUDE_PATH ${DOCTEST_INCLUDE_DIR})
+
+    #export vars
+    set (TEST_THIRD_PARTY_INCLUDE_PATH ${TEST_THIRD_PARTY_INCLUDE_PATH} PARENT_SCOPE)
+endif(BOLDER_WITH_TESTS)

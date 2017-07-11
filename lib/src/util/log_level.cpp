@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include "util/log_level.hpp"
 
 std::string bolder::to_string(Log_level level) {

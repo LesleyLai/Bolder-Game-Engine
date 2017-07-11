@@ -1,3 +1,6 @@
+#+TODO: TODO STARTED | DONE CANCELED
+#+PRIORITIES: A C B
+
 * STARTED [#A] logger
 ** DONE Logging with stream-like interface
 ** DONE Logging policies classes

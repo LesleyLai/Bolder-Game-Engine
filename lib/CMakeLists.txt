@@ -22,5 +22,7 @@ file (GLOB_RECURSE LIB_SOURCE_FILES "${LIBRARY_SRC_PATH}/*.cpp")
 add_library (${LIB_NAME} STATIC ${LIB_SOURCE_FILES} ${LIB_HEADER_FILES})
 
 #test
-enable_testing ()
-add_subdirectory (test)
+if(BOLDER_WITH_TESTS)
+    enable_testing ()
+    add_subdirectory (test)
+endif()

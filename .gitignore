@@ -10,3 +10,6 @@ CMakeLists.txt.user
 # Qt Creator backups
 *.autosave
 CMakeFiles
+
+# Third-party external projects
+third_party/doctest
