@@ -3,6 +3,13 @@
 
 Bolder is a game engine. The project just started, so it is far from useful.
 
+* Build status
+| Platform  | Status                                                               |
+|-----------+----------------------------------------------------------------------|
+| Windows   | [[https://ci.appveyor.com/project/LesleyLai/bolder-game-engine][https://ci.appveyor.com/api/projects/status/LesleyLai/bolder-game-engine/branch/master]]                                                                 |
+| Linux/Mac | [[https://travis-ci.org/LesleyLai/Bolder-Game-Engine][https://travis-ci.org/LesleyLai/Bolder-Game-Engine.svg?branch=master]] |
+
+
 * Project Structure
 
 #+begin_example
