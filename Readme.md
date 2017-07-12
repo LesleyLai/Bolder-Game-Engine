@@ -1,5 +1,10 @@
 Bolder is a game engine. The project just started, so it is far from useful.
 
+# Build #
+To build bolder game engine, you need to install [git](https://git-scm.com/), [CMake](https://cmake.org/) to your computer. Also, the engine depends on [Boost C++ Library](http://www.boost.org/).
+
+
+
 # Build status #
 | Platform | Status |
 |-----------|-------|
