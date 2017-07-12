@@ -1,8 +1,9 @@
 #include "doctest.h"
-#include "util/logger.hpp"
 #include <sstream>
 #include <memory>
 #include <utility>
+
+#include "util/logger.hpp"
 
 using namespace bolder;
 

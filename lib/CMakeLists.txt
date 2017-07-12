@@ -4,10 +4,10 @@ set (LIB_NAME "${PROJECT_NAME}Lib")
 #configure directories
 set (LIBRARY_MODULE_PATH "${PROJECT_SOURCE_DIR}/lib")
 set (LIBRARY_SRC_PATH  "${LIBRARY_MODULE_PATH}/src" )
-set (LIBRARY_INCLUDE_PATH  "${LIBRARY_MODULE_PATH}/include" ${THIRD_PARTY_INCLUDE_PATH})
+set (LIBRARY_INCLUDE_PATH  "${LIBRARY_MODULE_PATH}/include")
 
 #set includes
-include_directories (${LIBRARY_INCLUDE_PATH})
+include_directories ("${LIBRARY_INCLUDE_PATH}/bolder")
 
 #export vars
 set (LIBRARY_INCLUDE_PATH ${LIBRARY_INCLUDE_PATH} PARENT_SCOPE)

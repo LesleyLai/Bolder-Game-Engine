@@ -9,6 +9,7 @@ set (TEST_SRC_PATH  "${TEST_MODULE_PATH}" )
 
 #set includes
 include_directories (${LIBRARY_INCLUDE_PATH}
+    ${THIRD_PARTY_INCLUDE_PATH}
     ${TEST_THIRD_PARTY_INCLUDE_PATH})
 
 #set test sources
