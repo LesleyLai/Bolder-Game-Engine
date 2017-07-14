@@ -1,9 +1,14 @@
-Bolder is a game engine. The project just started, so it is far from useful.
+**Bolder** is a game engine. The project just started, so it is far from useful.
+
+The medium-term task of Bolder is a small cross-platform 2d game engine.
 
 # Build #
-To build bolder game engine, you need to install [git](https://git-scm.com/), [CMake](https://cmake.org/) to your computer. Also, the engine depends on [Boost C++ Library](http://www.boost.org/).
+To build **bolder game engine**, you need to install [git](https://git-scm.com/), [CMake](https://cmake.org/) to your computer. 
 
+Also, the engine depends on [Boost C++ Library](http://www.boost.org/).
 
+# Contribution #
+[Todo.org](./Todo.org) contains the current todo list.
 
 # Build status #
 | Platform | Status |
@@ -16,7 +21,9 @@ To build bolder game engine, you need to install [git](https://git-scm.com/), [C
 ``` c
 /lib
   /src
+    /bolder
   /include
+    /bolder
   /platform // platform dependent codes
   /test // unit test for the engine
 /docs // Documents

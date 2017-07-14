@@ -17,7 +17,6 @@ enum class Log_level {
     /// Informational events most useful for developers to debug application,
     /// should output nothing in Release mode.
     debug,
-    notice,
     /// Information representing potential errors in the use of engine.
     warning,
     /// Error event that are not likely severely influence the engine.

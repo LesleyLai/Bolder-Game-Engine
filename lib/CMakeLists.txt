@@ -1,3 +1,4 @@
+
 #configure variables
 set (LIB_NAME "${PROJECT_NAME}Lib")
 
@@ -7,7 +8,7 @@ set (LIBRARY_SRC_PATH  "${LIBRARY_MODULE_PATH}/src" )
 set (LIBRARY_INCLUDE_PATH  "${LIBRARY_MODULE_PATH}/include")
 
 #set includes
-include_directories ("${LIBRARY_INCLUDE_PATH}/bolder")
+include_directories ("${LIBRARY_INCLUDE_PATH}/bolder" ${THIRD_PARTY_INCLUDE_PATH})
 
 #export vars
 set (LIBRARY_INCLUDE_PATH ${LIBRARY_INCLUDE_PATH} PARENT_SCOPE)
@@ -20,6 +21,14 @@ file (GLOB_RECURSE LIB_SOURCE_FILES "${LIBRARY_SRC_PATH}/*.cpp")
 
 # Engine
 add_library (${LIB_NAME} STATIC ${LIB_SOURCE_FILES} ${LIB_HEADER_FILES})
+
+# Logging option
+option(BOLDER_LOGGING_VERBOSE
+    "More verbose logging and output debug logging to standard out" ON)
+
+if(BOLDER_LOGGING_VERBOSE)
+    target_compile_definitions(${LIB_NAME} PRIVATE BOLDER_LOGGING_VERBOSE = 1)
+endif()
 
 #test
 if(BOLDER_WITH_TESTS)

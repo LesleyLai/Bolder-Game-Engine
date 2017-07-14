@@ -50,4 +50,4 @@ Distance/intersection
 ** TODO  [#C] Graphics wrapper
 *** TODO Vulkan setup
 *** TODO Draw triangles and lines
-** TODO [#C] Entity system
+** TODO Entity system

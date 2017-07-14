@@ -10,11 +10,12 @@
 
 #include <ostream>
 #include <string>
-#include <sstream>
 #include <memory>
+#include <mutex>
 
 #include "log_level.hpp"
 #include "log_policy.hpp"
+#include "log_message.hpp"
 
 namespace bolder {
 /** @defgroup log Logger
@@ -26,8 +27,6 @@ namespace bolder {
  *  @{
  */
 
-class Log_message;
-
 class Logger_base {
 public:
     Logger_base(std::unique_ptr<Log_policy_interface> policy);
@@ -38,7 +37,6 @@ public:
 
     /**
      * @brief Create a temporary Log_message to do logging.
-     * @param level Level of the logging
      */
     Log_message operator()(Log_level level = Log_level::info) const;
 
@@ -51,13 +49,15 @@ protected:
 
 private:
     std::unique_ptr<Log_policy_interface> policy_;
+    mutable std::mutex mutex_; // Protect the logger
 };
 
-template <typename Policy = Log_debug_policy>
+template <typename Policy>
 class Logger : public Logger_base {
 public:
     Logger()
-        : Logger_base{std::unique_ptr<Log_policy_interface> {new Policy}}
+        : Logger_base{std::unique_ptr<Log_policy_interface> {
+                      std::make_unique<Policy>()}}
     {
 
     }
@@ -68,54 +68,8 @@ public:
      * @brief Get a pointer to the policy class
      */
     Policy* policy() {
-        return dynamic_cast<Policy*>(Logger_base::policy());
+        return static_cast<Policy*>(Logger_base::policy());
     }
-
-};
-
-/**
- * @brief Object to accumulate whole message
- */
-class Log_message {
-public:
-    /**
-     * @brief Move constructor
-     * @param msg The message to move
-     */
-    Log_message(Log_message&& msg);
-
-    /**
-     * @brief Move assignment
-     * @param msg The message to move
-     */
-    Log_message& operator=(Log_message&& msg);
-
-    /**
-      * @brief Destructor output the message to its owner logger
-      */
-    ~Log_message() {
-        owner_->flush(*this);
-    }
-
-    /**
-     * @brief Accumulate a variable of type to into log message
-     */
-    template <typename T>
-    Log_message& operator<< (const T& value);
-
-    /**
-     * @brief Accumulate iostream manipulator function into log message
-     */
-    Log_message& operator<< (std::ostream& (*fn)(std::ostream& os));
-
-private:
-    friend class Logger_base; // Only logger can initialize Log_message onject
-
-    Log_message(const Logger_base* owner, Log_level level);
-
-    std::ostringstream buffer_;
-    const Logger_base* owner_; // Owner of the message
-    Log_level level_;
 };
 
 /**
@@ -123,16 +77,10 @@ private:
  *
  * Sample usage:
  * ```cpp
- * g_logger(Log_level::info) << "Hello world\n";
+ * bolder_logger(Log_level::info) << "Hello world\\n";
  * ```
  */
-extern Logger<Log_debug_policy> g_logger;
+extern Logger<Log_debug_policy> bolder_logger;
 
 /** @}*/
-
-template <typename T>
-Log_message& Log_message::operator<< (const T& value) {
-    buffer_ << value;
-    return *this;
-}
-}
+} // namespace bolder
