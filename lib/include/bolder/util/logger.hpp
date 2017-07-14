@@ -8,10 +8,9 @@
   * g_logger is a global variable defined in this module.
   */
 
-#include <ostream>
 #include <string>
-#include <memory>
 #include <mutex>
+#include <vector>
 
 #include "log_level.hpp"
 #include "log_policy.hpp"
@@ -22,65 +21,66 @@ namespace bolder {
  * @brief This module provides a simple logger.
  *
  * The logger is [policy-based](https://en.wikipedia.org/wiki/Policy-based_design).
+ * Every policies are callback that get called when logger try to record
+ * information.
  *
- * @see Log_policy_interface How to define and use your own logging policy.
+ * @see Log_policy How to define and use customized logging policics.
  *  @{
  */
 
-class Logger_base {
+class Logger {
 public:
-    Logger_base(std::unique_ptr<Log_policy_interface> policy);
-    virtual ~Logger_base();
+    Logger(const std::string& name);
+
+    ~Logger();
 
     /// @brief Log the message
     void flush(const Log_message& message) const;
+
+    void add_policy(const Log_policy& policy);
+    void add_policy(Log_policy&& policy);
 
     /**
      * @brief Create a temporary Log_message to do logging.
      */
     Log_message operator()(Log_level level = Log_level::info) const;
 
-protected:
-    /**
-     * @brief Access the logging policy of the logger
-     * @return a pointer to the logging policy
-     */
-    Log_policy_interface* policy() const;
-
 private:
-    std::unique_ptr<Log_policy_interface> policy_;
+    std::string name_; // Name of the logger
+    std::vector<Log_policy> policies_;
     mutable std::mutex mutex_; // Protect the logger
 };
 
-template <typename Policy>
-class Logger : public Logger_base {
-public:
-    Logger()
-        : Logger_base{std::unique_ptr<Log_policy_interface> {
-                      std::make_unique<Policy>()}}
-    {
-
-    }
-
-    virtual ~Logger() {}
-
-    /**
-     * @brief Get a pointer to the policy class
-     */
-    Policy* policy() {
-        return static_cast<Policy*>(Logger_base::policy());
-    }
-};
 
 /**
  * @brief Globle logger
  *
  * Sample usage:
  * ```cpp
- * bolder_logger(Log_level::info) << "Hello world\\n";
+ * global_log(Log_level::error) << "Cannot open window\\n";
  * ```
  */
-extern Logger<Log_debug_policy> bolder_logger;
+Log_message global_log(Log_level level);
+
+/// @name FunsGroupedInDoxygen
+///@{
+/// A bunch of short-cut macros for engine wide logging
+#ifdef BOLDER_LOGGING_VERBOSE
+#define BOLDER_LOG_FILE_LINE __FILE__ << ":" << __LINE__ << " \n"
+#define BOLDER_LOG_INFO bolder::global_log(Log_level::info) << BOLDER_LOG_FILE_LINE
+#define BOLDER_LOG_DEBUG bolder::global_log(Log_level::debug) << BOLDER_LOG_FILE_LINE
+#define BOLDER_LOG_WARNING bolder::global_log(Log_level::warning) << BOLDER_LOG_FILE_LINE
+#define BOLDER_LOG_ERROR bolder::global_log(Log_level::error) << BOLDER_LOG_FILE_LINE
+#define BOLDER_LOG_FATAL bolder::global_log(Log_level::fatal) << BOLDER_LOG_FILE_LINE
+#undef BOLDER_LOG_FILE_LINE
+#else
+#define BOLDER_LOG_INFO bolder::global_log(Log_level::info)
+#define BOLDER_LOG_DEBUG bolder::global_log(Log_level::debug)
+#define BOLDER_LOG_WARNING bolder::global_log(Log_level::warning)
+#define BOLDER_LOG_ERROR bolder::global_log(Log_level::error)
+#define BOLDER_LOG_FATAL bolder::global_log(Log_level::fatal)
+#endif
+///@}
 
 /** @}*/
 } // namespace bolder

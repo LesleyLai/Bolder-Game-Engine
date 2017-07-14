@@ -5,13 +5,20 @@
 
 namespace bolder {
 
-class Logger_base;
+class Logger;
 /** \addtogroup log
  *  @{
  */
 
 /**
  * @brief Object to accumulate whole message
+ *
+ * Log_message is the backend of the Logger class. It will accumulate messages
+ * and send them back while destruction. Outside code cannot create a
+ * Log_message, instead Logger will create temporary Log_message objects whenever
+ * user put new message to logger.
+ *
+ * @see Logger
  */
 class Log_message {
 public:
@@ -44,12 +51,12 @@ public:
     Log_message& operator<< (std::ostream& (*fn)(std::ostream& os));
 
 private:
-    friend class Logger_base; // Only logger can initialize Log_message onject
+    friend class Logger; // Only logger can initialize Log_message onject
 
-    Log_message(const Logger_base* owner, Log_level level);
+    Log_message(const Logger* owner, Log_level level);
 
     std::ostringstream buffer_;
-    const Logger_base* owner_; // Owner of the message
+    const Logger* owner_; // Owner of the message
     Log_level level_;
 };
 

@@ -1,15 +1,15 @@
 #pragma once
 
-#include <string>
-#include <fstream>
-#include <chrono>
-
 /**
  * @file log_policy.hpp Logging policy
  * @brief Engine defined logging policies.
- *
- * Logging policies are class with a "write" function to log its argument into.
  */
+
+#include <string>
+#include <fstream>
+#include <chrono>
+#include <functional>
+#include <memory>
 
 namespace bolder {
 /** \addtogroup log
@@ -21,54 +21,48 @@ namespace bolder {
  */
 struct logging_info {
     std::chrono::system_clock::time_point time; ///< Time point of logging
+    std::string logger_name; ///< The logger's name
     std::string level; ///< string of log level
-    std::string msg;
+    std::string msg; ///< Logging message
 };
 
-class Log_policy_interface {
-public:
-    virtual ~Log_policy_interface();
-
-    /**
-     * @brief Write the log message according to the policy
-     * @param msg The log message to write
-     */
-    virtual void write(const logging_info&) = 0;
-};
+/** @brief Prototype of log policies
+ *
+ * Logging policies are callback with a logging_info argument.
+ */
+using Log_policy = std::function<void(const logging_info& info)>;
 
 /**
  * @brief A logging policy of writing message to a file
  */
-class Log_file_policy : public Log_policy_interface {
+class Log_file_policy {
 public:
-    virtual ~Log_file_policy();
+    /// Default constructor
+    Log_file_policy();
 
-    void write(const logging_info& info) override;
+    /// Constructs a Log_file_policy connect to a file
+    Log_file_policy(const std::string& filename);
 
-    /// @brief Lets the logger log into a file with filename
+    /// Puts logging information to a file
+    void operator()(const logging_info& info);
+
+    /// Lets the logger log into a file with filename
     void open_file(const std::string& filename);
 
-    /**
-     * @brief Closes the file that logger append to
-     */
+    /// Closes the file that logger append to
     void close_file();
 
 private:
-    std::ofstream file_;
+    std::shared_ptr<std::ofstream> file_ptr_;
 };
 
 /**
- * @brief Logging policy for debugging.
+ * @brief Logging policy for stdout
+ * @param info A bundle of logging information
  *
- * A logging policy of writing message both to a file and to standard out
- * in debugging mode. It behaves like Log_file_policy in release mode.
+ * A logging policy of writing message to standard out.
  */
-class Log_debug_policy : public Log_file_policy {
-public:
-    virtual ~Log_debug_policy();
-
-    void write(const logging_info& info) override;
-};
+void Log_print_policy(const logging_info& info);
 
 /** @}*/
 

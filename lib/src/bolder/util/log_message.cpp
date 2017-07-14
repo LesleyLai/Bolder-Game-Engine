@@ -23,7 +23,7 @@ Log_message& Log_message::operator=(Log_message&& msg) {
     return *this;
 }
 
-Log_message::Log_message(const Logger_base* owner, Log_level level) :
+Log_message::Log_message(const Logger* owner, Log_level level) :
     owner_{owner}, level_{level} {
 }
 

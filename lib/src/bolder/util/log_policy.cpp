@@ -5,15 +5,38 @@
 
 using namespace bolder;
 
-Log_policy_interface::~Log_policy_interface() {}
-
-Log_file_policy::~Log_file_policy() {
+namespace {
+inline void check_file_opened(const std::ofstream& file) {
+    if (!file.is_open()) {
+        throw std::runtime_error{"LOGGER: Unable to open an output file stream"};
+    }
+}
 }
 
-void Log_file_policy::write(const logging_info& info)
+Log_file_policy::Log_file_policy()
 {
-    file_ << utility::date_time_string(info.time) << ' ';
-    file_ << info.level << " " << info.msg << "\n";
+
+}
+
+/**
+ * @brief Constructs a Log_file_policy connect to a file
+ * @param filename Name of the file to open.
+ */
+Log_file_policy::Log_file_policy(const std::string& filename)
+    : file_ptr_{std::make_shared<std::ofstream>(filename)}
+{
+    check_file_opened(*file_ptr_);
+}
+
+
+/**
+ * @brief Puts logging information to a file
+ * @param info A bundle of logging information
+ */
+void Log_file_policy::operator()(const logging_info& info)
+{
+    *file_ptr_ << utility::date_time_string(info.time) << ' ';
+    *file_ptr_ << info.level << " " << info.msg << "\n";
 }
 
 
@@ -23,23 +46,17 @@ void Log_file_policy::write(const logging_info& info)
  */
 void Log_file_policy::open_file(const std::string& filename)
 {
-    file_.open(filename);
-    if (!file_.is_open()) {
-        throw std::runtime_error{"LOGGER: Unable to open an output file stream"};
-    }
+    file_ptr_->open(filename);
+    check_file_opened(*file_ptr_);
 }
 
 void Log_file_policy::close_file()
 {
-    if (file_) file_.close();
+    if (file_ptr_) file_ptr_->close();
 }
 
-Log_debug_policy::~Log_debug_policy() {}
-
-void Log_debug_policy::write(const logging_info& info)
+void bolder::Log_print_policy(const logging_info& info)
 {
-#ifdef BOLDER_LOGGING_VERBOSE
-    std::cout << "[bolder] " << info.level << " " << info.msg << "\n";
-#endif
-    Log_file_policy::write(info);
+    std::cout << info.logger_name << " " <<
+                 info.level << " " << info.msg << "\n";
 }
