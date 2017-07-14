@@ -3,7 +3,7 @@
 #include "util/log_policy.hpp"
 #include "util/date_time.hpp"
 
-using namespace bolder;
+using namespace bolder::logging;
 
 namespace {
 inline void check_file_opened(const std::ofstream& file) {
@@ -55,7 +55,7 @@ void Log_file_policy::close_file()
     if (file_ptr_) file_ptr_->close();
 }
 
-void bolder::Log_print_policy(const logging_info& info)
+void bolder::logging::Log_print_policy(const logging_info& info)
 {
     std::cout << info.logger_name << " " <<
                  info.level << " " << info.msg << "\n";

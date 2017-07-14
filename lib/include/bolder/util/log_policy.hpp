@@ -12,6 +12,8 @@
 #include <memory>
 
 namespace bolder {
+namespace logging {
+
 /** \addtogroup log
  *  @{
  */
@@ -66,4 +68,5 @@ void Log_print_policy(const logging_info& info);
 
 /** @}*/
 
+} // namespace logging
 } // namespace bolder

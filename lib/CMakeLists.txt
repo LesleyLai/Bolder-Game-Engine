@@ -27,7 +27,7 @@ option(BOLDER_LOGGING_VERBOSE
     "More verbose logging and output debug logging to standard out" ON)
 
 if(BOLDER_LOGGING_VERBOSE)
-    target_compile_definitions(${LIB_NAME} PRIVATE BOLDER_LOGGING_VERBOSE = 1)
+    add_definitions(-DBOLDER_LOGGING_VERBOSE=1)
 endif()
 
 #test

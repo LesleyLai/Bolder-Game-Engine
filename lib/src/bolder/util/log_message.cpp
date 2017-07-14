@@ -1,7 +1,7 @@
 #include "util/logger.hpp"
 #include "util/log_message.hpp"
 
-using namespace bolder;
+using namespace bolder::logging;
 
 Log_message::~Log_message() {
     owner_->flush(*this);

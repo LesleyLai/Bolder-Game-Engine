@@ -3,6 +3,7 @@
 #include <string>
 
 namespace bolder {
+namespace logging {
 /** \addtogroup log
  *  @{
  */
@@ -31,4 +32,5 @@ enum class Log_level {
 std::string to_string(Log_level level);
 
 /** @}*/
-}
+} // namespace logging
+} // namespace bolder

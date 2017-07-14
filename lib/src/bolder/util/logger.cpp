@@ -1,7 +1,7 @@
 #include "util/logger.hpp"
 #include <utility>
 
-using namespace bolder;
+using namespace bolder::logging;
 
 Logger::Logger(const std::string& name)
     : name_{name} {
@@ -35,11 +35,6 @@ void Logger::add_policy(const Log_policy& policy)
     policies_.push_back(policy);
 }
 
-void Logger::add_policy(Log_policy&& policy)
-{
-    policies_.push_back(std::move(policy));
-}
-
 /**
  * @brief Create a temporary Log_message to do logging.
  * @param level Level of the logging
@@ -48,14 +43,14 @@ Log_message Logger::operator()(Log_level level) const {
     return Log_message {this, level};
 }
 
-Log_message bolder::global_log(Log_level level) {
+Log_message bolder::logging::global_log(Log_level level) {
     std::string file = "bolderGameEngine.log";
     static Logger bolder_logger {"[Bolder]"};
 #ifdef BOLDER_LOGGING_VERBOSE
     bolder_logger.add_policy(Log_print_policy);
     bolder_logger.add_policy(Log_file_policy{file});
 #else
-    bolder_logger.add_policy(std::move{Log_file_policy{file}});
+    bolder_logger.add_policy(Log_file_policy{file});
 #endif
     return bolder_logger(level);
 }

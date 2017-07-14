@@ -12,11 +12,12 @@
 #include <mutex>
 #include <vector>
 
-#include "log_level.hpp"
 #include "log_policy.hpp"
+#include "log_level.hpp"
 #include "log_message.hpp"
 
 namespace bolder {
+namespace logging {
 /** @defgroup log Logger
  * @brief This module provides a simple logger.
  *
@@ -38,7 +39,6 @@ public:
     void flush(const Log_message& message) const;
 
     void add_policy(const Log_policy& policy);
-    void add_policy(Log_policy&& policy);
 
     /**
      * @brief Create a temporary Log_message to do logging.
@@ -62,25 +62,19 @@ private:
  */
 Log_message global_log(Log_level level);
 
-/// @name FunsGroupedInDoxygen
+/// @name Global logging macros
 ///@{
 /// A bunch of short-cut macros for engine wide logging
-#ifdef BOLDER_LOGGING_VERBOSE
-#define BOLDER_LOG_FILE_LINE __FILE__ << ":" << __LINE__ << " \n"
-#define BOLDER_LOG_INFO bolder::global_log(Log_level::info) << BOLDER_LOG_FILE_LINE
-#define BOLDER_LOG_DEBUG bolder::global_log(Log_level::debug) << BOLDER_LOG_FILE_LINE
-#define BOLDER_LOG_WARNING bolder::global_log(Log_level::warning) << BOLDER_LOG_FILE_LINE
-#define BOLDER_LOG_ERROR bolder::global_log(Log_level::error) << BOLDER_LOG_FILE_LINE
-#define BOLDER_LOG_FATAL bolder::global_log(Log_level::fatal) << BOLDER_LOG_FILE_LINE
-#undef BOLDER_LOG_FILE_LINE
-#else
-#define BOLDER_LOG_INFO bolder::global_log(Log_level::info)
-#define BOLDER_LOG_DEBUG bolder::global_log(Log_level::debug)
-#define BOLDER_LOG_WARNING bolder::global_log(Log_level::warning)
-#define BOLDER_LOG_ERROR bolder::global_log(Log_level::error)
-#define BOLDER_LOG_FATAL bolder::global_log(Log_level::fatal)
-#endif
+#define BOLDER_LOG_level(level) ::bolder::logging::global_log( \
+    ::bolder::logging::Log_level::level)
+
+#define BOLDER_LOG_INFO BOLDER_LOG_level(info)
+#define BOLDER_LOG_DEBUG BOLDER_LOG_level(debug)
+#define BOLDER_LOG_WARNING BOLDER_LOG_level(warning)
+#define BOLDER_LOG_ERROR BOLDER_LOG_level(error)
+#define BOLDER_LOG_FATAL BOLDER_LOG_level(fatal)
 ///@}
 
 /** @}*/
+} // namespace logging
 } // namespace bolder

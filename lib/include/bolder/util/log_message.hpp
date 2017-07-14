@@ -4,6 +4,7 @@
 #include "log_level.hpp"
 
 namespace bolder {
+namespace logging {
 
 class Logger;
 /** \addtogroup log
@@ -67,5 +68,5 @@ Log_message& Log_message::operator<< (const T& value) {
 }
 
 /** @}*/
-
+} // namespace logging
 }

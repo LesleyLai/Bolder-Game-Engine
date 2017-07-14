@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include "util/log_level.hpp"
 
-std::string bolder::to_string(Log_level level) {
+std::string bolder::logging::to_string(Log_level level) {
     switch (level) {
     case Log_level::info:
         return "[Info]";

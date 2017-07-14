@@ -10,7 +10,7 @@
 
 #include "util/logger.hpp"
 
-using namespace bolder;
+using namespace bolder::logging;
 
 class Log_test_policy {
 public:
@@ -26,7 +26,6 @@ private:
 };
 
 TEST_CASE("Get correct log level string from to_string") {
-    BOLDER_LOG_DEBUG << 1;
     REQUIRE(to_string(Log_level::warning) == "[Warning]");
 }
 
