@@ -24,10 +24,10 @@ void Logger::flush(const Log_message& message) const {
     logging_info info{std::move(time), name_,
                 std::move(level), message.buffer_.str()};
 
-    std::lock_guard<std::mutex> lock(mutex_);
     for (auto policy : policies_) {
         policy(info);
     }
+
 }
 
 void Logger::add_policy(const Log_policy& policy)

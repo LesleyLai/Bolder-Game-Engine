@@ -1,23 +1,8 @@
 include(ExternalProject)
 find_package(Git REQUIRED)
 
-
 #configure directories
 set (THIRD_PARTY_MODULE_PATH "${PROJECT_SOURCE_DIR}/third_party")
-
-# Boost
-set(Boost_USE_STATIC_LIBS OFF)
-set(Boost_USE_MULTITHREADED ON)
-set(Boost_USE_STATIC_RUNTIME OFF)
-FIND_PACKAGE(Boost 1.43 COMPONENTS REQUIRED)
-
-if(Boost_FOUND)
-    include_directories(${Boost_INCLUDE_DIRS})
-    set (THIRD_PARTY_INCLUDE_PATH ${Boost_INCLUDE_DIRS} ${THIRD_PARTY_INCLUDE_PATH})
-else()
-  message( FATAL_ERROR "Cannot find the boost C++ library."
-      " The bolder game engine need boost library to build." )
-endif()
 
 set (THIRD_PARTY_INCLUDE_PATH ${THIRD_PARTY_INCLUDE_PATH} PARENT_SCOPE)
 
