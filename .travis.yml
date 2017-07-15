@@ -1,8 +1,6 @@
 language: cpp
 sudo: false
 
-env: BOOST_VERSION=default
-
 matrix:
   include:
 
@@ -20,19 +18,21 @@ matrix:
       addons: *gcc6
       env: COMPILER='g++-6' BUILD_TYPE='Debug'
 
-    # Linux C++14 Clang builds
-    - os: linux
-      compiler: clang
-      addons: &clang38
-        apt:
-          sources: ['llvm-toolchain-precise-3.8', 'ubuntu-toolchain-r-test']
-          packages: ['clang-3.8']
-      env: COMPILER='clang++-3.8' BUILD_TYPE='Release'
-
-    - os: linux
-      compiler: clang
-      addons: *clang38
-      env: COMPILER='clang++-3.8' BUILD_TYPE='Debug'
+    ############################################################################
+    # # Linux C++14 Clang builds                                               #
+    # - os: linux                                                              #
+    #   compiler: clang                                                        #
+    #   addons: &clang38                                                       #
+    #     apt:                                                                 #
+    #       sources: ['llvm-toolchain-precise-3.8', 'ubuntu-toolchain-r-test'] #
+    #       packages: ['clang-3.8']                                            #
+    #   env: COMPILER='clang++-3.8' BUILD_TYPE='Release'                       #
+    #                                                                          #
+    # - os: linux                                                              #
+    #   compiler: clang                                                        #
+    #   addons: *clang38                                                       #
+    #   env: COMPILER='clang++-3.8' BUILD_TYPE='Debug'                         #
+    ############################################################################
 
     # OSX C++14 Clang Builds
 
@@ -66,25 +66,6 @@ install:
     fi
 
   ############################################################################
-  # Install Boost headers
-  ############################################################################
-  - |
-    if [[ "${BOOST_VERSION}" != "" ]]; then
-      BOOST_DIR=${DEPS_DIR}/boost-${BOOST_VERSION}
-      if [[ -z "$(ls -A ${BOOST_DIR})" ]]; then
-        if [[ "${BOOST_VERSION}" == "trunk" ]]; then
-          BOOST_URL="http://github.com/boostorg/boost.git"
-          travis_retry git clone --depth 1 --recursive ${BOOST_URL} ${BOOST_DIR} || exit 1
-          (cd ${BOOST_DIR} && ./bootstrap.sh && ./b2 headers) || exit 1
-        else
-          BOOST_URL="http://sourceforge.net/projects/boost/files/boost/${BOOST_VERSION}/boost_${BOOST_VERSION//\./_}.tar.gz"
-          mkdir -p ${BOOST_DIR}
-          { travis_retry wget -O - ${BOOST_URL} | tar --strip-components=1 -xz -C ${BOOST_DIR}; } || exit 1
-        fi
-      fi
-      CMAKE_OPTIONS+=" -DBOOST_ROOT=${BOOST_DIR}"
-    fi
-      ############################################################################
   # Install a recent Doxygen
   ############################################################################
   - |
