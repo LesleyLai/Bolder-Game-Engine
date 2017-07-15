@@ -22,17 +22,8 @@ namespace bolder {
  *  @see log
  */
 namespace logging {
-/** @defgroup log Logging
- * @brief This module provides a simple logger.
- *
- * All of the module are inside namespace logging. The logger is
- * [policy-based](https://en.wikipedia.org/wiki/Policy-based_design).
- * Every policies are callback that get called when logger try to record
- * information.
- *
- * @see Log_policy Define a callback satisfy this prototype as customized
- * logging policies.
- *  @{
+/** @addtogroup log
+ * @{
  */
 
 /*!
@@ -44,15 +35,13 @@ public:
 
     ~Logger();
 
-    /// @brief Logs the message
+    /// Logs the message
     void flush(const Log_message& message) const;
 
-    /// @brief Adds a policy to the logger
+    /// Adds a policy to the logger
     void add_policy(const Log_policy& policy);
 
-    /**
-     * @brief Create a temporary Log_message to do logging.
-     */
+    /// Create a temporary Log_message to do logging.
     Log_message operator()(Log_level level = Log_level::info) const;
 
 private:
@@ -60,17 +49,7 @@ private:
     std::vector<Log_policy> policies_;
 };
 
-/**
- * @brief Globle logger
- *
- * Sample usage:
- * ```cpp
- * global_log(bolder::logging::Log_level::error) << "Cannot open window\\n";
- * ```
- *
- * An easier way is to use BOLDER_LOG_* Macros
- * @see Global logging macros
- */
+/// Global logger
 Log_message global_log(Log_level level);
 
 /// @name Global logging macros
@@ -91,8 +70,9 @@ Log_message global_log(Log_level level);
 
 /** @addtogroup log
  *  @{
- * @brief Short-hand type alias to declear Logger without logging namespace.
  */
+
+/// Short-hand type alias to declear Logger without logging namespace.
 using Logger = logging::Logger;
 /** @}*/
 

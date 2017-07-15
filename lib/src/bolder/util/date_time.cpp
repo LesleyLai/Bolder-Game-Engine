@@ -1,6 +1,6 @@
-#include <ctime>
 #include <iomanip>
 #include <sstream>
+#include <ctime>
 #include "util/date_time.hpp"
 
 /**
@@ -9,13 +9,12 @@
  * @return A string represent time with format Y-m-d h:m:s
  */
 std::string bolder::utility::date_time_string(
-        const std::chrono::system_clock::time_point& time)
-{
+        const std::chrono::system_clock::time_point& time) {
     const auto time_c = std::chrono::system_clock::to_time_t(time);
 
     std::stringstream ss;
-    std::tm tm;
-    localtime_s(&tm, &time_c);
-    ss << std::put_time(&tm, "%Y-%m-%d %X");
+
+    auto tm = localtime(&time_c);
+    ss << std::put_time(tm, "%Y-%m-%d %X");
     return ss.str();
 }

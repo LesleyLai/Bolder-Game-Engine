@@ -11,10 +11,15 @@ option(BOLDER_WITH_TESTS "Build tests of Bolder Game Engine" ON)
 option(BOLDER_WITH_DEMOS "Build demos of Bolder Game Engine" ON)
 
 add_subdirectory (third_party EXCLUDE_FROM_ALL)
+
+if (MSVC)
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS) # Suppress C4996
+endif()
+
 add_subdirectory (lib)
 
 if(BOLDER_WITH_DEMOS)
-add_subdirectory (demo)
+    add_subdirectory (demo)
 endif ()
 
 # Documents

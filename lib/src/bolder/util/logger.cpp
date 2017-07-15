@@ -3,6 +3,51 @@
 
 using namespace bolder::logging;
 
+/** @defgroup log Logging
+ * @brief This module provides a simple logger.
+ *
+ * All of the module are inside namespace logging. The logger is
+ * [policy-based](https://en.wikipedia.org/wiki/Policy-based_design).
+ * Every policies are callback that get called when logger try to record
+ * information.
+ */
+
+namespace  {
+// A singleton of the global logger
+struct Global_logger {
+public:
+    static Logger& instance();
+
+private:
+    Global_logger();
+
+    Logger logger_;
+};
+
+
+Logger& Global_logger::instance()
+{
+    static Global_logger instance;
+    return instance.logger_;
+}
+
+Global_logger::Global_logger() : logger_{"[Bolder]"}
+{
+    std::string file = "bolderGameEngine.log";
+#ifdef BOLDER_LOGGING_VERBOSE
+    logger_.add_policy(Log_print_policy);
+    logger_.add_policy(Log_file_policy{file});
+#else
+    logger_.add_policy(Log_file_policy{file});
+#endif
+}
+
+}
+
+/**
+ * @brief Constructs logger with its name
+ * @param name The name of the logger
+ */
 Logger::Logger(const std::string& name)
     : name_{name} {
 
@@ -43,14 +88,16 @@ Log_message Logger::operator()(Log_level level) const {
     return Log_message {this, level};
 }
 
+/**
+ * @brief Global logger
+ *
+ * Sample usage:
+ * ```cpp
+ * global_log(bolder::logging::Log_level::error) << "Cannot open window\\n";
+ * ```
+ * An easier way is to use BOLDER_LOG_* Macros
+ * @see Global logging macros
+ */
 Log_message bolder::logging::global_log(Log_level level) {
-    std::string file = "bolderGameEngine.log";
-    static Logger bolder_logger {"[Bolder]"};
-#ifdef BOLDER_LOGGING_VERBOSE
-    bolder_logger.add_policy(Log_print_policy);
-    bolder_logger.add_policy(Log_file_policy{file});
-#else
-    bolder_logger.add_policy(Log_file_policy{file});
-#endif
-    return bolder_logger(level);
+    return Global_logger::instance()(level);
 }

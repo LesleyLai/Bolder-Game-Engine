@@ -5,13 +5,14 @@
 ** STARTED [#A] logger
 *** DONE Logging with stream-like interface
 *** DONE Logging policies classes
-*** STARTED Documents
+*** DONE Documents
 *** TODO Asynchronous logging support
 ** TODO [#A] Exception hierarchy
 ** TODO Assertion
 
 * utilities
 ** TODO [#A] String utilities
+*** TODO constexpr string
 ** TODO Math libraries
 *** TODO [#A] Radian/degree classes for angles
 *** TODO [#A] Safe <cmath> wrapper with sane error handling and radian/degree support
@@ -33,10 +34,10 @@
 - camera matrices
 - rotation, scale, translation, transform matrices
 - decompose transform matrix
-*** TODO [#C] Geometric
+*** STARTED [#C] Geometric
 Point, line, triangle, sphere, AABB, OABB, capsule, etc
 Distance/intersection
-
+*** TODO [#C] Copy on write
 
 * Platform layer
 ** TODO Platform independent OS interface

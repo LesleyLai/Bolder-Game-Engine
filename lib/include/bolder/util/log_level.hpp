@@ -1,5 +1,10 @@
 #pragma once
 
+/**
+  * @file log_level.hpp
+  * @brief Logging level.
+  */
+
 #include <string>
 
 namespace bolder {
