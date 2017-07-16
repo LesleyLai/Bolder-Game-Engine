@@ -12,9 +12,7 @@ option(BOLDER_WITH_DEMOS "Build demos of Bolder Game Engine" ON)
 
 add_subdirectory (third_party EXCLUDE_FROM_ALL)
 
-if (MSVC)
-    add_definitions(-D_CRT_SECURE_NO_WARNINGS) # Suppress C4996
-endif()
+include(scripts/cmake/compiler.cmake)
 
 add_subdirectory (lib)
 

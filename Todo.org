@@ -14,7 +14,7 @@
 ** TODO [#A] String utilities
 *** TODO constexpr string
 ** TODO Math libraries
-*** TODO [#A] Radian/degree classes for angles
+*** STARTED [#A] Radian/degree classes for angles
 *** TODO [#A] Safe <cmath> wrapper with sane error handling and radian/degree support
 *** TODO Mathematical constants
 *** TODO Fixed-size vectors
@@ -37,15 +37,10 @@
 *** STARTED [#C] Geometric
 Point, line, triangle, sphere, AABB, OABB, capsule, etc
 Distance/intersection
-*** TODO [#C] Copy on write
+** TODO [#C] Copy on write template
 
-* Platform layer
-** TODO Platform independent OS interface
-*** Platform detection
-*** Window system wrapper
-** TODO Windows/Linux implementation of the OS interface
-*** TODO Windows
-*** TODO Linux
+* Platform wrapper
+** TODO glfw wrapper
 ** TODO utf-8 aware os wrapper
 
 
@@ -54,7 +49,7 @@ Distance/intersection
 ** TODO Task runner
 ** TODO Module startup/shutdown mechanisms
 ** TODO Game Loop
-** TODO  [#C] Graphics wrapper
+** TODO  [#C] Graphics
 *** TODO Vulkan setup
 *** TODO Draw triangles and lines
 ** TODO Entity system
