@@ -3,19 +3,16 @@
 
 * Debugging
 ** STARTED [#A] logger
-*** DONE Logging with stream-like interface
-*** DONE Logging policies classes
-*** DONE Documents
-*** TODO Asynchronous logging support
+- TODO Asynchronous logging support
 ** TODO [#A] Exception hierarchy
 ** TODO Assertion
 
 * utilities
-** TODO [#A] String utilities
+** TODO String utilities
 *** TODO constexpr string
 ** TODO Math libraries
-*** STARTED [#A] Radian/degree classes for angles
-*** TODO [#A] Safe <cmath> wrapper with sane error handling and radian/degree support
+*** STARTED Radian/degree classes for angles
+*** TODO Safe <cmath> wrapper with sane error handling and radian/degree support
 *** TODO Mathematical constants
 *** TODO Fixed-size vectors
 - dot
@@ -49,8 +46,8 @@ Distance/intersection
 ** TODO Task runner
 ** TODO Module startup/shutdown mechanisms
 ** TODO Game Loop
-** TODO  [#C] Graphics
+** TODO Graphics
 *** TODO Vulkan setup
 *** TODO Draw triangles and lines
 ** TODO Entity system
-** TODO [#C] Scene Graphs
+** TODO Scene Graphs

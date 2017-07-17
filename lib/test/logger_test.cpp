@@ -1,12 +1,5 @@
 #include "doctest.h"
 #include <sstream>
-#include <memory>
-#include <utility>
-#include <iostream>
-
-#ifdef BOLDER_LOGGING_VERBOSE
-#include <chrono>
-#endif
 
 #include "util/logger.hpp"
 
@@ -26,7 +19,7 @@ private:
 };
 
 TEST_CASE("Get correct log level string from to_string") {
-    REQUIRE(to_string(logging::Log_level::warning) == "[Warning]");
+    REQUIRE_EQ(to_string(logging::Log_level::warning), "[Warning]");
 
 }
 
@@ -35,12 +28,10 @@ TEST_CASE("logger work with stream style logging") {
     Logger test_logger {"[Test]"};
     test_logger.add_policy(Log_test_policy{ss});
     test_logger(logging::Log_level::debug) << "Test output " << std::hex << 42;
-    REQUIRE(ss.str() == "[Debug] Test output 2a");
+    REQUIRE_EQ(ss.str(), "[Debug] Test output 2a");
 }
 
-// =============================================================================
 // Implementation details of the log test policy
-// =============================================================================
 Log_test_policy::Log_test_policy(std::ostringstream& ss) : ss_{ss} {}
 Log_test_policy::~Log_test_policy() {}
 

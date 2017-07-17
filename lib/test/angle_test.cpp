@@ -1,149 +1,156 @@
+#include <sstream>
+
+#include "math/angle.hpp"
 #include "doctest.h"
 
-constexpr float pi = 3.1415926535897932384626433832795028841971693993751058209749445923078164062;
+using namespace bolder::math;
 
-constexpr float degree_to_rad = pi / 180;
-constexpr float rad_to_degree = 180 / pi;
-
-class Degree;
-
-class Radian
-{
-public:
-    /// Default constructor
-    Radian();
-
-    Radian(Degree degree);
-
-    /// Construct radian from a number
-    explicit Radian(float value);
-
-    float value() const;
-
-    Radian& operator+=(Radian rhs);
-    Radian& operator-=(Radian rhs);
-    Radian& operator*=(float rhs);
-    float& operator/=(Radian rhs);
-
-private:
-    float value_;
-};
-
-class Degree
-{
-public:
-    Degree();
-
-    Degree(Radian radian);
-
-    /// Construct degree from a number
-    explicit Degree(float value);
-
-    float value() const;
-
-private:
-    float value_;
-};
-
-TEST_CASE("Radian arithmetics") {
+TEST_CASE("[angle] Radian arithmetics") {
     Radian pi_o_4 {pi/4};
     Radian pi_o_2 {pi/2};
 
     SUBCASE("Radian unary addition operator") {
         auto pp = pi_o_4;
         pp += pi_o_4;
-        REQUIRE(pp.value() == doctest::Approx(pi_o_2.value()));
+        REQUIRE_EQ(pp.value(), doctest::Approx(pi_o_2.value()));
     }
 
     SUBCASE("Radian unary subtraction operator") {
         auto pp = pi_o_2;
         pp -= pi_o_4;
-        REQUIRE(pp.value() == doctest::Approx(pi_o_4.value()));
+        REQUIRE_EQ(pp.value(), doctest::Approx(pi_o_4.value()));
     }
 
     SUBCASE("Radian unary multiplication operator") {
         auto pp = pi_o_4;
         pp *= 2;
-        REQUIRE(pp.value() == doctest::Approx(pi_o_2.value()));
+        REQUIRE_EQ(pp.value(), doctest::Approx(pi_o_2.value()));
     }
 
     SUBCASE("Radian unary division operator") {
         auto pp = pi_o_2;
-        pp /= pi_o_4;
-        REQUIRE(pp.value() == doctest::Approx(2));
+        pp /= 2;
+        REQUIRE_EQ(pp.value(), doctest::Approx(pi_o_4.value()));
     }
 
-    //REQUIRE((pi_o_4 + pi_o_2).value() == doctest::Approx(pi / 4 * 3));
+    SUBCASE("Negation of radian") {
+        REQUIRE_EQ((-pi_o_2).value(), doctest::Approx(-pi_o_2.value()));
+    }
+
+    SUBCASE("Radian binary addition operator") {
+        REQUIRE_EQ((pi_o_4 + pi_o_2).value(), doctest::Approx(pi / 4 * 3));
+    }
+
+    SUBCASE("Radian binary minus operator") {
+        REQUIRE_EQ((pi_o_2 - pi_o_4).value(), doctest::Approx(pi / 4));
+    }
+
+    SUBCASE("Radian binary multiply operator") {
+        REQUIRE_EQ((pi_o_2 * 2).value(), doctest::Approx(pi));
+        REQUIRE_EQ((2 * pi_o_2).value(), doctest::Approx(pi));
+    }
+
+    SUBCASE("Radian binary divide operator") {
+        REQUIRE_EQ((pi_o_2 / 2).value(), doctest::Approx(pi / 4));
+        REQUIRE_EQ(pi_o_2 / pi_o_2, doctest::Approx(1));
+    }
+
 }
 
-TEST_CASE("Convert degree and radian") {
+TEST_CASE("[angle] degree arithmetics") {
+    Radian degree_30 {30};
+    Radian degree_60 {60};
 
+    SUBCASE("Degree unary addition operator") {
+        auto pp = degree_30;
+        pp += degree_30;
+        REQUIRE_EQ(pp.value(), doctest::Approx(degree_60.value()));
+    }
+
+    SUBCASE("Degree unary subtraction operator") {
+        auto pp = degree_60;
+        pp -= degree_30;
+        REQUIRE_EQ(pp.value(), doctest::Approx(degree_30.value()));
+    }
+
+    SUBCASE("Degree unary multiplication operator") {
+        auto pp = degree_30;
+        pp *= 2;
+        REQUIRE_EQ(pp.value(), doctest::Approx(degree_60.value()));
+    }
+
+    SUBCASE("Negation of degree") {
+        REQUIRE_EQ((-degree_30).value(), doctest::Approx(-degree_30.value()));
+    }
+
+    SUBCASE("Degree binary addition operator") {
+        REQUIRE_EQ((degree_30 + degree_60).value(), doctest::Approx(90));
+    }
+
+    SUBCASE("Degree binary minus operator") {
+        REQUIRE_EQ((degree_60 - degree_30).value(), doctest::Approx(30));
+    }
+
+    SUBCASE("Degree binary multiply operator") {
+        REQUIRE_EQ((degree_60 * 2).value(), doctest::Approx(120));
+        REQUIRE_EQ((2 * degree_60).value(), doctest::Approx(120));
+    }
+
+    SUBCASE("Degree binary divide operator") {
+        REQUIRE_EQ((degree_60 / 2).value(), doctest::Approx(30));
+        REQUIRE_EQ(degree_60 / degree_30, doctest::Approx(2));
+    }
+}
+
+TEST_CASE("[angle] Convert between degree and radian") {
     SUBCASE("Degree to radian") {
         Degree d{45};
         Radian r = d;
-        REQUIRE(r.value() == doctest::Approx(pi / 4));
+        REQUIRE_EQ(r.value(), doctest::Approx(pi / 4));
     }
 
     SUBCASE("Radian to degree") {
         Radian r{pi / 2};
         Degree d = r;
-        REQUIRE(d.value() == doctest::Approx(90));
+        REQUIRE_EQ(d.value(), doctest::Approx(90));
     }
 }
 
-Radian::Radian() : value_{0} {}
+TEST_CASE("[angle] Comparison of degree and radian") {
+    SUBCASE("equal") {
+        REQUIRE_EQ(Radian{1}, Radian{1});
+        REQUIRE_EQ(Degree{1}, Degree{1});
+    }
 
-Radian::Radian(Degree degree) :value_{degree.value() * degree_to_rad}
-{
+    SUBCASE("not equal") {
+        REQUIRE_NE(Radian{2}, Radian{1});
+        REQUIRE_NE(Degree{2}, Degree{1});
+    }
+
+    SUBCASE("greater than") {
+        REQUIRE_GT(Radian{2}, Radian{1});
+        REQUIRE_GT(Degree{2}, Degree{1});
+    }
+
+    SUBCASE("greater or equal") {
+        REQUIRE_GE(Radian{2}, Radian{1});
+        REQUIRE_GE(Degree{2}, Degree{2});
+    }
+
+    SUBCASE("less than") {
+        REQUIRE_LT(Radian{1}, Radian{2});
+        REQUIRE_LT(Degree{1}, Degree{2});
+    }
+
+    SUBCASE("less or equal") {
+        REQUIRE_LE(Radian{1}, Radian{1});
+        REQUIRE_LE(Degree{1}, Degree{2});
+    }
 }
 
-Radian::Radian(float value) : value_{value}
-{
+TEST_CASE("[angle] String conversions") {
+    std::stringstream ss;
+    ss << Radian{pi};
+    REQUIRE_EQ(ss.str(), "1_radians");
 
-}
-
-float Radian::value() const
-{
-    return value_;
-}
-
-Radian &Radian::operator+=(Radian rhs)
-{
-    value_ += rhs.value();
-    return *this;
-}
-
-Radian &Radian::operator-=(Radian rhs)
-{
-    value_ -= rhs.value();
-    return *this;
-}
-
-Radian &Radian::operator*=(float rhs)
-{
-    value_ *= rhs;
-    return *this;
-}
-
-float &Radian::operator/=(Radian rhs)
-{
-    value_ /= rhs.value();
-    return value_;
-}
-
-Degree::Degree() : value_{0} {}
-
-Degree::Degree(Radian radian) :value_{radian.value() * rad_to_degree}
-{
-
-}
-
-Degree::Degree(float value) :value_{value}
-{
-
-}
-
-float Degree::value() const
-{
-    return value_;
 }
