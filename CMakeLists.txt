@@ -9,6 +9,12 @@ set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
 option(BOLDER_WITH_TESTS "Build tests of Bolder Game Engine" ON)
 option(BOLDER_WITH_DEMOS "Build demos of Bolder Game Engine" ON)
+option(BOLDER_LOGGING_VERBOSE
+    "More verbose logging and output debug logging to standard out" ON)
+
+if(BOLDER_LOGGING_VERBOSE)
+    add_definitions(-DBOLDER_LOGGING_VERBOSE=1)
+endif()
 
 add_subdirectory (third_party EXCLUDE_FROM_ALL)
 

@@ -150,7 +150,15 @@ TEST_CASE("[angle] Comparison of degree and radian") {
 
 TEST_CASE("[angle] String conversions") {
     std::stringstream ss;
-    ss << Radian{pi};
-    REQUIRE_EQ(ss.str(), "1_radians");
+
+    SUBCASE("Radian string conversion") {
+        ss << Radian{pi};
+        REQUIRE_EQ(ss.str(), "1_radians");
+    }
+
+    SUBCASE("Degree string conversion") {
+        ss << Degree{45};
+        REQUIRE_EQ(ss.str(), "45_degrees");
+    }
 
 }

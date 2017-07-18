@@ -1,8 +1,7 @@
-#include <iostream>
-#include "bolder/util/logger.hpp"
-
-using namespace std;
+#include "bolder/engine.hpp"
 
 int main(int argc, char** argv) {
-    cout << "Hello world!\n";
+    bolder::Engine engine {"Bolder Demo"};
+
+    return engine.exec(argc, argv);
 }

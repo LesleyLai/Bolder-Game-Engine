@@ -1,4 +1,6 @@
 #include "util/logger.hpp"
+
+#include <iostream>
 #include <utility>
 
 using namespace bolder::logging;
@@ -30,6 +32,7 @@ Logger& Global_logger::instance()
     static Global_logger instance;
     return instance.logger_;
 }
+
 
 Global_logger::Global_logger() : logger_{"[Bolder]"}
 {

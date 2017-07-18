@@ -1,4 +1,3 @@
-
 #configure variables
 set (LIB_NAME "${PROJECT_NAME}Lib")
 
@@ -21,14 +20,7 @@ file (GLOB_RECURSE LIB_SOURCE_FILES "${LIBRARY_SRC_PATH}/*.cpp")
 
 # Engine
 add_library (${LIB_NAME} STATIC ${LIB_SOURCE_FILES} ${LIB_HEADER_FILES})
-
-# Logging option
-option(BOLDER_LOGGING_VERBOSE
-    "More verbose logging and output debug logging to standard out" ON)
-
-if(BOLDER_LOGGING_VERBOSE)
-    add_definitions(-DBOLDER_LOGGING_VERBOSE=1)
-endif()
+target_link_libraries(${LIB_NAME} ${THIRD_PARTY_LIBS})
 
 #test
 if(BOLDER_WITH_TESTS)
