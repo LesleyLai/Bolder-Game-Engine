@@ -20,7 +20,7 @@ add_subdirectory (third_party EXCLUDE_FROM_ALL)
 
 include(scripts/cmake/compiler.cmake)
 
-add_subdirectory (lib)
+add_subdirectory (core)
 
 if(BOLDER_WITH_DEMOS)
     add_subdirectory (demo)

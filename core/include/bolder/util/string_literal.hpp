@@ -1,5 +1,4 @@
-#ifndef STRING_LITERAL_HPP
-#define STRING_LITERAL_HPP
+#pragma once
 
 #include <cstddef>
 
@@ -13,7 +12,7 @@ struct String_literal {
 public:
     /// Construct a String_literal class from a string literal
     template<size_t n>
-    String_literal(const char(&arr)[n])
+    constexpr String_literal(const char(&arr)[n])
         : data_{arr},
           size_{n}
     {
@@ -31,5 +30,3 @@ private:
 
 }
 }
-
-#endif // STRING_LITERAL_HPP

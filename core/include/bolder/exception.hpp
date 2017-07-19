@@ -1,5 +1,4 @@
-#ifndef EXCEPTION_HPP
-#define EXCEPTION_HPP
+#pragma once
 
 namespace bolder {
 
@@ -18,5 +17,3 @@ private:
 };
 
 }
-
-#endif // EXCEPTION_HPP

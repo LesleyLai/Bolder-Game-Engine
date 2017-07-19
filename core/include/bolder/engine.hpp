@@ -1,5 +1,4 @@
-#ifndef ENGINE_HPP
-#define ENGINE_HPP
+#pragma once
 
 #include <memory>
 #include "util/string_literal.hpp"
@@ -20,5 +19,3 @@ private:
     std::unique_ptr<Impl> impl_;
 };
 }
-
-#endif // ENGINE_HPP

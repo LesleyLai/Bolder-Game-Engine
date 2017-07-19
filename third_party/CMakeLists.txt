@@ -5,11 +5,12 @@ find_package(Git REQUIRED)
 set (THIRD_PARTY_MODULE_PATH "${PROJECT_SOURCE_DIR}/third_party")
 
 # GLFW
-add_subdirectory(glfw)
-
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
+
+add_subdirectory(glfw)
 
 set(GLFW_Lib glfw)
 
