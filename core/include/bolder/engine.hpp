@@ -5,6 +5,10 @@
 
 namespace bolder {
 
+namespace platform {
+class Display;
+}
+
 class Engine
 {
 public:
@@ -15,7 +19,6 @@ public:
     int exec(int argc, char** argv);
 
 private:
-    struct Impl;
-    std::unique_ptr<Impl> impl_;
+    std::unique_ptr<platform::Display> display_;
 };
 }
