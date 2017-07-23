@@ -1,11 +1,13 @@
+# Compiler specific settings
+
 if(compiler_included)
     return()
 endif()
-set(common_included true)
+set(compiler_included true)
 
 function(add_compiler_flags)
     foreach(flag ${ARGV})
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${flag}")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${flag}" PARENT_SCOPE)
     endforeach()
 endfunction()
 
@@ -71,6 +73,5 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     add_compiler_flags(/std:c++latest) # for post c++14 updates in MSVC
     add_compiler_flags(/permissive-) # force standard conformance
     add_compiler_flags(/WX)
-    add_compiler_flags(/W4)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS) # Suppress C4996
 endif()

@@ -13,7 +13,7 @@ Engine::Engine(utility::String_literal title)
 Engine::~Engine() = default;
 
 
-int Engine::exec(int argc, char** argv)
+int Engine::exec(int /*argc*/, char** /*argv*/)
 {
     while (!display_->should_close()) {
         display_->update();
