@@ -7,6 +7,8 @@
 
 using ID = std::uint32_t;
 
+class World;
+
 class Entity {
 public:
     ID index() const {

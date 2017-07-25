@@ -5,8 +5,8 @@
 using namespace bolder::platform;
 
 namespace  {
-void glfw_error_callback(int, const char* description) {
-    BOLDER_LOG_FATAL <<  description;
+void glfw_error_callback(int, const char* /*description*/) {
+    //BOLDER_LOG_FATAL <<  description;
 }
 }
 
