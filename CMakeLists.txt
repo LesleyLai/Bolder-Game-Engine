@@ -18,9 +18,7 @@ endif()
 
 add_subdirectory (third_party EXCLUDE_FROM_ALL)
 
-include(scripts/cmake/compiler.cmake)
-
-add_subdirectory (core)
+add_subdirectory (Engine)
 
 if(BOLDER_WITH_DEMOS)
     add_subdirectory (demo)
