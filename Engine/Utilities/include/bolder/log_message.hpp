@@ -5,7 +5,6 @@
   * @brief Contains message to log.
   */
 
-
 #include <sstream>
 #include "log_level.hpp"
 

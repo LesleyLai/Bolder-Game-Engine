@@ -26,7 +26,7 @@ namespace logging {
 /// A Logger object output information according to its policies
 class Logger {
 public:
-    Logger(utility::String_literal name);
+    Logger(String_literal name);
 
     ~Logger();
 
@@ -40,7 +40,7 @@ public:
     Log_message operator()(Log_level level = Log_level::info) const;
 
 private:
-    const utility::String_literal name_; // Name of the logger
+    const String_literal name_; // Name of the logger
     std::vector<Log_policy> policies_;
 };
 

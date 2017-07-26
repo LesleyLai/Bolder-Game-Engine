@@ -35,7 +35,7 @@ Log_file_policy::Log_file_policy(const std::string& filename)
  */
 void Log_file_policy::operator()(const logging_info& info)
 {
-    *file_ptr_ << utility::date_time_string(info.time) << ' ';
+    *file_ptr_ << date_time_string(info.time) << ' ';
     *file_ptr_ << info.level << " " << info.msg << "\n";
 }
 

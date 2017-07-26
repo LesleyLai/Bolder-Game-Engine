@@ -26,7 +26,7 @@ namespace logging {
  */
 struct logging_info {
     std::chrono::system_clock::time_point time; ///< Time point of logging
-    utility::String_literal logger_name; ///< The logger's name
+    String_literal logger_name; ///< The logger's name
     Log_level level; ///< Log severity level
     std::string msg; ///< Logging message
 };

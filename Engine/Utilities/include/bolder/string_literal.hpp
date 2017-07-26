@@ -8,7 +8,10 @@
 #include <cstddef>
 
 namespace bolder {
-namespace utility {
+
+/** @addtogroup utilities
+ * @{
+ */
 
 /**
  * @brief A compile time string
@@ -33,5 +36,6 @@ private:
     const size_t size_;
 };
 
-}
+/** @}*/
+
 }

@@ -12,7 +12,7 @@ class Display;
 class Engine
 {
 public:
-    Engine(utility::String_literal title);
+    Engine(String_literal title);
     ~Engine();
 
     /// Run the engine

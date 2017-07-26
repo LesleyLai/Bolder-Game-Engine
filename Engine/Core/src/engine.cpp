@@ -4,7 +4,7 @@
 
 using namespace bolder;
 
-Engine::Engine(utility::String_literal title)
+Engine::Engine(String_literal title)
     : display_{std::make_unique<platform::Display>(title)}
 {
 }

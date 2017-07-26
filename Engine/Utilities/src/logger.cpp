@@ -4,7 +4,6 @@
 #include <utility>
 
 using namespace bolder::logging;
-using namespace bolder::utility;
 
 /** @defgroup log Logging
  * @brief This module provides a simple logger.
@@ -52,7 +51,7 @@ Global_logger::Global_logger() : logger_{"[Bolder]"}
  * @brief Constructs logger with its name
  * @param name The name of the logger
  */
-Logger::Logger(String_literal name)
+Logger::Logger(bolder::String_literal name)
     : name_{name} {
 
 }
