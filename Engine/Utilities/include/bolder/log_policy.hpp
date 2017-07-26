@@ -11,6 +11,9 @@
 #include <functional>
 #include <memory>
 
+#include "log_level.hpp"
+#include "string_literal.hpp"
+
 namespace bolder {
 namespace logging {
 
@@ -23,8 +26,8 @@ namespace logging {
  */
 struct logging_info {
     std::chrono::system_clock::time_point time; ///< Time point of logging
-    std::string logger_name; ///< The logger's name
-    std::string level; ///< string of log level
+    utility::String_literal logger_name; ///< The logger's name
+    Log_level level; ///< Log severity level
     std::string msg; ///< Logging message
 };
 

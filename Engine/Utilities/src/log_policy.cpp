@@ -57,6 +57,16 @@ void Log_file_policy::close_file()
 
 void bolder::logging::Log_print_policy(const logging_info& info)
 {
-    std::cout << info.logger_name << " " <<
-                 info.level << " " << info.msg << "\n";
+    std::ostream* out;
+    switch (info.level) {
+    case Log_level::debug:
+    case Log_level::info:
+        out = &std::cout;
+    case Log_level::warning:
+    case Log_level::error:
+    case Log_level::fatal:
+        out = &std::cerr;
+    }
+
+    *out << info.logger_name << " " << info.level << " " << info.msg << "\n";
 }

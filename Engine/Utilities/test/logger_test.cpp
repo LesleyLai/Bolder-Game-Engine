@@ -20,7 +20,6 @@ private:
 
 TEST_CASE("Get correct log level string from to_string") {
     REQUIRE_EQ(to_string(logging::Log_level::warning), "[Warning]");
-
 }
 
 TEST_CASE("logger work with stream style logging") {

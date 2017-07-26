@@ -9,7 +9,7 @@ file (GLOB_RECURSE UTIL_SOURCE_FILES "${UTIL_SRC}/*.hpp")
 file (GLOB_RECURSE UTIL_SOURCE_FILES "${UTIL_SRC}/*.cpp")
 
 # Engine
-add_library (BolderUtility STATIC ${UTIL_SOURCE_FILES})
+add_library (BolderUtility STATIC ${UTIL_SOURCE_FILES} ${UTIL_HEADER_FILES})
 
 #test
 if(BOLDER_WITH_TESTS)

@@ -4,6 +4,7 @@
 #include <utility>
 
 using namespace bolder::logging;
+using namespace bolder::utility;
 
 /** @defgroup log Logging
  * @brief This module provides a simple logger.
@@ -51,7 +52,7 @@ Global_logger::Global_logger() : logger_{"[Bolder]"}
  * @brief Constructs logger with its name
  * @param name The name of the logger
  */
-Logger::Logger(const std::string& name)
+Logger::Logger(String_literal name)
     : name_{name} {
 
 }
@@ -67,10 +68,9 @@ Logger::~Logger() {
 void Logger::flush(const Log_message& message) const {
 
     auto time = std::chrono::system_clock::now();
-    auto level = to_string(message.level_);
 
     logging_info info{std::move(time), name_,
-                std::move(level), message.buffer_.str()};
+                message.level_, message.buffer_.str()};
 
     for (auto policy : policies_) {
         policy(info);

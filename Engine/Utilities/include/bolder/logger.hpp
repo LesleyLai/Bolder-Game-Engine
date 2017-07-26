@@ -15,23 +15,18 @@
 #include "log_policy.hpp"
 #include "log_level.hpp"
 #include "log_message.hpp"
+#include "string_literal.hpp"
 
 namespace bolder {
-/** @namespace logging
- *  @brief The namespace of all API relative to logging.
- *  @see log
- */
 namespace logging {
 /** @addtogroup log
  * @{
  */
 
-/*!
- * @brief A Logger object output information according to its policies
- */
+/// A Logger object output information according to its policies
 class Logger {
 public:
-    Logger(const std::string& name);
+    Logger(utility::String_literal name);
 
     ~Logger();
 
@@ -45,7 +40,7 @@ public:
     Log_message operator()(Log_level level = Log_level::info) const;
 
 private:
-    std::string name_; // Name of the logger
+    const utility::String_literal name_; // Name of the logger
     std::vector<Log_policy> policies_;
 };
 

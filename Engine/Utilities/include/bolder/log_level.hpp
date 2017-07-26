@@ -5,6 +5,7 @@
   * @brief Logging level.
   */
 
+#include <ostream>
 #include <string>
 
 namespace bolder {
@@ -31,10 +32,12 @@ enum class Log_level {
     fatal,
 };
 
-/**
- * @brief A helper to get a string represent the Log_level
- */
+/// output a string represent of level to ostream os
+std::ostream& operator<<(std::ostream& os, Log_level level);
+
+/// Return a string represent of level
 std::string to_string(Log_level level);
+
 
 /** @}*/
 } // namespace logging

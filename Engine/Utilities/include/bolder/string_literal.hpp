@@ -1,5 +1,10 @@
 #pragma once
 
+/**
+ * @file string_literal.hpp
+ * @brief Compile time string class.
+ */
+
 #include <cstddef>
 
 namespace bolder {
@@ -19,7 +24,7 @@ public:
         static_assert(n != 0, "Empty string literal is not allowed");
     }
 
-    constexpr operator const char* () {return data_;}
+    constexpr operator const char* () const {return data_;}
 
     constexpr size_t size() const {return size_;}
 

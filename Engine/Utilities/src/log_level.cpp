@@ -1,18 +1,33 @@
-#include <stdexcept>
+#include <sstream>
 #include "log_level.hpp"
 
-std::string bolder::logging::to_string(Log_level level) {
+std::ostream& bolder::logging::operator<<(std::ostream& os,
+                                          const Log_level level)
+{
     switch (level) {
     case Log_level::info:
-        return "[Info]";
+        os << "[Info]";
+        break;
     case Log_level::debug:
-        return "[Debug]";
+        os << "[Debug]";
+        break;
     case Log_level::warning:
-        return "[Warning]";
+        os << "[Warning]";
+        break;
     case Log_level::error:
-        return "[Error]";
+        os << "[Error]";
+        break;
     case Log_level::fatal:
-        return "[Fatal]";
+        os << "[Fatal]";
+        break;
     }
-    throw std::invalid_argument("Unexpect input of to_string(Log_level) function");
+
+    return os;
+}
+
+std::string bolder::logging::to_string(bolder::logging::Log_level level)
+{
+    std::stringstream ss;
+    ss << level;
+    return ss.str();
 }
