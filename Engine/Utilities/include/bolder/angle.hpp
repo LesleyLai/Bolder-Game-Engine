@@ -1,11 +1,11 @@
 #pragma once
 
-#include <ostream>
-
 /**
  * @file angle.hpp
  * @brief float point Degrees and Radians classes, along with literal operators.
  */
+
+#include <ostream>
 
 namespace bolder {
 namespace math {
@@ -38,10 +38,12 @@ public:
     /// Construct radian from a number
     constexpr explicit Radian(float value) : value_{value} {}
 
-    /// Gets value of underlying float
+    /// Returns value of underlying float
     constexpr float value() const { return value_; }
 
+    /// Return the negation of the Radian
     constexpr Radian operator-() const { return Radian{-value_}; }
+
     Radian& operator+=(Radian rhs);
     Radian& operator-=(Radian rhs);
     Radian& operator*=(float rhs);
@@ -66,6 +68,7 @@ public:
     /// Gets value of underlying float
     constexpr float value() const { return value_; }
 
+    /// Return the negation of the Degree
     constexpr Degree operator-() const { return Degree{-value_}; }
 
     Degree& operator+=(Degree rhs);
@@ -78,135 +81,223 @@ private:
     float value_;
 };
 
-// Binary arithmetic operations of Radian and Degree
+
+/**
+ * @brief Returns the sum of two radians.
+ * @related Radian
+ */
 constexpr Radian operator+(Radian lhs, Radian rhs) {
     return Radian(lhs.value() + rhs.value());
 }
 
+/**
+ * @brief Returns the difference of two radians.
+ * @related Radian
+ */
 constexpr Radian operator-(Radian lhs, Radian rhs) {
     return Radian(lhs.value() - rhs.value());
 }
 
+/**
+ * @brief Returns the product of a radian and a scalar.
+ * @related Radian
+ */
 constexpr Radian operator*(Radian lhs, float rhs) {
     return Radian(lhs.value() * rhs);
 }
 
+/**
+ * @brief Returns the product of a radian and a scalar.
+ * @related Radian
+ */
 constexpr Radian operator*(float lhs, Radian rhs) {
     return Radian(lhs * rhs.value());
 }
 
+/**
+ * @brief Divides a radian value by another radian.
+ * @related Radian
+ */
 constexpr float operator/(Radian lhs, Radian rhs) {
     return lhs.value() / rhs.value();
 }
 
+/**
+ * @brief Divides a radian value by a scalar.
+ * @related Radian
+ */
 constexpr Radian operator/(Radian lhs, float rhs) {
     return Radian(lhs.value() / rhs);
 }
 
+/**
+ * @brief Returns the sum of two degrees.
+ * @related Degree
+ */
 constexpr Degree operator+(Degree lhs, Degree rhs) {
     return Degree(lhs.value() + rhs.value());
 }
 
+/**
+ * @brief Returns the difference of two degrees.
+ * @related Degree
+ */
 constexpr Degree operator-(Degree lhs, Degree rhs) {
     return Degree(lhs.value() - rhs.value());
 }
 
+/**
+ * @brief Returns the product of a degree and a scalar.
+ * @related Degree
+ */
 constexpr Degree operator*(Degree lhs, float rhs) {
     return Degree(lhs.value() * rhs);
 }
 
+/**
+ * @brief Returns the product of a degree and a scalar.
+ * @related Degree
+ */
 constexpr Degree operator*(float lhs, Degree rhs) {
     return Degree(lhs * rhs.value());
 }
 
+/**
+ * @brief Divides a degree value by a scalar.
+ * @related Degree
+ */
 constexpr float operator/(Degree lhs, Degree rhs) {
     return lhs.value() / rhs.value();
 }
 
+/**
+ * @brief Divides a degree value by another degree.
+ * @related Degree
+ */
 constexpr Degree operator/(Degree lhs, float rhs) {
     return Degree(lhs.value() / rhs);
 }
 
-// Comparison operations of Radian and Degree
+/**
+ * @related Radian
+ */
 constexpr bool operator==(Radian lhs, Radian rhs) {
     return lhs.value() == rhs.value();
 }
 
+/**
+ * @related Radian
+ */
 constexpr bool operator!=(Radian lhs, Radian rhs) {
     return lhs.value() != rhs.value();
 }
 
+/**
+ * @related Radian
+ */
 constexpr bool operator<(Radian lhs, Radian rhs) {
     return lhs.value() < rhs.value();
 }
 
+/**
+ * @related Radian
+ */
 constexpr bool operator>(Radian lhs, Radian rhs) {
     return lhs.value() > rhs.value();
 }
 
+/**
+ * @related Radian
+ */
 constexpr bool operator<=(Radian lhs, Radian rhs) {
     return lhs.value() <= rhs.value();
 }
 
+/**
+ * @related Radian
+ */
 constexpr bool operator>=(Radian lhs, Radian rhs) {
     return lhs.value() >= rhs.value();
 }
 
+/**
+ * @related Degree
+ */
 constexpr bool operator==(Degree lhs, Degree rhs) {
     return lhs.value() == rhs.value();
 }
 
+/**
+ * @related Degree
+ */
 constexpr bool operator!=(Degree lhs, Degree rhs) {
     return lhs.value() != rhs.value();
 }
 
+/**
+ * @related Degree
+ */
 constexpr bool operator<(Degree lhs, Degree rhs) {
     return lhs.value() < rhs.value();
 }
 
+/**
+ * @related Degree
+ */
 constexpr bool operator>(Degree lhs, Degree rhs) {
     return lhs.value() > rhs.value();
 }
 
+/**
+ * @related Degree
+ */
 constexpr bool operator<=(Degree lhs, Degree rhs) {
     return lhs.value() <= rhs.value();
 }
 
+/**
+ * @related Degree
+ */
 constexpr bool operator>=(Degree lhs, Degree rhs) {
     return lhs.value() >= rhs.value();
 }
 
-
-// Implementation of the member functions
-
+/// Adds rhs to this radian
 inline Radian &Radian::operator+=(Radian rhs) {
     value_ += rhs.value(); return *this;
 }
 
+/// Subtracts rhs from this radian
 inline Radian &Radian::operator-=(Radian rhs) {
     value_ -= rhs.value(); return *this;
 }
 
+/// Multiplies a scalar rhs to this radian
 inline Radian &Radian::operator*=(float rhs) {
     value_ *= rhs; return *this;
 }
 
+/// Divides a scalar rhs to this radian
 inline Radian &Radian::operator/=(float rhs) {
     value_ /= rhs; return *this;
 }
 
+/// Adds rhs to this degree
 inline Degree &Degree::operator+=(Degree rhs) {
     value_ += rhs.value(); return *this;
 }
 
+/// Subtracts rhs from this degree
 inline Degree &Degree::operator-=(Degree rhs) {
     value_ -= rhs.value(); return *this;
 }
 
+/// Multiplies a scalar rhs to this degree
 inline Degree &Degree::operator*=(float rhs) {
     value_ *= rhs; return *this;
 }
 
+/// Divides a scalar rhs to this degree
 inline Degree &Degree::operator/=(float rhs) {
     value_ /= rhs; return *this;
 }

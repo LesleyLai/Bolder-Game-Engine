@@ -1,5 +1,10 @@
 #pragma once
 
+/**
+ * @file vec2.hpp
+ * @brief Header file for 2d float point vector.
+ */
+
 #include <ostream>
 
 namespace bolder { namespace math {
@@ -22,41 +27,32 @@ struct Vec2 {
     constexpr Vec2(float xx, float yy) : x{xx}, y{yy} {}
 
     /// Returns the size of Vec2
-    constexpr size_type size() { return 2; }
-
-    /// Returns the element of index i
-    ///
+    constexpr size_type size() const { return 2; }
 
     ///@{
     /**
      * @brief Returns the element of index i
      * @warning No bound checking.
      */
-    constexpr float & operator[](size_type i);
+    float & operator[](size_type i);
     constexpr float const & operator[](size_type i) const;
     ///@}
 
-    /// Adds rhs to this vector
+    constexpr Vec2 operator-() const;
     Vec2& operator+=(const Vec2& rhs);
-
-    /// Subtracts rhs from this vector
     Vec2& operator-=(const Vec2& rhs);
-
-    /// Multiplies a scalar rhs to this vector
     Vec2& operator*=(float rhs);
-
-    /// Divides a scalar rhs to this vector
     Vec2& operator/=(float rhs);
 
-    friend constexpr bool operator==(const Vec2& lhs, const Vec2& rhs);
-    friend constexpr bool operator!=(const Vec2& lhs, const Vec2& rhs);
+    constexpr float length_square() const;
+    float length() const;
 
     friend std::ostream& operator<<(std::ostream& os, const Vec2& v);
 };
 
 std::ostream& operator<<(std::ostream& os, const Vec2& v);
 
-constexpr float &Vec2::operator[](Vec2::size_type i)
+inline float &Vec2::operator[](Vec2::size_type i)
 {
     return elems[i];
 }
@@ -66,28 +62,51 @@ constexpr const float &Vec2::operator[](Vec2::size_type i) const
     return elems[i];
 }
 
+/// Return the negation of the vector
+constexpr Vec2 Vec2::operator-() const
+{
+    return Vec2{-x, -y};
+}
+
+/// Adds rhs to this vector
 inline Vec2& Vec2::operator+=(const Vec2& rhs) {
     x += rhs.x;
     y += rhs.y;
     return *this;
 }
 
+/// Subtracts rhs from this vector
 inline Vec2& Vec2::operator-=(const Vec2& rhs) {
     x -= rhs.x;
     y -= rhs.y;
     return *this;
 }
 
+/// Multiplies a scalar rhs to this vector
 inline Vec2& Vec2::operator*=(float rhs) {
     x *= rhs;
     y *= rhs;
     return *this;
 }
 
+/// Divides a scalar rhs to this vector
 inline Vec2& Vec2::operator/=(float rhs) {
     x /= rhs;
     y /= rhs;
     return *this;
+}
+
+/**
+ * @brief Returns the squared length of this vector.
+ *
+ * When it is not necessary to get the exact length of a vector, it is advised
+ * to use this method instead of length.
+ *
+ * @see length
+ */
+constexpr float Vec2::length_square() const
+{
+    return x * x + y * y;
 }
 
 /**
@@ -118,7 +137,7 @@ constexpr Vec2 operator-(const Vec2& lhs, const Vec2& rhs)
 }
 
 /**
- * @brief Calculates the scalar product of this vector with the given value.
+ * @brief Calculates the scalar product of vector with the given value.
  * @related Vec2
  */
 constexpr Vec2 operator*(const Vec2& lhs, float rhs)
@@ -127,7 +146,7 @@ constexpr Vec2 operator*(const Vec2& lhs, float rhs)
 }
 
 /**
- * @brief Calculates the scalar product of this vector with the given value.
+ * @brief Calculates the scalar product of vector with the given value.
  * @related Vec2
  */
 constexpr Vec2 operator*(float lhs, const Vec2& rhs)

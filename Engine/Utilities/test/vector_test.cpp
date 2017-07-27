@@ -52,6 +52,10 @@ TEST_CASE("[math] 2D Vectors") {
             v/=2;
             REQUIRE_EQ(v, half_v);
         }
+
+        SUBCASE("Negation") {
+            REQUIRE_EQ(-v, Vec2{-1, -2});
+        }
     }
 
     SUBCASE("Binary arithmetics of Vec2") {
@@ -75,6 +79,11 @@ TEST_CASE("[math] 2D Vectors") {
         SUBCASE("dot product") {
             REQUIRE_EQ(dot(v, v2), Vec2{3, 10});
         }
+    }
+
+    SUBCASE("Length of the vector") {
+        REQUIRE_EQ(v.length_square(), doctest::Approx(5));
+        REQUIRE_EQ(v.length(), doctest::Approx(std::sqrt(5)));
     }
 
 }
