@@ -69,7 +69,10 @@ endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     add_compiler_flags(/std:c++latest) # for post c++14 updates in MSVC
-    add_compiler_flags(/permissive-) # force standard conformance
     add_compiler_flags(/WX)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS) # Suppress C4996
+
+    if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 19.10)
+        add_compiler_flags(/permissive-) # force standard conformance
+    endif()
 endif()

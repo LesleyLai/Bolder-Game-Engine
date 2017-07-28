@@ -1,5 +1,4 @@
-#ifndef OPENGL_CONTEXT_HPP
-#define OPENGL_CONTEXT_HPP
+#pragma once
 
 namespace bolder { namespace graphics { namespace GL {
 
@@ -14,7 +13,3 @@ public:
 };
 
 }}} // namespace bolder::graphics::GL
-
-
-
-#endif // OPENGL_CONTEXT_HPP

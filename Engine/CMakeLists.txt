@@ -12,9 +12,12 @@ add_subdirectory(OpenGL)
 # Engien core functionalities
 add_subdirectory(Core)
 
+# Application entry base class
+add_subdirectory(Application)
+
 if(BOLDER_WITH_TESTS)
     enable_testing()
 endif()
 
 # Export variables
-set (BOLDER_CORE_INCLUDE_PATH "${BOLDER_CORE_INCLUDE_PATH}" PARENT_SCOPE)
+set (BOLDER_APP_INCLUDE_PATH "${BOLDER_APP_INCLUDE_PATH}" PARENT_SCOPE)
