@@ -12,7 +12,6 @@ function(add_compiler_flags)
 endfunction()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    add_compiler_flags(-Werror)
     add_compiler_flags(-pedantic)
     add_compiler_flags(-pedantic-errors)
     add_compiler_flags(-Wno-gnu-anonymous-struct)
