@@ -59,6 +59,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     if(CMAKE_CXX_COMPILER_VERSION VERSION_EQUAL 7.0 OR CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 7.0)
         add_compiler_flags(-Walloc-zero)
         add_compiler_flags(-Walloca)
+        add_compiler_flage(-Wimplicit-fallthrough)
     endif()
 endif()
 
@@ -69,7 +70,7 @@ endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     add_compiler_flags(/std:c++latest) # for post c++14 updates in MSVC
-    #add_compiler_flags(/permissive-) # force standard conformance
+    add_compiler_flags(/permissive-) # force standard conformance
     add_compiler_flags(/WX)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS) # Suppress C4996
 endif()
