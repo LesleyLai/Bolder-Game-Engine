@@ -13,13 +13,15 @@ Exception::Exception(const char* message) noexcept : msg_{message}
 
 }
 
-Exception::~Exception() {}
-
 const char* Exception::what() const noexcept
 {
     return msg_ ? msg_ : "Unknown exception";
 }
 
-Not_implemented::Not_implemented() : Exception("Not implemented") {}
+Unimplemented::Unimplemented() noexcept : Exception("Not implemented") {}
 
-Invalid_argument::Invalid_argument() : Exception("Invalid argument") {}
+Invalid_argument::Invalid_argument() noexcept : Exception("Invalid argument") {}
+
+Runtime_error::Runtime_error(const char* message) noexcept  : Exception{message}
+{
+}

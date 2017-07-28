@@ -1,21 +1,42 @@
 #include "bolder/exception.hpp"
 #include "bolder/engine.hpp"
 #include "bolder/display.hpp"
+#include "bolder/opengl_context.hpp"
 
-using namespace bolder;
+namespace bolder {
+namespace detail {
+struct Engine_impl {
+    platform::Display display;
+    graphics::GL::OpenGL_context gl_context;
+
+    Engine_impl(String_literal title)
+        : display{title},
+          gl_context{} {
+
+    }
+
+    int exec(int /*argc*/, char** /*argv*/) {
+        while (!display.closed()) {
+            gl_context.update();
+            display.update();
+        }
+        return 0;
+    }
+};
+
+}
 
 Engine::Engine(String_literal title)
-    : display_{std::make_unique<platform::Display>(title)}
+    : impl_{std::make_unique<detail::Engine_impl>(title)}
 {
 }
 
 Engine::~Engine() = default;
 
 
-int Engine::exec(int /*argc*/, char** /*argv*/)
+int Engine::exec(int argc, char** argv)
 {
-    while (!display_->should_close()) {
-        display_->update();
-    }
-    return 0;
+    return impl_->exec(argc, argv);
+}
+
 }

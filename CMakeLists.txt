@@ -7,6 +7,9 @@ set_property (GLOBAL PROPERTY USE_FOLDERS ON)
 set (CMAKE_CXX_STANDARD 14)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Less verbose generated make file
+set_property(GLOBAL PROPERTY RULE_MESSAGES OFF)
+
 option(BOLDER_WITH_TESTS "Build tests of Bolder Game Engine" ON)
 option(BOLDER_WITH_DEMOS "Build demos of Bolder Game Engine" ON)
 option(BOLDER_LOGGING_VERBOSE

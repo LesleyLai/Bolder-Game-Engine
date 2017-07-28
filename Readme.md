@@ -19,17 +19,14 @@ Also, the engine depends on [Boost C++ Library](http://www.boost.org/).
 
 # Project Structure #
 ``` c
-/lib
-  /src
-    /bolder
-  /include
-    /bolder
-  /platform // platform dependent codes
-  /test // unit test for the engine
+/Engine // Modules of the engine
+  /Core // Core engine codes
+  /Utilities // Utilities and math libraries that other parts of engine depend on
+  /Platform // Platform specific codes and a platform-agnostic interface for such codes
+  /OpenGL // A thin OpenGL wrapper
+
 /docs // Documents
-/demo
-  /src
-  /test
+/demo // Demo about how to use the engine
 /third_party
 /scripts // Misc scripts
 ```

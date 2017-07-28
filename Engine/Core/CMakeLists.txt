@@ -7,7 +7,8 @@ set (CORE_INCLUDE_PATH
 include_directories (
   "${CORE_INCLUDE_PATH}"
   ${THIRD_PARTY_INCLUDE_PATH}
-  ${PLATFORM_INCLUDE_PATH})
+  ${PLATFORM_INCLUDE_PATH}
+  ${OPENGL_INCLUDE_PATH})
 
 #set sources
 file (GLOB_RECURSE CORE_HEADER_FILES "${CORE_INCLUDE_PATH}/*.hpp")
@@ -21,7 +22,8 @@ add_library (BolderCore STATIC
 target_link_libraries(BolderCore
   ${THIRD_PARTY_LIBS}
   BolderUtility
-  BolderPlatform)
+  BolderPlatform
+  BolderOpenGL)
 
 #test
 if(BOLDER_WITH_TESTS)

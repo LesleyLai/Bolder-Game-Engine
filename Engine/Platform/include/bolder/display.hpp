@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include <string>
+#include "bolder/string_literal.hpp"
 
 namespace bolder { namespace platform {
 
@@ -9,21 +9,21 @@ namespace bolder { namespace platform {
 class Display
 {
 public:
-    Display(const char* title);
+    Display(String_literal title);
     ~Display();
 
-    int width() const;
-    int height() const;
+    // Returns a (width, height) pair
+    std::pair<int, int> dimension() const;
 
-    // Returns whether the display should close
-    bool should_close() const;
+    // Returns whether the display is closed
+    bool closed() const;
 
-    void update();
+    void update() const;
 
 private:
     struct Display_impl;
     std::unique_ptr<Display_impl> impl_;
 };
 
-} }
+}}
 

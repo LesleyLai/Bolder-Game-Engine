@@ -60,12 +60,17 @@ void bolder::logging::Log_print_policy(const logging_info& info)
     std::ostream* out;
     switch (info.level) {
     case Log_level::debug:
+        [[fallthrough]];
     case Log_level::info:
         out = &std::cout;
+        break;
     case Log_level::warning:
+        [[fallthrough]];
     case Log_level::error:
+        [[fallthrough]];
     case Log_level::fatal:
         out = &std::cerr;
+        break;
     }
 
     *out << info.logger_name << " " << info.level << " " << info.msg << "\n";

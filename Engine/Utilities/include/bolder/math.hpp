@@ -1,8 +1,6 @@
 #pragma once
 
-#include <iostream>
 #include <cmath>
-#include <cfenv>
 #include "exception.hpp"
 
 namespace bolder { namespace math {
@@ -11,12 +9,15 @@ namespace bolder { namespace math {
  *  @{
  */
 
+/**
+ * @brief Returns the square root of arg
+ * @param arg The input to find square root
+ * @throw bolder::Invalid_argument if the input is negative or nan
+ */
 inline float sqrt(float arg) {
-    auto result = std::sqrt(arg);
-    if (std::fetestexcept(FE_INVALID)) {
-        throw Invalid_argument {};
-    }
-    return result;
+    return (arg < 0 || std::isnan(arg))
+            ? (throw Invalid_argument{})
+            : std::sqrt(arg);
 }
 
 /** @}*/

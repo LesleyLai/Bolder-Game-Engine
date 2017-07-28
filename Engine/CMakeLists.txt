@@ -6,6 +6,9 @@ add_subdirectory(Utilities)
 # Platform abstruction layer
 add_subdirectory(Platform)
 
+# Thin OpenGL Wrapper
+add_subdirectory(OpenGL)
+
 # Engien core functionalities
 add_subdirectory(Core)
 
