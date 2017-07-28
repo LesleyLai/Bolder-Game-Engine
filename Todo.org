@@ -2,15 +2,17 @@
 #+PRIORITIES: A C B
 
 * Debugging
-** STARTED [#A] logger
-- TODO Asynchronous logging support
-** TODO [#A] Exception hierarchy
+** TODO Asynchronous logging support
+** STARTED [#A] Exception hierarchy
 ** TODO Assertion
 
+* Profiling
+** Benchmark functions
+
 * utilities
-** TODO String utilities
+** STARTED String utilities
 *** STARTED constexpr string
-** TODO Math libraries
+** STARTED Math libraries
 *** TODO Safe <cmath> wrapper with sane error handling and radian/degree support
 *** TODO Mathematical constants
 *** TODO [#A] Fixed-size vectors
@@ -35,20 +37,17 @@ Point, line, triangle, sphere, AABB, OABB, capsule, etc
 Distance/intersection
 
 ** TODO [#C] Copy on write template
+** TODO Task runner
 
 * Platform wrapper
-** TODO glfw wrapper
-** TODO utf-8 aware os wrapper
-
+** TODO utf-8 support os wrapper
 
 * TODO Core Engine
 ** TODO Communication mechanisms between systems
 - Event queue
-** TODO Task runner
 ** TODO Module startup/shutdown mechanisms
 ** TODO Game Loop
-** TODO Graphics
-*** TODO Opengl setup
-*** TODO Draw triangles and lines
-** TODO Entity system
-** TODO Scene Graphs
+
+* TODO Graphics
+** TODO Draw basic geometries with OpenGL
+** STARTED Entity system

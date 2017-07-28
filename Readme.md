@@ -5,7 +5,7 @@ The medium-term task of Bolder is a small cross-platform 2d game engine.
 # Build #
 To build **bolder game engine**, you need to install [git](https://git-scm.com/), and [CMake](https://cmake.org/) to your computer. 
 
-Also, the engine depends on [Boost C++ Library](http://www.boost.org/).
+For linux, you need gcc or clang to compiler the codes. For Windows, only Microsoft Visual Studio 2017 is supported. Previous versions of MSVC cannot compile the engine.
 
 # Contribution #
 [Todo.org](./Todo.org) contains the current todo list.
