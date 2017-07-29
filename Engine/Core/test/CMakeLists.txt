@@ -6,7 +6,6 @@ file (GLOB TEST_SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 
 #set target executable
 add_executable (BolderCoreTest ${TEST_SOURCE_FILES})
-add_dependencies(BolderCoreTest doctest)
 
 add_test(NAME BolderCoreTest COMMAND BolderCoreTest)
 

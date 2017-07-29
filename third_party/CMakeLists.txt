@@ -32,21 +32,7 @@ set (THIRD_PARTY_MODULE_PATH "${THIRD_PARTY_MODULE_PATH}" PARENT_SCOPE)
 
 # Unit test framework
 if(BOLDER_WITH_TESTS)
-    ExternalProject_Add(
-        doctest
-        PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/doctest
-        GIT_REPOSITORY https://github.com/onqtam/doctest.git
-        TIMEOUT 10
-        UPDATE_COMMAND ${GIT_EXECUTABLE} pull
-        CONFIGURE_COMMAND ""
-        BUILD_COMMAND ""
-        INSTALL_COMMAND ""
-        LOG_DOWNLOAD ON
-        )
-
-    # Expose required variable (DOCTEST_INCLUDE_DIR) to parent scope
-    ExternalProject_Get_Property(doctest source_dir)
-    set(DOCTEST_INCLUDE_DIR ${source_dir}/doctest CACHE INTERNAL
+    set(DOCTEST_INCLUDE_DIR "${THIRD_PARTY_MODULE_PATH}/doctest/doctest" CACHE INTERNAL
         "Path to include folder for doctest")
 
     #set variables for tests
@@ -54,4 +40,6 @@ if(BOLDER_WITH_TESTS)
 
     #export vars
     set (TEST_THIRD_PARTY_INCLUDE_PATH ${TEST_THIRD_PARTY_INCLUDE_PATH} PARENT_SCOPE)
+
+
 endif(BOLDER_WITH_TESTS)

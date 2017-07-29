@@ -63,7 +63,6 @@ unsigned int compile_shaders() {
         "}\n\0"
     };
 
-
     glShaderSource(vertex_shader, 1, &vertex_shader_source, nullptr);
     glCompileShader(vertex_shader);
 
@@ -138,10 +137,6 @@ OpenGL_context::OpenGL_context()
     glEnableVertexAttribArray(0);
     // use our shader program when we want to render an object
     shader_program = compile_shaders();
-
-
-    //someOpenGLFunctionThatDrawsOurTriangle();
-
 
 }
 
