@@ -70,7 +70,7 @@ unsigned int compile_shaders() {
 
     unsigned int fragment_shader;
     fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment_shader, 1, &fragment_shader_source, NULL);
+    glShaderSource(fragment_shader, 1, &fragment_shader_source, nullptr);
     glCompileShader(fragment_shader);
 
     test_shader_compile_success(fragment_shader);

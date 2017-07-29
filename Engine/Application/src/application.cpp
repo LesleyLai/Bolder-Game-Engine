@@ -2,38 +2,45 @@
 #include "bolder/logger.hpp"
 #include "bolder/exception.hpp"
 
+static constexpr const char* default_title = "Bolder game engine application";
+
 using namespace bolder;
 
 Application::Application() noexcept {}
 
-int Application::exec(int argc, char** argv) noexcept
-try {
-    engine_ = std::make_unique<Engine>("Bolder Demo");
-    initialize();
-    return engine_->exec(argc, argv);
-} catch(const bolder::Exception& e) {
-    dump(e);
-    return 1;
-} catch (const std::exception& e) {
-    BOLDER_LOG_FATAL << "C++ exception: " << e.what();
-    return 1;
-} catch (...) {
-    BOLDER_LOG_FATAL << "Unknown exception";
-    return 1;
-}
-
-void Application::dump(const bolder::Exception& e) noexcept
+Application::Application(const char* title) noexcept
 {
-    BOLDER_LOG_FATAL << "Crash report:\n"
-                     << e.what();
-}
-
-Engine& Application::engine() const
-{
-    return *engine_;
+    title_ = title;
 }
 
 Application::~Application()
 {
 
+}
+
+int Application::exec(int argc, char** argv) noexcept
+try {
+    title_ = title_ ? title_ : default_title;
+    engine_ = std::make_unique<Engine>(title_);
+    initialize();
+    return engine_->exec(argc, argv);
+} catch(const bolder::Exception& e) {
+    report_crash(e.what());
+    return 1;
+} catch (const std::exception& e) {
+    report_crash(std::string{"C++ exception: "} + e.what());
+    return 1;
+} catch (...) {
+    report_crash("Unknown C++ exception");
+    return 1;
+}
+
+void Application::report_crash(const std::string& message) noexcept
+{
+    BOLDER_LOG_FATAL << "Crash report:\n" << message;
+}
+
+Engine& Application::engine() const
+{
+    return *engine_;
 }

@@ -10,10 +10,6 @@ using namespace bolder;
 using namespace bolder::platform;
 
 namespace {
-void loadGL() {
-
-}
-
 void glfw_error_callback(int, const char* description) {
     BOLDER_LOG_FATAL <<  description;
 }
@@ -30,8 +26,6 @@ struct Display::Display_impl {
         BOLDER_LOG_INFO << "Platform layer with GLFW initialized";
 
         glfwMakeContextCurrent(window);
-
-        loadGL();
     }
 
     ~Display_impl() {
@@ -45,7 +39,7 @@ struct Display::Display_impl {
     GLFWwindow* window = nullptr;
 };
 
-Display::Display(bolder::String_literal title)
+Display::Display(const char* title)
     : impl_{std::make_unique<Display_impl>(title)}
 {
 }

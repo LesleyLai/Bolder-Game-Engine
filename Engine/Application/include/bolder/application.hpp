@@ -1,12 +1,12 @@
 #pragma once
 
 #include <memory>
+#include <string>
 #include "bolder/engine.hpp"
 
 namespace bolder {
 
 class Engine;
-class Exception;
 
 class Application
 {
@@ -33,11 +33,11 @@ public:
     virtual void initialize() = 0;
 
     /**
-     * @brief Crush report function
+     * @brief Crash report function
      *
      * Override this function to customize crash report.
      */
-    virtual void dump(const bolder::Exception& e) noexcept;
+    virtual void report_crash(const std::string& message) noexcept;
 
 protected:
     /// Return the engine object contained in the application
@@ -45,6 +45,7 @@ protected:
 
 private:
     std::unique_ptr<Engine> engine_;
+    const char * title_ = nullptr;
 };
 
 }

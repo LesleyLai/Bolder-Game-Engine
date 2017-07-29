@@ -20,6 +20,12 @@ add_library (BolderOpenGL STATIC
 
 target_link_libraries (BolderOpenGL BolderUtility ${THIRD_PARTY_LIBS})
 
+#test
+if(BOLDER_WITH_TESTS)
+    enable_testing ()
+    add_subdirectory (test)
+endif()
+
 # Export variables
 set (OPENGL_INCLUDE_PATH ${OPENGL_INCLUDE_PATH} PARENT_SCOPE)
 

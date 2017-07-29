@@ -9,7 +9,7 @@ namespace bolder { namespace platform {
 class Display
 {
 public:
-    Display(String_literal title);
+    Display(const char* title);
     ~Display();
 
     // Returns a (width, height) pair

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <memory>
-#include "bolder/string_literal.hpp"
 
 namespace bolder {
 
@@ -9,10 +8,13 @@ namespace detail {
 struct Engine_impl;
 }
 
+/**
+ * @brief This class manages all the states and the main loop of the game engine
+ */
 class Engine
 {
 public:
-    Engine(String_literal title);
+    Engine(const char* title);
     ~Engine();
 
     /// Run the engine

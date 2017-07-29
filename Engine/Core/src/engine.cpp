@@ -9,7 +9,7 @@ struct Engine_impl {
     platform::Display display;
     graphics::GL::OpenGL_context gl_context;
 
-    Engine_impl(String_literal title)
+    Engine_impl(const char* title)
         : display{title},
           gl_context{} {
 
@@ -26,7 +26,7 @@ struct Engine_impl {
 
 }
 
-Engine::Engine(String_literal title)
+Engine::Engine(const char* title)
     : impl_{std::make_unique<detail::Engine_impl>(title)}
 {
 }
