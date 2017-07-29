@@ -1,7 +1,6 @@
 #include "opengl_shader.hpp"
 #include "bolder/logger.hpp"
 
-
 namespace  {
 bool is_shader_compiled(unsigned int shader) {
     int  success;
@@ -19,24 +18,26 @@ bool is_shader_compiled(unsigned int shader) {
 }
 }
 
-Shader_opengl::Shader_opengl(const char* source, Shader_opengl::Type type) :
+using namespace bolder::graphics::GL;
+
+Shader::Shader(const char* source, Shader::Type type) :
     type_{type},
     source_{source},
     id_{glCreateShader(GLenum(type_))}
 {
 }
 
-Shader_opengl::~Shader_opengl()
+Shader::~Shader()
 {
     glDeleteShader(id_);
 }
 
-GLuint Shader_opengl::id() const
+unsigned int Shader::id() const
 {
     return id_;
 }
 
-bool Shader_opengl::compile()
+bool Shader::compile()
 {
     glShaderSource(id_, 1, &source_, nullptr);
     glCompileShader(id_);

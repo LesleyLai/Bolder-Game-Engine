@@ -1,6 +1,8 @@
+#include "opengl_shader_program.hpp"
 #include "opengl_shader.hpp"
-
 #include "doctest.h"
+
+using namespace bolder::graphics::GL;
 
 constexpr const char * vertex_shader_source = {
     "#version 330 core\n"
@@ -11,12 +13,30 @@ constexpr const char * vertex_shader_source = {
     "}\0"
 };
 
-TEST_CASE("[OpenGL] OpenGL_shader") {
-    Shader_opengl vertex_shader {vertex_shader_source,
-                Shader_opengl::Type::Vertex};
+constexpr const char * fragment_shader_source = {
+    "#version 330 core\n"
+    "out vec4 FragColor;\n"
+    "void main()\n"
+    "{\n"
+    "   FragColor = vec4(1.0f, 0.2f, 0.0f, 1.0f);\n"
+    "}\n\0"
+};
 
-    SUBCASE("Can compile shader") {
-        REQUIRE_EQ(vertex_shader.compile(), true);
-    }
+TEST_CASE("[OpenGL] Shader and shader program") {
+    Shader vertex_shader {vertex_shader_source,
+                Shader::Type::Vertex};
+
+    REQUIRE_EQ(vertex_shader.compile(), true);
+
+    Shader fragment_shader {fragment_shader_source,
+                Shader::Type::Fragment};
+
+    REQUIRE_EQ(vertex_shader.compile(), true);
+    REQUIRE_EQ(fragment_shader.compile(), true);
+
+    Shader_program shader_program;
+    shader_program.attach(vertex_shader);
+    shader_program.attach(fragment_shader);
+    REQUIRE_EQ(shader_program.link(), true);
 
 }

@@ -2,7 +2,9 @@
 
 #include "glad/glad.h"
 
-class Shader_opengl {
+namespace bolder { namespace graphics { namespace GL {
+
+class Shader {
 public:
     /// OpenGL_shader type
     enum class Type {
@@ -11,11 +13,11 @@ public:
         Geometry = GL_GEOMETRY_SHADER,
     };
 
-    Shader_opengl(const char* source, Type type);
-    ~Shader_opengl();
+    Shader(const char* source, Type type);
+    ~Shader();
 
     /// Returns the OpenGl assigned id of this OpenGL_shader.
-    GLuint id() const;
+    unsigned int id() const;
 
     /// Compiles this OpenGL_shader
     bool compile();
@@ -23,5 +25,8 @@ public:
 private:
     Type type_;
     const char* source_;
-    GLuint id_;
+    unsigned int id_;
 };
+
+}}} // namespace bolder::graphics::GL
+
