@@ -17,7 +17,7 @@ struct Engine_impl {
 
     int exec(int /*argc*/, char** /*argv*/) {
         while (!display.closed()) {
-            gl_context.update();
+            gl_context.render();
             display.update();
         }
         return 0;

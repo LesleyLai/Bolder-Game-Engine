@@ -9,7 +9,11 @@ public:
     OpenGL_context();
 
     /// Renders the context
-    void update();
+    void render();
+
+private:
+    unsigned int vao;
+    unsigned int shader_program;
 };
 
 }}} // namespace bolder::graphics::GL
