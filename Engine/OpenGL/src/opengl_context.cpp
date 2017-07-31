@@ -22,9 +22,12 @@ constexpr const char *vertex_shader_source = {
 constexpr const char * fragment_shader_source = {
     "#version 330 core\n"
     "out vec4 FragColor;\n"
+    "\n"
+    "uniform float gv;\n"
+    "\n"
     "void main()\n"
     "{\n"
-    "   FragColor = vec4(1.0f, 0.2f, 0.0f, 1.0f);\n"
+    "   FragColor = vec4(1.0f, gv, 0.0f, 1.0f);\n"
     "}\n\0"
 };
 
@@ -112,6 +115,13 @@ void OpenGL_context::render()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    using namespace std::chrono;
+
+    auto current = high_resolution_clock::now();
+    auto time = duration_cast<duration<float, std::ratio<1,3>>>(
+                current.time_since_epoch());
+    auto v = std::sin(time.count());
+    shader_program->set_uniform("gv", v);
     shader_program->use();
     glBindVertexArray(vao);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

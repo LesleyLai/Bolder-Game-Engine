@@ -34,7 +34,38 @@ unsigned int Shader_program::id() const
     return id_;
 }
 
-void Shader_program::use()
+void Shader_program::use() const
 {
     glUseProgram(id_);
+}
+
+
+template<>
+void Shader_program::set_uniform(const char* name, const float& value) const
+{
+    glUniform1f(glGetUniformLocation(id_, name), value);
+}
+
+template<>
+void Shader_program::set_uniform(const char* name, const double& value) const
+{
+    glUniform1d(glGetUniformLocation(id_, name), value);
+}
+
+template<>
+void Shader_program::set_uniform(const char* name, const int& value) const
+{
+    glUniform1i(glGetUniformLocation(id_, name), value);
+}
+
+template<>
+void Shader_program::set_uniform(const char* name, const bool& value) const
+{
+    glUniform1i(glGetUniformLocation(id_, name), value);
+}
+
+template<>
+void Shader_program::set_uniform(const char* name, const unsigned int& value) const
+{
+    glUniform1ui(glGetUniformLocation(id_, name), value);
 }
