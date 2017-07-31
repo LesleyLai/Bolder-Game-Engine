@@ -1,4 +1,5 @@
 #include <chrono>
+#include <thread>
 
 #include "bolder/exception.hpp"
 #include "bolder/engine.hpp"
@@ -8,8 +9,8 @@
 
 namespace {
     // Check if fps is too low and report to logger
-    void check_fps_too_lower(int fps) {
-        constexpr int fps_min = 30;
+    void check_fps_too_lower(double fps) {
+        constexpr double fps_min = 30;
         if (fps < fps_min) {
             BOLDER_LOG_WARNING << "Low frame rate: " << fps << " fps";
             // Todo: Report snapshot of current status of game
@@ -42,18 +43,18 @@ int Engine_impl::exec(int, char**) {
 void Engine_impl::game_loop()
 {
     using namespace std::chrono;
+    using Ms = duration<double, std::milli>;
+
     auto previous = high_resolution_clock::now();
-    duration<double, std::milli> lag {0};
+    Ms lag {0};
 
     // Time s(ms) between two update
     constexpr milliseconds ms_per_update {10};
 
     while (!display.closed()) {
         auto current = high_resolution_clock::now();
-        const auto delta_time = current - previous;
-        int fps = static_cast<int>(1s / delta_time);
+        const auto delta_time = duration_cast<Ms>(current - previous);
 
-        previous = current;
         lag += delta_time;
 
         // Todo: process input
@@ -70,8 +71,10 @@ void Engine_impl::game_loop()
         // Swap buffer and deal platform message
         display.update();
 
+        previous = current;
+        double fps = 1s / delta_time;
+
         check_fps_too_lower(fps);
-        // Todo: Set upper limit of the frame rate
     }
 }
 
@@ -83,7 +86,6 @@ Engine::Engine(const char* title)
 }
 
 Engine::~Engine() = default;
-
 
 int Engine::exec(int argc, char** argv)
 {
