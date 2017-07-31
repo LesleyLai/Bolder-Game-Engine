@@ -4,6 +4,10 @@
 
 namespace bolder { namespace graphics { namespace GL {
 
+/**
+ * @ingroup opengl
+ * @brief The Shader class
+ */
 class Shader {
 public:
     /// OpenGL_shader type

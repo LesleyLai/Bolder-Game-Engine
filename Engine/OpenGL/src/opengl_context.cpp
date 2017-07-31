@@ -1,8 +1,6 @@
 #include "opengl_context.hpp"
 #include "opengl_shader.hpp"
-#include "opengl_shader_program.hpp"
-
-#include "glad/glad.h"
+#include "opengl_program.hpp"
 
 #include "bolder/logger.hpp"
 #include "bolder/exception.hpp"
@@ -10,13 +8,17 @@
 using namespace bolder;
 using namespace bolder::graphics::GL;
 
+/** @defgroup opengl OpenGL
+ * @brief This module provides a thin wrapper of OpenGL.
+ */
+
 constexpr const char *vertex_shader_source = {
     "#version 330 core\n"
     "layout (location = 0) in vec3 aPos;\n"
     "void main()\n"
     "{\n"
     "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "}\0"
+    "}\n\0"
 };
 
 constexpr const char * fragment_shader_source = {
@@ -55,7 +57,7 @@ auto compile_shaders() {
     Shader fragment_shader {fragment_shader_source, Shader::Type::Fragment};
     fragment_shader.compile();
 
-    auto program = std::make_unique<Shader_program>();
+    auto program = std::make_unique<Program>();
     program->attach(vertex_shader);
     program->attach(fragment_shader);
     program->link();
@@ -120,8 +122,8 @@ void OpenGL_context::render()
     auto current = high_resolution_clock::now();
     auto time = duration_cast<duration<float, std::ratio<1,3>>>(
                 current.time_since_epoch());
-    auto v = std::sin(time.count());
-    shader_program->set_uniform("gv", v);
+    auto gv = std::sin(time.count());
+    shader_program->set_uniform("gv", gv);
     shader_program->use();
     glBindVertexArray(vao);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

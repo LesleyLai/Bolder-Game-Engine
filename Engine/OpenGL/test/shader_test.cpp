@@ -1,4 +1,4 @@
-#include "opengl_shader_program.hpp"
+#include "opengl_program.hpp"
 #include "opengl_shader.hpp"
 #include "doctest.h"
 
@@ -34,7 +34,7 @@ TEST_CASE("[OpenGL] Shader and shader program") {
     REQUIRE_EQ(vertex_shader.compile(), true);
     REQUIRE_EQ(fragment_shader.compile(), true);
 
-    Shader_program shader_program;
+    Program shader_program;
     shader_program.attach(vertex_shader);
     shader_program.attach(fragment_shader);
     REQUIRE_EQ(shader_program.link(), true);

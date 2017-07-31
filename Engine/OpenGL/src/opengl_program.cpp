@@ -1,19 +1,19 @@
-#include "opengl_shader_program.hpp"
+#include "opengl_program.hpp"
 #include "opengl_shader.hpp"
 #include "bolder/logger.hpp"
 
 using namespace bolder::graphics::GL;
 
-Shader_program::Shader_program() : id_{glCreateProgram()} {
+Program::Program() : id_{glCreateProgram()} {
 
 }
 
-void Shader_program::attach(const Shader& shader)
+void Program::attach(const Shader& shader)
 {
     glAttachShader(id_, shader.id());
 }
 
-bool bolder::graphics::GL::Shader_program::link()
+bool bolder::graphics::GL::Program::link()
 {
     glLinkProgram(id_);
 
@@ -29,43 +29,42 @@ bool bolder::graphics::GL::Shader_program::link()
     return true;
 }
 
-unsigned int Shader_program::id() const
+unsigned int Program::id() const
 {
     return id_;
 }
 
-void Shader_program::use() const
+void Program::use() const
 {
     glUseProgram(id_);
 }
 
-
 template<>
-void Shader_program::set_uniform(const char* name, const float& value) const
+void Program::set_uniform(const char* name, const float& value) const
 {
     glUniform1f(glGetUniformLocation(id_, name), value);
 }
 
 template<>
-void Shader_program::set_uniform(const char* name, const double& value) const
+void Program::set_uniform(const char* name, const double& value) const
 {
     glUniform1d(glGetUniformLocation(id_, name), value);
 }
 
 template<>
-void Shader_program::set_uniform(const char* name, const int& value) const
+void Program::set_uniform(const char* name, const int& value) const
 {
     glUniform1i(glGetUniformLocation(id_, name), value);
 }
 
 template<>
-void Shader_program::set_uniform(const char* name, const bool& value) const
+void Program::set_uniform(const char* name, const bool& value) const
 {
     glUniform1i(glGetUniformLocation(id_, name), value);
 }
 
 template<>
-void Shader_program::set_uniform(const char* name, const unsigned int& value) const
+void Program::set_uniform(const char* name, const unsigned int& value) const
 {
     glUniform1ui(glGetUniformLocation(id_, name), value);
 }

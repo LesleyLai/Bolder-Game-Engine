@@ -4,13 +4,19 @@
 
 namespace bolder { namespace graphics { namespace GL {
 
-class Shader_program;
+class Program;
 
+/**
+ * @ingroup opengl
+ * @brief Context of OpenGL
+ */
 class OpenGL_context
 {
 public:
     /// Initialize OpenGL
     OpenGL_context();
+
+    /// Destructor
     ~OpenGL_context();
 
     /// Renders the context
@@ -18,7 +24,9 @@ public:
 
 private:
     unsigned int vao;
-    std::unique_ptr<Shader_program> shader_program;
+    std::unique_ptr<Program> shader_program;
 };
+
+/** @}*/
 
 }}} // namespace bolder::graphics::GL
