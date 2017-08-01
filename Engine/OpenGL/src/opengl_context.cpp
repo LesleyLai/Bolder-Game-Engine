@@ -4,6 +4,7 @@
 
 #include "bolder/logger.hpp"
 #include "bolder/exception.hpp"
+#include "bolder/file_util.hpp"
 
 using namespace bolder;
 using namespace bolder::graphics::GL;

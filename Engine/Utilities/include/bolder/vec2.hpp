@@ -19,7 +19,6 @@ struct Vec2 {
 
     union {
         struct{ float x, y; };
-        struct{ float u, v; };
         float elems[2];
     };
 
