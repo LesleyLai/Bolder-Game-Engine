@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <cmath>
 #include <ostream>
 #include <functional>
@@ -20,6 +21,10 @@ struct Vector {
     using size_type = size_t;
     using value_type = T;
 
+    constexpr Vector() {}
+
+    constexpr Vector(std::array<T, size> data) : elems_{data} {}
+
     ///@{
     /**
      * @brief Returns the element of index i
@@ -39,7 +44,8 @@ struct Vector {
     constexpr value_type length_square() const;
     value_type length() const;
 
-    T elems_[size];
+private:
+    std::array<T,size> elems_;
 };
 
 template <size_t size, typename T>
