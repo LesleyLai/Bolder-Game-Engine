@@ -1,5 +1,7 @@
 #include "doctest.h"
 
+#include "exception.hpp"
+
 #include <algorithm>
 #include <ostream>
 
@@ -44,7 +46,7 @@ private:
 bool operator==(const Mat4& lhs, const Mat4& rhs);
 std::ostream& operator<<(std::ostream& os, const Mat4& m);
 
-Mat4&Mat4::operator+=(const Mat4& rhs) {
+Mat4& Mat4::operator+=(const Mat4& rhs) {
     for (int i = 0; i != 16; ++i) {
         elem_[i] += rhs.elem_[i];
     }
@@ -92,8 +94,7 @@ constexpr Mat4 Mat4::orthographic(const float& left, const float& right,
                         const float& bottom, const float& top,
                         const float& z_near, const float& z_far)
 {
-
-    return Mat4{};
+    return true ? throw Unimplemented{} : Mat4{};
 }
 
 constexpr Mat4::Mat4() : Mat4(1)
@@ -129,7 +130,8 @@ constexpr Mat4::Mat4(const float& v)
 bool bolder::math::operator==(const Mat4& lhs, const Mat4& rhs) {
     return std::equal(std::begin(lhs.elem_),
                       std::end(lhs.elem_),
-                      std::begin(rhs.elem_));
+                      std::begin(rhs.elem_),
+                      std::end(rhs.elem_));
 }
 
 std::ostream& bolder::math::operator<<(std::ostream& os, const Mat4& m) {
@@ -208,9 +210,5 @@ TEST_CASE("4x4 Matrix") {
         SUBCASE("Binary") {
             REQUIRE_EQ(left * right, product);
         }
-    }
-
-    SUBCASE("Creates an orthographic projection matrix") {
-        auto ortho = Mat4::orthographic(0, 800, 600, 0, -1, 1);
     }
 }

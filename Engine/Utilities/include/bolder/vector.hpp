@@ -16,6 +16,9 @@ namespace bolder { namespace math {
  *  @{
  */
 
+/**
+ * @brief 2D,3D,4D vectors
+ */
 template <size_t size, typename T>
 struct Vector {
     using size_type = size_t;
@@ -266,9 +269,6 @@ std::ostream& operator<<(std::ostream& os, const Vector<size, T>& v)
     os << ")";
     return os;
 }
-
-template <size_t size, typename T>
-struct Vector;
 
 extern template struct Vector<2, float>;
 extern template struct Vector<3, float>;

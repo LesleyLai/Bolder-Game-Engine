@@ -1,4 +1,5 @@
 #include "opengl_context.hpp"
+#include "opengl_buffer.hpp"
 #include "opengl_shader.hpp"
 #include "opengl_program.hpp"
 
@@ -66,6 +67,31 @@ auto compile_shaders() {
     return program;
 }
 
+void check_error() {
+    auto error = glGetError();
+    if (error != GL_NO_ERROR) {
+        auto error_string_from_enum = [](GLenum error) {
+            switch(error) {
+            case GL_INVALID_OPERATION:
+                return "Invalid operation";
+            case GL_INVALID_ENUM:
+                return "Invalid enum";
+            case GL_INVALID_VALUE:
+                return "Invalid value";
+            case GL_OUT_OF_MEMORY:
+                return "Out of memory";
+            case GL_INVALID_FRAMEBUFFER_OPERATION:
+                return "Invalid framebuffer operation";
+            default:
+                return "unknown error";
+            }
+        };
+
+        const char* error_string = error_string_from_enum(error);
+        BOLDER_LOG_ERROR << "OpenGL: " << error_string;
+    }
+}
+
 }
 
 OpenGL_context::OpenGL_context()
@@ -82,28 +108,17 @@ OpenGL_context::OpenGL_context()
     unsigned int indices[] = {0, 1, 3,
                               1, 2, 3};
 
+    vao = std::make_unique<Vertex_array>();
+    vao->bind();
 
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-
-    unsigned int vbo;
-    glGenBuffers(1, &vbo);
-    //  Copies data into a buffer used by opengl
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(triangles), triangles, GL_STATIC_DRAW);
-
-    // copy our index array in a element buffer for OpenGL to use
-    unsigned int ebo;
-    glGenBuffers(1, &ebo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    Buffer vbo(triangles, 4 * 3, 3);
 
 
-    //  Sets the vertex attributes pointers
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
-                          static_cast<void*>(0));
-    glEnableVertexAttribArray(0);
-    // use our shader program when we want to render an object
+    vbo.bind();
+    vao->add_buffer(vbo, 0);
+
+    ibo = std::make_unique<Index_buffer>(indices, 6);
+
     shader_program = compile_shaders();
     shader_program->use();
 
@@ -126,7 +141,13 @@ void OpenGL_context::render()
     auto gv = std::sin(time.count());
     shader_program->set_uniform("gv", gv);
     shader_program->use();
-    glBindVertexArray(vao);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
+
+    vao->bind();
+    ibo->bind();
+    glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(ibo->size()),
+                   GL_UNSIGNED_INT, 0);
+    ibo->unbind();
+    vao->unbind();
+
+    check_error();
 }

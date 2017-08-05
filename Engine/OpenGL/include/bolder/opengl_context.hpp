@@ -1,6 +1,8 @@
 #pragma once
 
 #include <memory>
+#include "opengl_buffer.hpp"
+#include "opengl_vertex_array.hpp"
 
 namespace bolder { namespace graphics { namespace GL {
 
@@ -23,7 +25,8 @@ public:
     void render();
 
 private:
-    unsigned int vao;
+    std::unique_ptr<Vertex_array> vao;
+    std::unique_ptr<Index_buffer> ibo;
     std::unique_ptr<Program> shader_program;
 };
 

@@ -8,9 +8,7 @@ namespace detail {
 struct Engine_impl;
 }
 
-/**
- * @brief This class manages all the states and the main loop of the game engine
- */
+/// This class manages all the states and the main loop of the game engine
 class Engine
 {
 public:
