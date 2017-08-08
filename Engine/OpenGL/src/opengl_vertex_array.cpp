@@ -9,12 +9,12 @@ Vertex_array::Vertex_array()
     glGenVertexArrays(1, &id_);
 }
 
-void Vertex_array::bind() const
+void Vertex_array::bind() const noexcept
 {
     glBindVertexArray(id_);
 }
 
-void Vertex_array::unbind() const
+void Vertex_array::unbind() const noexcept
 {
     glBindVertexArray(0);
 }

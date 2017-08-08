@@ -1,6 +1,5 @@
 #pragma once
 
-#include <array>
 #include <cmath>
 #include <ostream>
 #include <functional>
@@ -12,56 +11,98 @@
 
 namespace bolder { namespace math {
 
+/**
+  * @brief Common functions for that all vector spetializations need
+  *
+  * @related Vector
+  */
+#define BOLDER_VECTOR_IMPL_MIXIN(n)     \
+    using size_type = size_t;           \
+    using value_type = T;               \
+                                        \
+    constexpr Vector() {}               \
+                                        \
+    /* Accessors */                     \
+    value_type& operator[](size_type i) {return elems_[i];} \
+    constexpr const value_type& operator[](size_type i) const {return elems_[i];} \
+                                        \
+    constexpr value_type length_square() const {return dot(*this, *this);} \
+    constexpr value_type length() const {return std::sqrt(length_square());} \
+
+
 /** \addtogroup math
  *  @{
  */
 
 /**
- * @brief 2D,3D,4D vectors
+ * @brief Template of fix-sized vectors
  */
 template <size_t size, typename T>
 struct Vector {
-    using size_type = size_t;
-    using value_type = T;
-
-    constexpr Vector() {}
-
-    constexpr Vector(std::array<T, size> data) : elems_{data} {}
-
-    ///@{
-    /**
-     * @brief Returns the element of index i
-     * @warning No bound checking.
-     */
-    value_type& operator[](size_type i);
-    constexpr const value_type& operator[](size_type i) const;
-    ///@}
-
-    Vector& operator+=(const Vector& rhs);
-    Vector& operator-=(const Vector& rhs);
-    Vector& operator*=(T rhs);
-    Vector& operator/=(T rhs);
-
-    constexpr Vector operator-() const;
-
-    constexpr value_type length_square() const;
-    value_type length() const;
-
-private:
     std::array<T,size> elems_;
+
+    BOLDER_VECTOR_IMPL_MIXIN(size)
 };
 
-template <size_t size, typename T>
-inline T &Vector<size, T>::operator[](size_type i)
-{
-    return elems_[i];
-}
+using Vec2 = Vector<2, float>; ///< @brief 2D float point vector type
+using Vec3 = Vector<3, float>; ///< @brief 3D float point vector type
+using Vec4 = Vector<4, float>; ///< @brief 4D float point vector type
 
-template <size_t size, typename T>
-constexpr const T &Vector<size, T>::operator[](size_type i) const
-{
-    return elems_[i];
-}
+/**
+ * @brief 2D Vector specialization
+ * @see Vector
+ */
+template <typename T>
+struct Vector<2, T> {
+    union {
+        struct { T x, y; };
+        T elems_[2];
+    };
+
+    BOLDER_VECTOR_IMPL_MIXIN(2)
+
+    Vector(T xx, T yy) : x{xx}, y{yy} {}
+};
+
+/**
+ * @brief 3D Vector specialization
+ * @see Vector
+ */
+template <typename T>
+struct Vector<3, T> {
+    union {
+        struct { T x, y, z; };
+        struct { Vector<2, T> xy; };
+        T elems_[3];
+    };
+
+
+    BOLDER_VECTOR_IMPL_MIXIN(3)
+
+    Vector(T xx, T yy, T zz) : x{xx}, y{yy}, z{zz} {}
+    Vector(Vector<2, T> xy, T zz) : x{xy.x}, y{xy.y}, z{zz} {}
+};
+
+/**
+ * @brief 4D Vector specialization
+ * @see Vector
+ */
+template <typename T>
+struct Vector<4, T> {
+    union {
+        struct { T x, y, z, w; };
+        struct { Vector<2, T> xy; };
+        struct { Vector<3, T> xyz; };
+        T elems_[4];
+    };
+
+    BOLDER_VECTOR_IMPL_MIXIN(4)
+
+    Vector(T xx, T yy, T zz, T ww) : x{xx}, y{yy}, z{zz}, w{ww} {}
+    Vector(Vector<3, T> xyz, T ww) : x{xyz.x}, y{xyz.y}, z{xyz.z}, w{ww} {}
+};
+
+#undef BOLDER_VECTOR_IMPL_MIXIN
 
 namespace detail {
 template <size_t size, typename T, typename Binary_op>
@@ -89,81 +130,59 @@ constexpr Vector<size, T> vec_elem_binary_op(const Vector<size, T>& lhs,
 }
 
 /// Adds rhs to this vector
+/// @related Vector
 template<size_t size, typename T>
-inline Vector<size, T>& Vector<size, T>::operator+=(const Vector<size, T>& rhs)
+inline Vector<size, T>& operator+=(Vector<size, T>& lhs,
+                                   const Vector<size, T>& rhs)
 {
     for (auto i = 0u; i != size; ++i) {
-        elems_[i] += rhs[i];
+        lhs[i] += rhs[i];
     }
-    return *this;
+    return lhs;
 }
 
 /// Subtracts rhs from this vector
+/// @related Vector
 template<size_t size, typename T>
-inline Vector<size, T>& Vector<size, T>::operator-=(const Vector<size, T>& rhs)
+inline Vector<size, T>& operator-=(Vector<size, T>& lhs,
+                                   const Vector<size, T>& rhs)
 {
     for (auto i = 0u; i != size; ++i) {
-        elems_[i] -= rhs[i];
+        lhs[i] -= rhs[i];
     }
-    return *this;
+    return lhs;
 }
 
 /// Multiplies a scalar rhs to this vector
+/// @related Vector
 template<size_t size, typename T>
-inline Vector<size, T>& Vector<size, T>::operator*=(T rhs) {
+inline Vector<size, T>& operator*=(Vector<size, T>& lhs, T rhs) {
     for (auto i = 0u; i != size; ++i) {
-        elems_[i] *= rhs;
+        lhs[i] *= rhs;
     }
-    return *this;
+    return lhs;
 }
 
 /// Divides a scalar rhs to this vector
+/// @related Vector
 template<size_t size, typename T>
-inline Vector<size, T>& Vector<size, T>::operator/=(T rhs) {
+inline Vector<size, T>& operator/=(Vector<size, T>& lhs, T rhs) {
     for (auto i = 0u; i != size; ++i) {
-        elems_[i] /= rhs;
+        lhs[i] /= rhs;
     }
-    return *this;
+    return lhs;
 }
 
 /// Return the negation of the vector
+/// @related Vector
 template<size_t size, typename T>
-constexpr Vector<size, T> Vector<size, T>::operator-() const {
+constexpr Vector<size, T> operator-(const Vector<size, T>& vector) {
     Vector<size, T> result;
     for (auto i = 0u; i != size; ++i) {
-        result[i] = -elems_[i];
+        result[i] = -vector[i];
     }
     return result;
 }
-
-
-/**
- * @brief Returns the squared length of this vector.
- *
- * When it is not necessary to get the exact length of a vector, it is advised
- * to use this method instead of length.
- *
- * @see length
- */
-template<size_t size, typename T>
-constexpr T Vector<size, T>::length_square() const
-{
-    return dot(*this, *this);
-}
-
-
-/**
- * @brief Returns the length of the vector.
- *
- * @note Uses length_square if it is not necessary to get the exact length of a
- * vector.
- * @see length_square
- */
-template<size_t size, typename T>
-inline T Vector<size, T>::length() const {
-     return std::sqrt(length_square());
-}
-
 
 /**
  * @brief Returns the sum of two vector.
@@ -230,6 +249,19 @@ constexpr float dot(const Vector<size, T>& lhs, const Vector<size, T>& rhs)
     }
     return result;
 }
+
+/**
+ * @brief Returns the cross product between the specified vectors.
+ * @related Vec3
+ */
+template<typename T>
+constexpr Vector<3, T> cross(const Vector<3, T>& lhs, const Vector<3, T>& rhs)
+{
+    return Vector<3, T> {lhs.y * rhs.z - lhs.z * rhs.y,
+                lhs.z * rhs.x - lhs.x * rhs.z,
+                lhs.x * rhs.y - lhs.y * rhs.x};
+}
+
 
 /**
  * @brief Determines if two given vectors are equal.

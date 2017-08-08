@@ -10,7 +10,7 @@
 namespace bolder {
 
 /// All exceptions used by bolder game engine inherit from this class
-class Exception : std::exception {
+struct Exception : std::exception {
 public:
     Exception() noexcept;
     Exception(const char* message) noexcept;
@@ -23,18 +23,18 @@ private:
 };
 
 /// Trying to use not implemented features
-class Unimplemented : public Exception {
+struct Unimplemented : Exception {
 public:
     Unimplemented() noexcept;
 };
 
 /// Arguments of a function is invalid
-class Invalid_argument : public Exception {
+struct Invalid_argument : Exception {
 public:
     Invalid_argument() noexcept;
 };
 
-class Runtime_error : public Exception {
+struct Runtime_error : Exception {
 public:
     Runtime_error(const char* message) noexcept;
 };

@@ -13,12 +13,12 @@ Buffer::Buffer(float* data, size_t size, int count) : components_count_{count}
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Buffer::bind() const
+void Buffer::bind() const noexcept
 {
     glBindBuffer(GL_ARRAY_BUFFER, id_);
 }
 
-void Buffer::unbind() const
+void Buffer::unbind() const noexcept
 {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
@@ -38,12 +38,12 @@ Index_buffer::Index_buffer(uint32_t* data, unsigned int size) : size_{size}
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void Index_buffer::bind() const
+void Index_buffer::bind() const noexcept
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_);
 }
 
-void Index_buffer::unbind() const
+void Index_buffer::unbind() const noexcept
 {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }

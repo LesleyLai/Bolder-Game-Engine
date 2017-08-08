@@ -1,7 +1,7 @@
 #include <sstream>
 #include "doctest.h"
 
-#include "vec3.hpp"
+#include "vector.hpp"
 
 using namespace bolder::math;
 
@@ -16,6 +16,7 @@ TEST_CASE("[math] Vectors") {
     SUBCASE("Construct Vector from a smaller vector and a scalar") {
         Vec2 v3 {3, 5};
         REQUIRE_EQ(Vec3{v3, 7}, v2);
+        REQUIRE_EQ(Vec4{v2, 9}, Vec4{3, 5, 7, 9});
     }
 
     SUBCASE("Array-style indexing for Vectors") {
@@ -45,12 +46,12 @@ TEST_CASE("[math] Vectors") {
         }
 
         SUBCASE("*=") {
-            v*=2;
+            v*=2.f;
             REQUIRE_EQ(v, two_v);
         }
 
         SUBCASE("/=") {
-            v/=2;
+            v/=2.f;
             REQUIRE_EQ(v, half_v);
         }
 

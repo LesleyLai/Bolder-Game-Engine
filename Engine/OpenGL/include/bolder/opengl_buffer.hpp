@@ -11,8 +11,8 @@ class Buffer {
 public:
     Buffer(float* data, size_t size, int count);
 
-    void bind() const;
-    void unbind() const;
+    void bind() const noexcept;
+    void unbind() const noexcept;
 
     int components_count() const;
 
@@ -28,8 +28,8 @@ class Index_buffer {
 public:
     Index_buffer(uint32_t* data, unsigned int size);
 
-    void bind() const;
-    void unbind() const;
+    void bind() const noexcept;
+    void unbind() const noexcept;
 
     unsigned int size() const;
 
