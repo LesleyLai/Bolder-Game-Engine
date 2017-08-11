@@ -1,224 +1,91 @@
-//#include "doctest.h"
+#include "doctest.h"
+#include "matrix.hpp"
 
-//#include "exception.hpp"
+using namespace bolder::math;
 
-//#include <algorithm>
-//#include <ostream>
+TEST_CASE("4x4 Matrix") {
+    const Mat4 left {
+        11, 3, 7, 5,
+        12, 6, 8, 3,
+        8, 9, 1, 2,
+        3, 13, 1, 5,
+    };
 
-//namespace bolder { namespace math {
+    const Mat4 right {
+        3, 5, 1, 8,
+        2, 2, 4, 0,
+        5, 7, 2, 3,
+        6, 4, 1, 5,
+    };
 
-///// A column major MxN matrices
-//template<size_t M, size_t N, typename T>
-//class Matrix {
-//    static_assert(M != 0, "Row number is not equal to 0");
-//    static_assert(N != 0, "Column number is not equal to 0");
-//public:
-//    using value_type = T;
+    SUBCASE("One-argument constructor creates a diagnal matrix") {
+        const Mat4 identity {
+            1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 0,
+            0, 0, 0, 1,
+        };
 
-//    /// Default constructor creates an identity matrix.
-//    Matrix() : elems_{} {}
+        const Mat4 mat(1);
+        REQUIRE_EQ(mat, identity);
+    }
 
-//    /// Creates a Scalar matrix with all its diagonal entries equal to value
-//    Matrix(const value_type& value) : elems_{} {
-//        auto min = std::min(M, N);
-//        for (auto i = 0u; i != min; ++i) {
-//            elems_[M * min + min] = value;
-//        }
-//    }
-
-//    /**
-//     * @brief Returns an identity matrix
-//     * @note Sets all additional column to 0 if N > M
-//     */
-//    constexpr static Matrix identity() {
-//        return Matrix{};
-//    }
-
-//    T elems_[M*N];
-//};
-
-///// A column major 4x4 matrices
-//class Mat4 : public Matrix<4, 4, float> {
-//public:
-//    /// Creates an orthographic projection matrix
-//    static Mat4 orthographic(const float& left, const float& right,
-//                             const float& bottom, const float& top,
-//                             const float& z_near, const float& z_far);
-
-//    Mat4() : Matrix<4, 4, float>{} {}
-//    Mat4(const float& value) : Matrix<4, 4, float>{value} {}
-
-//    constexpr Mat4(
-//            const float& x0, const float& y0, const float& z0, const float& w0,
-//            const float& x1, const float& y1, const float& z1, const float& w1,
-//            const float& x2, const float& y2, const float& z2, const float& w2,
-//            const float& x3, const float& y3, const float& z3, const float& w3);
-
-//    Mat4& operator+=(const Mat4& rhs);
-//    Mat4& operator*=(const Mat4& rhs);
-
-//    friend bool operator==(const Mat4& lhs, const Mat4& rhs);
-//    friend std::ostream& operator<<(std::ostream& os, const Mat4& m);
-
-//    friend Mat4 operator+(const Mat4& lhs, const Mat4& rhs);
-//    friend Mat4 operator*(const Mat4& lhs, const Mat4& rhs);
-
-//private:
-//    float elem_[16];
-//};
-
-//bool operator==(const Mat4& lhs, const Mat4& rhs);
-//std::ostream& operator<<(std::ostream& os, const Mat4& m);
-
-//Mat4& Mat4::operator+=(const Mat4& rhs) {
-//    for (int i = 0; i != 16; ++i) {
-//        elem_[i] += rhs.elem_[i];
-//    }
-//    return *this;
-//}
-
-//Mat4& Mat4::operator*=(const Mat4& rhs) {
-//    *this = *this * rhs;
-//    return *this;
-//}
-
-//Mat4 operator+(const Mat4& lhs, const Mat4& rhs) {
-//    Mat4 result {};
-//    for (int i = 0; i != 16; ++i) {
-//        result.elem_[i] = lhs.elem_[i] + rhs.elem_[i];
-//    }
-//    return result;
-//}
+    SUBCASE("Addition") {
+        const Mat4 diff {
+            8, -2, 6, -3,
+            10, 4, 4, 3,
+            3, 2, -1, -1,
+            -3, 9, 0, 0,
+        };
 
 
-//Mat4 operator*(const Mat4& lhs, const Mat4& rhs) {
-//    Mat4 result {};
-//    for (int y = 0; y != 4; ++y) {
-//        for (int x = 0; x != 4; ++x) {
-//            float sum = 0;
-//            for (int k = 0; k != 4; ++k) {
-//                sum += lhs.elem_[x + k * 4] * rhs.elem_[k + y * 4];
-//            }
-//            result.elem_[4 * y + x] = sum;
-//        }
-//    }
+        SUBCASE("Unary") {
+            auto mat = left;
+            mat -= right;
+            REQUIRE_EQ(mat, diff);
+        }
 
-//    return result;
-//}
-//}}
+        SUBCASE("Binary") {
+            REQUIRE_EQ(left - right, diff);
+        }
+    }
 
-//using namespace bolder::math;
-
-//Mat4 Mat4::orthographic(const float& left, const float& right,
-//                        const float& bottom, const float& top,
-//                        const float& z_near, const float& z_far)
-//{
-//    return true ? throw Unimplemented{} : Mat4{};
-//}
-
-//Mat4::Mat4() : Mat4(1)
-//{
-//}
-
-///// Constructs a matrix from 16 numbers
-
-///**
-// * @brief Constructs a matrix from 16 numbers.
-// */
-//constexpr Mat4::Mat4(
-//        const float& x0, const float& y0, const float& z0, const float& w0,
-//        const float& x1, const float& y1, const float& z1, const float& w1,
-//        const float& x2, const float& y2, const float& z2, const float& w2,
-//        const float& x3, const float& y3, const float& z3, const float& w3) :
-//    elem_ {x0, y0, z0, w0,
-//           x1, y1, z1, w1,
-//           x2, y2, z2, w2,
-//           x3, y3, z3, w3}
-//{
-//}
-
-//bool bolder::math::operator==(const Mat4& lhs, const Mat4& rhs) {
-//    return std::equal(std::begin(lhs.elem_),
-//                      std::end(lhs.elem_),
-//                      std::begin(rhs.elem_),
-//                      std::end(rhs.elem_));
-//}
-
-//std::ostream& bolder::math::operator<<(std::ostream& os, const Mat4& m) {
-//    const auto elem = m.elem_;
-//    os << "mat("
-//       << '{' << elem[0] << ',' << elem[1] << ',' << elem[2] << ',' << elem[3] << '}'
-//       << '{' << elem[4] << ',' << elem[5] << ',' << elem[6] << ',' << elem[7] << '}'
-//       << '{' << elem[8] << ',' << elem[9] << ',' << elem[10] << ',' << elem[11] << '}'
-//       << '{' << elem[12] << ',' << elem[13] << ',' << elem[14] << ',' << elem[15] << '}'
-//       << ")";
-
-//    return os;
-//}
-
-//TEST_CASE("4x4 Matrix") {
-//    const Mat4 left {
-//        11, 3, 7, 5,
-//        12, 6, 8, 3,
-//        8, 9, 1, 2,
-//        3, 13, 1, 5,
-//    };
-
-//    const Mat4 right {
-//        3, 5, 1, 8,
-//        2, 2, 4, 0,
-//        5, 7, 2, 3,
-//        6, 4, 1, 5,
-//    };
-
-//    SUBCASE("Default constructor creates an identity matrix") {
-//        const Mat4 identity {
-//            1, 0, 0, 0,
-//            0, 1, 0, 0,
-//            0, 0, 1, 0,
-//            0, 0, 0, 1,
-//        };
-
-//        const Mat4 mat;
-//        REQUIRE_EQ(mat, identity);
-//    }
-
-//    SUBCASE("Addition") {
-//        const Mat4 sum {
-//            14, 8, 8, 13,
-//            14, 8, 12, 3,
-//            13, 16, 3, 5,
-//            9, 17, 2, 10,
-//        };
+    SUBCASE("subtraction") {
+        const Mat4 sum {
+            14, 8, 8, 13,
+            14, 8, 12, 3,
+            13, 16, 3, 5,
+            9, 17, 2, 10,
+        };
 
 
-//        SUBCASE("Unary") {
-//            auto mat = left;
-//            mat += right;
-//            REQUIRE_EQ(mat, sum);
-//        }
+        SUBCASE("Unary") {
+            auto mat = left;
+            mat += right;
+            REQUIRE_EQ(mat, sum);
+        }
 
-//        SUBCASE("Binary") {
-//            REQUIRE_EQ(left + right, sum);
-//        }
-//    }
+        SUBCASE("Binary") {
+            REQUIRE_EQ(left + right, sum);
+        }
+    }
 
-//    SUBCASE("multiplication") {
-//        const Mat4 product {
-//            125, 152, 70, 72,
-//            78, 54, 34, 24,
-//            164, 114, 96, 65,
-//            137, 116, 80, 69,
-//        };
+    SUBCASE("multiplication") {
+        const Mat4 product {
+            125, 152, 70, 72,
+            78, 54, 34, 24,
+            164, 114, 96, 65,
+            137, 116, 80, 69,
+        };
 
-//        SUBCASE("Unary") {
-//            auto mat = left;
-//            mat *= right;
-//            REQUIRE_EQ(mat, product);
-//        }
+        SUBCASE("Unary") {
+            auto mat = left;
+            mat *= right;
+            REQUIRE_EQ(mat, product);
+        }
 
-//        SUBCASE("Binary") {
-//            REQUIRE_EQ(left * right, product);
-//        }
-//    }
-//}
+        SUBCASE("Binary") {
+            REQUIRE_EQ(left * right, product);
+        }
+    }
+}

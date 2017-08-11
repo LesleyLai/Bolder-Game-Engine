@@ -37,23 +37,19 @@ namespace bolder { namespace math {
 /**
  * @brief Template of fix-sized vectors
  */
-template <size_t size, typename T>
+template<typename T, size_t size>
 struct Vector {
-    std::array<T,size> elems_;
+    T elems_[size];
 
     BOLDER_VECTOR_IMPL_MIXIN(size)
 };
-
-using Vec2 = Vector<2, float>; ///< @brief 2D float point vector type
-using Vec3 = Vector<3, float>; ///< @brief 3D float point vector type
-using Vec4 = Vector<4, float>; ///< @brief 4D float point vector type
 
 /**
  * @brief 2D Vector specialization
  * @see Vector
  */
 template <typename T>
-struct Vector<2, T> {
+struct Vector<T, 2> {
     union {
         struct { T x, y; };
         T elems_[2];
@@ -69,10 +65,10 @@ struct Vector<2, T> {
  * @see Vector
  */
 template <typename T>
-struct Vector<3, T> {
+struct Vector<T, 3> {
     union {
         struct { T x, y, z; };
-        struct { Vector<2, T> xy; };
+        struct { Vector<T, 2> xy; };
         T elems_[3];
     };
 
@@ -80,7 +76,7 @@ struct Vector<3, T> {
     BOLDER_VECTOR_IMPL_MIXIN(3)
 
     Vector(T xx, T yy, T zz) : x{xx}, y{yy}, z{zz} {}
-    Vector(Vector<2, T> xy, T zz) : x{xy.x}, y{xy.y}, z{zz} {}
+    Vector(Vector<T, 2> xy, T zz) : x{xy.x}, y{xy.y}, z{zz} {}
 };
 
 /**
@@ -88,28 +84,28 @@ struct Vector<3, T> {
  * @see Vector
  */
 template <typename T>
-struct Vector<4, T> {
+struct Vector<T, 4> {
     union {
         struct { T x, y, z, w; };
-        struct { Vector<2, T> xy; };
-        struct { Vector<3, T> xyz; };
+        struct { Vector<T, 2> xy; };
+        struct { Vector<T, 3> xyz; };
         T elems_[4];
     };
 
     BOLDER_VECTOR_IMPL_MIXIN(4)
 
     Vector(T xx, T yy, T zz, T ww) : x{xx}, y{yy}, z{zz}, w{ww} {}
-    Vector(Vector<3, T> xyz, T ww) : x{xyz.x}, y{xyz.y}, z{xyz.z}, w{ww} {}
+    Vector(Vector<T, 3> xyz, T ww) : x{xyz.x}, y{xyz.y}, z{xyz.z}, w{ww} {}
 };
 
 #undef BOLDER_VECTOR_IMPL_MIXIN
 
 namespace detail {
 template <size_t size, typename T, typename Binary_op>
-constexpr Vector<size, T> two_vec_binary_op(const Vector<size, T>& lhs,
-                                               const Vector<size, T>& rhs,
+constexpr Vector<T, size> binary_op(const Vector<T, size>& lhs,
+                                               const Vector<T, size>& rhs,
                                                Binary_op f) {
-    Vector<size, T> result;
+    Vector<T, size> result;
     for (auto i = 0u; i != size; ++i) {
         result[i] = f(lhs[i], rhs[i]);
     }
@@ -117,10 +113,10 @@ constexpr Vector<size, T> two_vec_binary_op(const Vector<size, T>& lhs,
 }
 
 template <size_t size, typename T, typename Binary_op>
-constexpr Vector<size, T> vec_elem_binary_op(const Vector<size, T>& lhs,
+constexpr Vector<T, size> binary_op(const Vector<T, size>& lhs,
                                                const T& rhs,
                                                Binary_op f) {
-    Vector<size, T> result;
+    Vector<T, size> result;
     for (auto i = 0u; i != size; ++i) {
         result[i] = f(lhs[i], rhs);
     }
@@ -131,9 +127,9 @@ constexpr Vector<size, T> vec_elem_binary_op(const Vector<size, T>& lhs,
 
 /// Adds rhs to this vector
 /// @related Vector
-template<size_t size, typename T>
-inline Vector<size, T>& operator+=(Vector<size, T>& lhs,
-                                   const Vector<size, T>& rhs)
+template<typename T, size_t size>
+inline Vector<T, size>& operator+=(Vector<T, size>& lhs,
+                                   const Vector<T, size>& rhs)
 {
     for (auto i = 0u; i != size; ++i) {
         lhs[i] += rhs[i];
@@ -143,9 +139,9 @@ inline Vector<size, T>& operator+=(Vector<size, T>& lhs,
 
 /// Subtracts rhs from this vector
 /// @related Vector
-template<size_t size, typename T>
-inline Vector<size, T>& operator-=(Vector<size, T>& lhs,
-                                   const Vector<size, T>& rhs)
+template<typename T, size_t size>
+inline Vector<T, size>& operator-=(Vector<T, size>& lhs,
+                                   const Vector<T, size>& rhs)
 {
     for (auto i = 0u; i != size; ++i) {
         lhs[i] -= rhs[i];
@@ -155,8 +151,8 @@ inline Vector<size, T>& operator-=(Vector<size, T>& lhs,
 
 /// Multiplies a scalar rhs to this vector
 /// @related Vector
-template<size_t size, typename T>
-inline Vector<size, T>& operator*=(Vector<size, T>& lhs, T rhs) {
+template<typename T, size_t size>
+inline Vector<T, size>& operator*=(Vector<T, size>& lhs, T rhs) {
     for (auto i = 0u; i != size; ++i) {
         lhs[i] *= rhs;
     }
@@ -165,8 +161,8 @@ inline Vector<size, T>& operator*=(Vector<size, T>& lhs, T rhs) {
 
 /// Divides a scalar rhs to this vector
 /// @related Vector
-template<size_t size, typename T>
-inline Vector<size, T>& operator/=(Vector<size, T>& lhs, T rhs) {
+template<typename T, size_t size>
+inline Vector<T, size>& operator/=(Vector<T, size>& lhs, T rhs) {
     for (auto i = 0u; i != size; ++i) {
         lhs[i] /= rhs;
     }
@@ -175,9 +171,9 @@ inline Vector<size, T>& operator/=(Vector<size, T>& lhs, T rhs) {
 
 /// Return the negation of the vector
 /// @related Vector
-template<size_t size, typename T>
-constexpr Vector<size, T> operator-(const Vector<size, T>& vector) {
-    Vector<size, T> result;
+template<typename T, size_t size>
+constexpr Vector<T, size> operator-(const Vector<T, size>& vector) {
+    Vector<T, size> result;
     for (auto i = 0u; i != size; ++i) {
         result[i] = -vector[i];
     }
@@ -188,40 +184,40 @@ constexpr Vector<size, T> operator-(const Vector<size, T>& vector) {
  * @brief Returns the sum of two vector.
  * @related Vector
  */
-template<size_t size, typename T>
-constexpr Vector<size, T> operator+(const Vector<size, T>& lhs,
-                                    const Vector<size, T>& rhs)
+template<typename T, size_t size>
+constexpr Vector<T, size> operator+(const Vector<T, size>& lhs,
+                                    const Vector<T, size>& rhs)
 {
-    return detail::two_vec_binary_op(lhs, rhs, std::plus<T>());
+    return detail::binary_op(lhs, rhs, std::plus<T>());
 }
 
 /**
  * @brief Returns the result of subtract rhs vector from lhs vector.
  * @related Vector
  */
-template<size_t size, typename T>
-constexpr Vector<size, T> operator-(const Vector<size, T>& lhs,
-                                    const Vector<size, T>& rhs)
+template<typename T, size_t size>
+constexpr Vector<T, size> operator-(const Vector<T, size>& lhs,
+                                    const Vector<T, size>& rhs)
 {
-    return detail::two_vec_binary_op(lhs, rhs, std::minus<T>());
+    return detail::binary_op(lhs, rhs, std::minus<T>());
 }
 
 /**
  * @brief Calculates the scalar product of vector with the given value.
  * @related Vector
  */
-template<size_t size, typename T>
-constexpr Vector<size, T> operator*(const Vector<size, T>& lhs, float rhs)
+template<typename T, size_t size>
+constexpr Vector<T, size> operator*(const Vector<T, size>& lhs, float rhs)
 {
-    return detail::vec_elem_binary_op(lhs, rhs, std::multiplies<T>());
+    return detail::binary_op(lhs, rhs, std::multiplies<T>());
 }
 
 /**
  * @brief Calculates the scalar product of vector with the given value.
  * @related Vector
  */
-template<size_t size, typename T>
-constexpr Vector<size, T> operator*(float lhs, const Vector<size, T>& rhs)
+template<typename T, size_t size>
+constexpr Vector<T, size> operator*(float lhs, const Vector<T, size>& rhs)
 {
     return rhs * lhs;
 }
@@ -230,18 +226,18 @@ constexpr Vector<size, T> operator*(float lhs, const Vector<size, T>& rhs)
  * @brief Calculates the scalar division of this vector with the given value.
  * @related Vector
  */
-template<size_t size, typename T>
-constexpr Vector<size, T> operator/(const Vector<size, T>& lhs, float rhs)
+template<typename T, size_t size>
+constexpr Vector<T, size> operator/(const Vector<T, size>& lhs, float rhs)
 {
-    return detail::vec_elem_binary_op(lhs, rhs, std::divides<T>());
+    return detail::binary_op(lhs, rhs, std::divides<T>());
 }
 
 /**
  * @brief Returns the dot product between the specified vectors.
  * @related Vector
  */
-template<size_t size, typename T>
-constexpr float dot(const Vector<size, T>& lhs, const Vector<size, T>& rhs)
+template<typename T, size_t size>
+constexpr float dot(const Vector<T, size>& lhs, const Vector<T, size>& rhs)
 {
     T result = 0;
     for (auto i = 0u; i != size; ++i) {
@@ -255,9 +251,9 @@ constexpr float dot(const Vector<size, T>& lhs, const Vector<size, T>& rhs)
  * @related Vec3
  */
 template<typename T>
-constexpr Vector<3, T> cross(const Vector<3, T>& lhs, const Vector<3, T>& rhs)
+constexpr Vector<T, 3> cross(const Vector<T, 3>& lhs, const Vector<T, 3>& rhs)
 {
-    return Vector<3, T> {lhs.y * rhs.z - lhs.z * rhs.y,
+    return Vector<T, 3> {lhs.y * rhs.z - lhs.z * rhs.y,
                 lhs.z * rhs.x - lhs.x * rhs.z,
                 lhs.x * rhs.y - lhs.y * rhs.x};
 }
@@ -267,9 +263,9 @@ constexpr Vector<3, T> cross(const Vector<3, T>& lhs, const Vector<3, T>& rhs)
  * @brief Determines if two given vectors are equal.
  * @related Vector
  */
-template<size_t size, typename T>
-constexpr bool operator==(const Vector<size, T>& lhs,
-                          const Vector<size, T>& rhs) {
+template<typename T, size_t size>
+constexpr bool operator==(const Vector<T, size>& lhs,
+                          const Vector<T, size>& rhs) {
     for (auto i = 0u; i != size; ++i) {
         if (lhs[i] != rhs[i]) return false;
     }
@@ -280,9 +276,9 @@ constexpr bool operator==(const Vector<size, T>& lhs,
  * @brief Determines if two given vectors are not equal.
  * @related Vector
  */
-template<size_t size, typename T>
-constexpr bool operator!=(const Vector<size, T>& lhs,
-                          const Vector<size, T>& rhs) {
+template<typename T, size_t size>
+constexpr bool operator!=(const Vector<T, size>& lhs,
+                          const Vector<T, size>& rhs) {
     return !(lhs == rhs);
 }
 
@@ -290,8 +286,8 @@ constexpr bool operator!=(const Vector<size, T>& lhs,
  * @brief Outputs a string representive of vector to a stream
  * @related Vector
  */
-template<size_t size, typename T>
-std::ostream& operator<<(std::ostream& os, const Vector<size, T>& v)
+template<typename T, size_t size>
+std::ostream& operator<<(std::ostream& os, const Vector<T, size>& v)
 {
     os << "vec(";
     for (size_t i = 0u, last = size - 1; i != size; ++i) {
@@ -302,9 +298,13 @@ std::ostream& operator<<(std::ostream& os, const Vector<size, T>& v)
     return os;
 }
 
-extern template struct Vector<2, float>;
-extern template struct Vector<3, float>;
-extern template struct Vector<4, float>;
+using Vec2 = Vector<float, 2>; ///< @brief 2D float point vector type
+using Vec3 = Vector<float, 3>; ///< @brief 3D float point vector type
+using Vec4 = Vector<float, 4>; ///< @brief 4D float point vector type
+
+extern template struct Vector<float, 2>;
+extern template struct Vector<float, 3>;
+extern template struct Vector<float, 4>;
 
 /** @}*/
 }} // namespace bolder::math

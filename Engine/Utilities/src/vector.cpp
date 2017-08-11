@@ -2,8 +2,8 @@
 
 namespace bolder { namespace math {
 
-template struct Vector<2, float>;
-template struct Vector<3, float>;
-template struct Vector<4, float>;
+template struct Vector<float, 2>;
+template struct Vector<float, 3>;
+template struct Vector<float, 4>;
 
 }}
