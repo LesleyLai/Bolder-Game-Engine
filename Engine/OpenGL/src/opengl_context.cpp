@@ -1,3 +1,5 @@
+#include <cmath>
+
 #include "opengl_context.hpp"
 #include "opengl_buffer.hpp"
 #include "opengl_shader.hpp"
@@ -145,7 +147,7 @@ void OpenGL_context::render()
     vao->bind();
     ibo->bind();
     glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(ibo->size()),
-                   GL_UNSIGNED_INT, 0);
+                   GL_UNSIGNED_INT, nullptr);
     ibo->unbind();
     vao->unbind();
 

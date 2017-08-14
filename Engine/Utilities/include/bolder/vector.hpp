@@ -23,8 +23,8 @@ namespace bolder { namespace math {
     constexpr Vector() {}               \
                                         \
     /* Accessors */                     \
-    value_type& operator[](size_type i) {return elems_[i];} \
-    constexpr const value_type& operator[](size_type i) const {return elems_[i];} \
+    value_type& operator[](size_type i) {return elems[i];} \
+    constexpr const value_type& operator[](size_type i) const {return elems[i];} \
                                         \
     constexpr value_type length_square() const {return dot(*this, *this);} \
     constexpr value_type length() const {return std::sqrt(length_square());} \
@@ -39,7 +39,7 @@ namespace bolder { namespace math {
  */
 template<typename T, size_t size>
 struct Vector {
-    T elems_[size];
+    T elems[size];
 
     BOLDER_VECTOR_IMPL_MIXIN(size)
 };
@@ -52,7 +52,7 @@ template <typename T>
 struct Vector<T, 2> {
     union {
         struct { T x, y; };
-        T elems_[2];
+        T elems[2];
     };
 
     BOLDER_VECTOR_IMPL_MIXIN(2)
@@ -69,7 +69,7 @@ struct Vector<T, 3> {
     union {
         struct { T x, y, z; };
         struct { Vector<T, 2> xy; };
-        T elems_[3];
+        T elems[3];
     };
 
 
@@ -89,7 +89,7 @@ struct Vector<T, 4> {
         struct { T x, y, z, w; };
         struct { Vector<T, 2> xy; };
         struct { Vector<T, 3> xyz; };
-        T elems_[4];
+        T elems[4];
     };
 
     BOLDER_VECTOR_IMPL_MIXIN(4)

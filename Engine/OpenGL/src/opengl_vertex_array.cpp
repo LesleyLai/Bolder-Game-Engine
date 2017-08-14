@@ -29,7 +29,7 @@ void Vertex_array::add_buffer(const Buffer& buffer, unsigned int index)
                           GL_FLOAT,
                           GL_FALSE,
                           /*3 * sizeof(float)*/0,
-                          static_cast<void*>(0));
+                          nullptr);
     glEnableVertexAttribArray(index);
 
     buffer.unbind();

@@ -41,7 +41,7 @@ private:
  */
 template<typename T>
 void Program::set_uniform(const char*, const T&) const {
-    static_assert(false, "unsupport uniform type");
+    //static_assert(false, "unsupport uniform type");
 }
 
 template<>
