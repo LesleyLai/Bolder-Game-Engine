@@ -26,17 +26,17 @@ TEST_CASE("[OpenGL] Shader and shader program") {
     Shader vertex_shader {vertex_shader_source,
                 Shader::Type::Vertex};
 
-    REQUIRE_EQ(vertex_shader.compile(), true);
+    REQUIRE_NOTHROW(vertex_shader.compile());
 
     Shader fragment_shader {fragment_shader_source,
                 Shader::Type::Fragment};
 
-    REQUIRE_EQ(vertex_shader.compile(), true);
-    REQUIRE_EQ(fragment_shader.compile(), true);
+    REQUIRE_NOTHROW(vertex_shader.compile());
+    REQUIRE_NOTHROW(fragment_shader.compile());
 
     Program shader_program;
     shader_program.attach(vertex_shader);
     shader_program.attach(fragment_shader);
-    REQUIRE_EQ(shader_program.link(), true);
+    REQUIRE_NOTHROW(shader_program.link());
 
 }

@@ -6,7 +6,7 @@
 
 namespace bolder { namespace graphics { namespace GL {
 
-class Program;
+struct Program;
 
 /**
  * @ingroup opengl

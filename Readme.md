@@ -31,6 +31,7 @@ For linux, you need gcc 6+ or clang to compiler the codes. For Windows, Microsof
 ``` c
 /Engine // Modules of the engine
   /Application // provides Application class that all games should inherent from
+  /Asset // Default assets of the engine
   /Core // Core engine codes
   /Utilities // Utilities and math libraries that other parts of engine depend on
   /Platform // Platform specific codes and a platform-agnostic interface for such codes

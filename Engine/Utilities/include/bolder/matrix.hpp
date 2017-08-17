@@ -19,8 +19,8 @@ public:
     static constexpr auto cols = N;
     using value_type = T;
 
-    /// Default constructor creates a matrix without initialize its values.
-    Matrix() {}
+    /// Default constructor creates a zero matrix
+    Matrix() : elems_{} {}
 
     /**
      * @brief Constructs a matrix from numbers.
@@ -68,8 +68,6 @@ public:
 private:
     T elems_[M*N];
 };
-
-using Mat4 = Matrix<float, 4, 4>;
 
 namespace detail {
 template<typename T, size_t M, size_t N, typename Binary_op>
@@ -164,5 +162,12 @@ std::ostream& operator<<(std::ostream& os,
     os << ')';
     return os;
 }
+
+using Mat2 = Matrix<float, 2, 2>;
+using Mat3 = Matrix<float, 3, 3>;
+using Mat4 = Matrix<float, 4, 4>;  ///< @brief 4x4 float point matrix type
+extern template class Matrix<float, 2, 2>;
+extern template class Matrix<float, 3, 3>;
+extern template class Matrix<float, 4, 4>;
 
 }} // namespace bolder::math

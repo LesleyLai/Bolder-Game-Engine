@@ -2,16 +2,16 @@
 
 #include <string>
 
-namespace bolder { namespace utility {
+namespace bolder { namespace file_util {
 
 /** @addtogroup utilities
  * @{
  */
 
 /// Returns a string of whole content of a file
-std::string load_file(const char* filename);
+std::string load(const char* filename);
 
 /** @}*/
 
-} } // namespace bolder::utility
+}} // namespace bolder::utility
 

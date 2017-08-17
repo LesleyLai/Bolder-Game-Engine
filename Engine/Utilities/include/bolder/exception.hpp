@@ -39,5 +39,4 @@ public:
     Runtime_error(const char* message) noexcept;
 };
 
-
 }

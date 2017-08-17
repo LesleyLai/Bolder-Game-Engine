@@ -17,7 +17,8 @@ file (GLOB_RECURSE CORE_SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 
 # Engine
 add_library (BolderCore STATIC
-  ${CORE_SOURCE_FILES} ${CORE_HEADER_FILES})
+  ${CORE_SOURCE_FILES}
+  ${CORE_HEADER_FILES})
 
 target_link_libraries(BolderCore
   ${THIRD_PARTY_LIBS}

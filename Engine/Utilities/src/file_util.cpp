@@ -4,9 +4,9 @@
 #include <fstream>
 #include <sstream>
 
-using namespace bolder;
+namespace bolder { namespace file_util {
 
-std::string utility::load_file(const char* filename)
+std::string load(const char* filename)
 {
     std::ifstream in {filename};
     if (in) {
@@ -15,5 +15,7 @@ std::string utility::load_file(const char* filename)
         return ss.str();
     }
     auto message = std::string("cannot open file " ) + filename;
-    throw Exception {message.c_str()};
+    throw Runtime_error {message.c_str()};
 }
+
+}}

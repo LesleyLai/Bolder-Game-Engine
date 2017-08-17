@@ -3,7 +3,31 @@
 
 using namespace bolder::math;
 
-TEST_CASE("4x4 Matrix") {
+TEST_CASE("Default constructor zero initialized vector") {
+    const Mat4 zero {
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+        0, 0, 0, 0,
+    };
+
+    const Mat4 mat;
+    REQUIRE_EQ(mat, zero);
+}
+
+TEST_CASE("One-argument constructor creates a diagnal matrix") {
+    const Mat4 identity {
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1,
+    };
+
+    const Mat4 mat(1);
+    REQUIRE_EQ(mat, identity);
+}
+
+TEST_CASE("4x4 Matrix arithmetic") {
     const Mat4 left {
         11, 3, 7, 5,
         12, 6, 8, 3,
@@ -17,18 +41,6 @@ TEST_CASE("4x4 Matrix") {
         5, 7, 2, 3,
         6, 4, 1, 5,
     };
-
-    SUBCASE("One-argument constructor creates a diagnal matrix") {
-        const Mat4 identity {
-            1, 0, 0, 0,
-            0, 1, 0, 0,
-            0, 0, 1, 0,
-            0, 0, 0, 1,
-        };
-
-        const Mat4 mat(1);
-        REQUIRE_EQ(mat, identity);
-    }
 
     SUBCASE("Addition") {
         const Mat4 diff {

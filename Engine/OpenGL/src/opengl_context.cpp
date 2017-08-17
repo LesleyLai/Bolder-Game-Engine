@@ -16,27 +16,6 @@ using namespace bolder::graphics::GL;
  * @brief This module provides a thin wrapper of OpenGL.
  */
 
-constexpr const char *vertex_shader_source = {
-    "#version 330 core\n"
-    "layout (location = 0) in vec3 aPos;\n"
-    "void main()\n"
-    "{\n"
-    "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-    "}\n\0"
-};
-
-constexpr const char * fragment_shader_source = {
-    "#version 330 core\n"
-    "out vec4 FragColor;\n"
-    "\n"
-    "uniform float gv;\n"
-    "\n"
-    "void main()\n"
-    "{\n"
-    "   FragColor = vec4(1.0f, gv, 0.0f, 1.0f);\n"
-    "}\n\0"
-};
-
 namespace {
 void load_GL() {
     if(!gladLoadGL()) {
@@ -56,9 +35,14 @@ void load_GL() {
 
 // Returns shader program of the compiled shader
 auto compile_shaders() {
-    Shader vertex_shader {vertex_shader_source, Shader::Type::Vertex};
+    auto vertex_shader_source = file_util::load("sprite.vert");
+    const char* vert_src = vertex_shader_source.c_str();
+    Shader vertex_shader {vert_src, Shader::Type::Vertex};
     vertex_shader.compile();
-    Shader fragment_shader {fragment_shader_source, Shader::Type::Fragment};
+
+    auto fragment_shader_source = file_util::load("sprite.frag");
+    const char* frag_src = fragment_shader_source.c_str();
+    Shader fragment_shader {frag_src, Shader::Type::Fragment};
     fragment_shader.compile();
 
     auto program = std::make_unique<Program>();

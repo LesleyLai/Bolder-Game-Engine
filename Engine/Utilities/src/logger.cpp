@@ -225,23 +225,20 @@ void Log_file_policy::close_file()
  */
 void Log_print_policy(const Info& info)
 {
-    std::ostream* out;
-    switch (info.level) {
-    case Level::debug:
-        //[[fallthrough]];
-    case Level::info:
-        out = &std::cout;
-        break;
-    case Level::warning:
-        //[[fallthrough]];
-    case Level::error:
-        //[[fallthrough]];
-    case Level::fatal:
-        out = &std::cerr;
-        break;
-    }
+    auto output_stream = [&info]() -> decltype(std::cout)& {
+        switch (info.level) {
+        case Level::debug:
+        case Level::info:
+            return std::cout;
+        case Level::warning:
+        case Level::error:
+        case Level::fatal:
+            return std::cerr;
+        }
+    };
 
-    *out << info.logger_name << " " << info.level << " " << info.msg << "\n";
+    output_stream()
+            << info.logger_name << " " << info.level << " " << info.msg << "\n";
 }
 
 

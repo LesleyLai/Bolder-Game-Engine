@@ -8,7 +8,7 @@ namespace bolder { namespace graphics { namespace GL {
  * @ingroup opengl
  * @brief The Shader class
  */
-class Shader {
+struct Shader {
 public:
     /// OpenGL_shader type
     enum class Type {
@@ -17,19 +17,22 @@ public:
         Geometry = GL_GEOMETRY_SHADER,
     };
 
+    /// Type of the shader
+    const Type type;
+    /// Source of the shader
+    const char* source;
+    ///The OpenGL assigned id of this shader.
+    const unsigned int id;
+
     Shader(const char* source, Type type);
     ~Shader();
 
-    /// Returns the OpenGl assigned id of this OpenGL_shader.
-    unsigned int id() const;
-
     /// Compiles this OpenGL_shader
-    bool compile();
+    void compile();
+
 
 private:
-    Type type_;
-    const char* source_;
-    unsigned int id_;
+    void check_compiled() const;
 };
 
 }}} // namespace bolder::graphics::GL

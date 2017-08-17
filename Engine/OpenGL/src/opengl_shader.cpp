@@ -1,45 +1,40 @@
 #include "opengl_shader.hpp"
 #include "bolder/logger.hpp"
+#include "bolder/exception.hpp"
 
-namespace  {
-bool is_shader_compiled(unsigned int shader) {
-    int  success;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-
-    if(!success)
-    {
-        char info_log[512];
-        glGetShaderInfoLog(shader, 512, nullptr, info_log);
-        BOLDER_LOG_ERROR << "Vertex shader compilation failed:\n"
-                         << info_log;
-        return false;
-    }
-    return true;
-}
-}
-
-using namespace bolder::graphics::GL;
+namespace bolder { namespace graphics { namespace GL {
 
 Shader::Shader(const char* source, Shader::Type type) :
-    type_{type},
-    source_{source},
-    id_{glCreateShader(GLenum(type_))}
+    type{type},
+    source{source},
+    id{glCreateShader(GLenum(type))}
 {
 }
 
 Shader::~Shader()
 {
-    glDeleteShader(id_);
+    glDeleteShader(id);
 }
 
-unsigned int Shader::id() const
+void Shader::compile()
 {
-    return id_;
+    glShaderSource(id, 1, &source, nullptr);
+    glCompileShader(id);
+    check_compiled();
 }
 
-bool Shader::compile()
+void Shader::check_compiled() const
 {
-    glShaderSource(id_, 1, &source_, nullptr);
-    glCompileShader(id_);
-    return is_shader_compiled(id_);
+    int success;
+    glGetShaderiv(id, GL_COMPILE_STATUS, &success);
+
+    if(!success)
+    {
+        char info_log[512];
+        glGetShaderInfoLog(id, 512, nullptr, info_log);
+
+        throw bolder::Runtime_error{info_log};
+    }
 }
+
+}}} // namespace bolder::graphics::GL
