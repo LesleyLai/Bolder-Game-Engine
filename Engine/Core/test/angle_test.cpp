@@ -1,6 +1,6 @@
 #include <sstream>
 
-#include "angle.hpp"
+#include "bolder/angle.hpp"
 #include "doctest.h"
 
 using namespace bolder::math;

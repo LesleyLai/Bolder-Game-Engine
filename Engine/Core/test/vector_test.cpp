@@ -1,7 +1,7 @@
 #include <sstream>
 #include "doctest.h"
 
-#include "vector.hpp"
+#include "bolder/vector.hpp"
 
 using namespace bolder::math;
 

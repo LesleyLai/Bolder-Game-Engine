@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 
+
 namespace bolder { namespace file_util {
 
 std::string load(const char* filename)

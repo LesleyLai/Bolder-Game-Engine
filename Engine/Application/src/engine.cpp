@@ -2,7 +2,7 @@
 #include <thread>
 
 #include "bolder/exception.hpp"
-#include "bolder/engine.hpp"
+#include "engine.hpp"
 #include "bolder/display.hpp"
 #include "bolder/logger.hpp"
 #include "bolder/opengl_context.hpp"

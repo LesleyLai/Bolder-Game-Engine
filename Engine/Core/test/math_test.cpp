@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "doctest.h"
-#include "math.hpp"
+#include "bolder/math.hpp"
 
 using namespace bolder;
 

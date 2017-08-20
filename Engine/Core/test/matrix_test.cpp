@@ -1,5 +1,5 @@
 #include "doctest.h"
-#include "matrix.hpp"
+#include "bolder/matrix.hpp"
 
 using namespace bolder::math;
 

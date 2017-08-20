@@ -1,7 +1,7 @@
 #include "doctest.h"
 #include <sstream>
 
-#include "logger.hpp"
+#include "bolder/logger.hpp"
 
 using namespace bolder;
 

@@ -1,16 +1,13 @@
 include(../scripts/cmake/compiler.cmake)
 
-# Utilities
-add_subdirectory(Utilities)
+# Engien core functionalities
+add_subdirectory(Core)
 
 # Platform abstruction layer
 add_subdirectory(Platform)
 
 # Thin OpenGL Wrapper
 add_subdirectory(OpenGL)
-
-# Engien core functionalities
-add_subdirectory(Core)
 
 # Application entry base class
 add_subdirectory(Application)
