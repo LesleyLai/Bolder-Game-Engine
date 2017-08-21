@@ -17,8 +17,8 @@ target_sources(BolderOpenGL
     PRIVATE
     "${OPENGL_INCLUDE_PATH}/bolder/opengl_buffer.hpp"
     "${OPENGL_SRC_PATH}/opengl_buffer.cpp"
-    "${OPENGL_INCLUDE_PATH}/bolder/opengl_context.hpp"
-    "${OPENGL_SRC_PATH}/opengl_context.cpp"
+    "${OPENGL_INCLUDE_PATH}/bolder/opengl_graphics_backend.hpp"
+    "${OPENGL_SRC_PATH}/opengl_graphics_backend.cpp"
     "${OPENGL_INCLUDE_PATH}/bolder/opengl_program.hpp"
     "${OPENGL_SRC_PATH}/opengl_program.cpp"
     "${OPENGL_INCLUDE_PATH}/bolder/opengl_shader.hpp"
@@ -29,7 +29,7 @@ target_sources(BolderOpenGL
     )
 
 # Platform layer
-target_link_libraries (BolderOpenGL BolderCore ${THIRD_PARTY_LIBS})
+target_link_libraries (BolderOpenGL BolderGraphics ${THIRD_PARTY_LIBS})
 
 #test
 if(BOLDER_WITH_TESTS)

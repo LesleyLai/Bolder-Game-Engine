@@ -1,6 +1,6 @@
 #include <cmath>
 
-#include "opengl_context.hpp"
+#include "opengl_graphics_backend.hpp"
 #include "opengl_buffer.hpp"
 #include "opengl_shader.hpp"
 #include "opengl_program.hpp"
@@ -80,7 +80,7 @@ void check_error() {
 
 }
 
-OpenGL_context::OpenGL_context()
+OpenGL_graphics_backend::OpenGL_graphics_backend()
 {
     load_GL();
 
@@ -110,12 +110,12 @@ OpenGL_context::OpenGL_context()
 
 }
 
-OpenGL_context::~OpenGL_context()
+OpenGL_graphics_backend::~OpenGL_graphics_backend()
 {
 
 }
 
-void OpenGL_context::render()
+void OpenGL_graphics_backend::render()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

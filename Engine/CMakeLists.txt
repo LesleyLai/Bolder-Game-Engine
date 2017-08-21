@@ -1,7 +1,10 @@
 include(../scripts/cmake/compiler.cmake)
 
-# Engien core functionalities
+# Engine core functionalities
 add_subdirectory(Core)
+
+# Graphics Module
+add_subdirectory(Graphics)
 
 # Platform abstruction layer
 add_subdirectory(Platform)
@@ -18,6 +21,3 @@ add_subdirectory(Assets)
 if(BOLDER_WITH_TESTS)
     enable_testing()
 endif()
-
-# Export variables
-set (BOLDER_APP_INCLUDE_PATH "${BOLDER_APP_INCLUDE_PATH}" PARENT_SCOPE)

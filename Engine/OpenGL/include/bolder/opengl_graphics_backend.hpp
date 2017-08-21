@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include "bolder/graphics_system.hpp"
 #include "opengl_buffer.hpp"
 #include "opengl_vertex_array.hpp"
 
@@ -12,17 +13,17 @@ struct Program;
  * @ingroup opengl
  * @brief Context of OpenGL
  */
-class OpenGL_context
+class OpenGL_graphics_backend : public Graphics_system
 {
 public:
     /// Initialize OpenGL
-    OpenGL_context();
+    OpenGL_graphics_backend();
 
     /// Destructor
-    ~OpenGL_context();
+    ~OpenGL_graphics_backend();
 
     /// Renders the context
-    void render();
+    void render() override;
 
 private:
     std::unique_ptr<Vertex_array> vao;

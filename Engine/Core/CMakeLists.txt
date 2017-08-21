@@ -3,7 +3,6 @@ set (CORE_SRC_PATH "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set (CORE_INCLUDE_PATH
   "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
-# Engine
 add_library (BolderCore STATIC "")
 
 target_include_directories(BolderCore
@@ -33,6 +32,7 @@ target_sources(BolderCore
     "${CORE_SRC_PATH}/transform.cpp"
     "${CORE_INCLUDE_PATH}/bolder/vector.hpp"
     "${CORE_SRC_PATH}/vector.cpp"
+    "${CORE_INCLUDE_PATH}/bolder/system.hpp"
     )
 
 target_link_libraries(BolderCore

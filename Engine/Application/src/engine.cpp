@@ -5,7 +5,8 @@
 #include "engine.hpp"
 #include "bolder/display.hpp"
 #include "bolder/logger.hpp"
-#include "bolder/opengl_context.hpp"
+#include "bolder/opengl_graphics_backend.hpp"
+#include "bolder/graphics_system.hpp"
 
 namespace {
     // Check if fps is too low and report to logger
@@ -22,11 +23,11 @@ namespace bolder {
 namespace detail {
 struct Engine_impl {
     platform::Display display;
-    graphics::GL::OpenGL_context gl_context;
+    std::unique_ptr<graphics::Graphics_system> graphics;
 
     Engine_impl(const char* title)
         : display{title},
-          gl_context{} {
+          graphics{std::make_unique<graphics::GL::OpenGL_graphics_backend>()} {
 
     }
 
@@ -66,7 +67,7 @@ void Engine_impl::game_loop()
         }
 
         // Render
-        gl_context.render();
+        graphics->render();
 
         // Swap buffer and deal platform message
         display.update();

@@ -1,6 +1,3 @@
-#set includes
-include_directories (${BOLDER_APP_INCLUDE_PATH})
-
 #set target executable
 add_executable (BolderDemo "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp")
 

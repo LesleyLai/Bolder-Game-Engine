@@ -56,7 +56,6 @@ public:
     const Vector<T, N>& operator[] (size_t i) const
     { return reinterpret_cast<const Vector<T, N> &>(elems_[i*N]); }
 
-
     /**
      * @brief Returns an identity matrix
      * @note Sets all additional column to 0 if N > M

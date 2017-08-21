@@ -12,7 +12,6 @@ function(add_compiler_flags)
 endfunction()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    add_compiler_flags(-stdlib=libstdc++)
     add_compiler_flags(-fvisibility=hidden)
     add_compiler_flags(-fstrict-aliasing)
     add_compiler_flags(-Wall)
@@ -50,7 +49,8 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
     add_compiler_flags(-Wshift-overflow=2)
     add_compiler_flags(-Wduplicated-cond)
 
-    if(CMAKE_CXX_COMPILER_VERSION VERSION_EQUAL 7.0 OR CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 7.0)
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_EQUAL 7.0
+            OR CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 7.0)
         add_compiler_flags(-Walloc-zero)
         add_compiler_flags(-Walloca)
         add_compiler_flags(-Wimplicit-fallthrough)

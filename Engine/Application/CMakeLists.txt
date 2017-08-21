@@ -20,7 +20,12 @@ target_include_directories(BolderApplication
     ${APP_INCLUDE_PATH}/bolder
     )
 
-target_link_libraries (BolderApplication BolderCore BolderPlatform BolderOpenGL)
+target_link_libraries(BolderApplication
+    BolderCore
+    BolderPlatform
+    BolderGraphics
+    BolderOpenGL
+    )
 
 # IDE specific
 set_property(TARGET BolderApplication PROPERTY FOLDER Layers)
