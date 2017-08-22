@@ -26,7 +26,7 @@ public:
      * @brief Constructs a matrix from numbers.
      */
     explicit constexpr Matrix(std::initializer_list<T> initList) {
-        const auto size = M*N;
+        constexpr const auto size = M*N;
         const auto min = std::min(size, initList.size());
         auto iter = initList.begin();
         for (auto i = 0u; i != min; ++i) {

@@ -14,6 +14,9 @@ public:
     Graphics_system();
 
     virtual void render() = 0;
+
+    /// Sets the viewport
+    virtual void set_view_port(int x, int y, int width, int height) = 0;
 };
 
 }}

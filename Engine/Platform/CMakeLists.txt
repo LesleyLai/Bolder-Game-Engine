@@ -8,6 +8,7 @@ add_library (BolderPlatform STATIC "")
 target_sources (BolderPlatform
     PRIVATE
     "${PLATFORM_INCLUDE_PATH}/bolder/display.hpp"
+    "${PLATFORM_INCLUDE_PATH}/bolder/input.hpp"
     "${PLATFORM_SRC_PATH}/display_glfw.cpp"
     )
 

@@ -33,6 +33,7 @@ target_sources(BolderCore
     "${CORE_INCLUDE_PATH}/bolder/vector.hpp"
     "${CORE_SRC_PATH}/vector.cpp"
     "${CORE_INCLUDE_PATH}/bolder/system.hpp"
+    "${CORE_INCLUDE_PATH}/bolder/event.hpp"
     )
 
 target_link_libraries(BolderCore

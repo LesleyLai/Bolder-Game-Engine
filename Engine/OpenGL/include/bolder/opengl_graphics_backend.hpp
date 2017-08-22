@@ -25,6 +25,9 @@ public:
     /// Renders the context
     void render() override;
 
+    /// Sets the viewport
+    void set_view_port(int x, int y, int width, int height) override;
+
 private:
     std::unique_ptr<Vertex_array> vao;
     std::unique_ptr<Index_buffer> ibo;

@@ -8,6 +8,7 @@ target_sources(BolderCoreTest
     PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/angle_test.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/entity_test.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/event_test.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/logger_test.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/math_test.cpp"

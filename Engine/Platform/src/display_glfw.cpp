@@ -1,3 +1,4 @@
+#include <iostream>
 #include <iomanip>
 
 #include "GLFW/glfw3.h"
@@ -13,6 +14,24 @@ namespace {
 void glfw_error_callback(int, const char* description) {
     BOLDER_LOG_FATAL <<  description;
 }
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    std::cout << width << ',' << height << std::endl;
+    //glViewport(0, 0, width, height);
+}
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    //if (key == GLFW_KEY_E && action == GLFW_PRESS)
+        //activate_airship();;
+}
+
+static void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    //std::cout << xpos << ',' << ypos << std::endl;
+}
+
 }
 
 struct Display::Display_impl {
@@ -26,6 +45,10 @@ struct Display::Display_impl {
         BOLDER_LOG_INFO << "Platform layer with GLFW initialized";
 
         glfwMakeContextCurrent(window);
+
+        glfwSetCursorPosCallback(window, cursor_pos_callback);
+        glfwSetKeyCallback(window, key_callback);
+        glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     }
 
     ~Display_impl() {

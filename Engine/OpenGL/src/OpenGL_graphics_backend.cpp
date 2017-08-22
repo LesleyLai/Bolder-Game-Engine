@@ -137,3 +137,8 @@ void OpenGL_graphics_backend::render()
 
     check_error();
 }
+
+void OpenGL_graphics_backend::set_view_port(int x, int y, int width, int height)
+{
+    glViewport(x, y, width, height);
+}
