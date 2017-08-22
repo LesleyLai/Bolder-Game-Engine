@@ -6,7 +6,6 @@
 #include "opengl_vertex_array.hpp"
 
 namespace bolder { namespace graphics { namespace GL {
-
 struct Program;
 
 /**
@@ -17,7 +16,7 @@ class OpenGL_graphics_backend : public Graphics_system
 {
 public:
     /// Initialize OpenGL
-    OpenGL_graphics_backend();
+    OpenGL_graphics_backend(event::Channel& channel);
 
     /// Destructor
     ~OpenGL_graphics_backend();
@@ -32,6 +31,7 @@ private:
     std::unique_ptr<Vertex_array> vao;
     std::unique_ptr<Index_buffer> ibo;
     std::unique_ptr<Program> shader_program;
+
 };
 
 /** @}*/

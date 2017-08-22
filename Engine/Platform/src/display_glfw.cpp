@@ -3,12 +3,30 @@
 
 #include "GLFW/glfw3.h"
 #include "bolder/logger.hpp"
+#include "bolder/event.hpp"
 #include "bolder/exception.hpp"
+#include "bolder/events/window_resize.hpp"
 #include "display.hpp"
 
 
 using namespace bolder;
 using namespace bolder::platform;
+
+
+struct detail::Display_impl {
+    Display_impl(const char* title, event::Channel& channel);
+
+    ~Display_impl() {
+        if (window) {
+            glfwDestroyWindow(window);
+        }
+        glfwTerminate();
+        BOLDER_LOG_INFO << "Platform layer with GLFW terminated";
+    }
+
+    event::Channel& channel;
+    GLFWwindow* window = nullptr;
+};
 
 namespace {
 void glfw_error_callback(int, const char* description) {
@@ -17,8 +35,9 @@ void glfw_error_callback(int, const char* description) {
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    std::cout << width << ',' << height << std::endl;
-    //glViewport(0, 0, width, height);
+    auto display = static_cast<detail::Display_impl*>(
+                       glfwGetWindowUserPointer(window));
+    display->channel.broadcast(graphics::Window_resize_event{width, height});
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -34,36 +53,8 @@ static void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos)
 
 }
 
-struct Display::Display_impl {
-    Display_impl(const char* title) {
-        glfwInit();
-        glfwSetErrorCallback(glfw_error_callback);
-        window = glfwCreateWindow(800, 600, title, nullptr, nullptr);
-        if (!window) {
-            throw Runtime_error {"GLFW Cannot create a window."};
-        }
-        BOLDER_LOG_INFO << "Platform layer with GLFW initialized";
-
-        glfwMakeContextCurrent(window);
-
-        glfwSetCursorPosCallback(window, cursor_pos_callback);
-        glfwSetKeyCallback(window, key_callback);
-        glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    }
-
-    ~Display_impl() {
-        if (window) {
-            glfwDestroyWindow(window);
-        }
-        glfwTerminate();
-        BOLDER_LOG_INFO << "Platform layer with GLFW terminated";
-    }
-
-    GLFWwindow* window = nullptr;
-};
-
-Display::Display(const char* title)
-    : impl_{std::make_unique<Display_impl>(title)}
+Display::Display(const char* title, event::Channel& channel)
+    : impl_{std::make_unique<detail::Display_impl>(title, channel)}
 {
 }
 
@@ -90,4 +81,23 @@ void Display::update() const
     // Check if any events have been activated (key pressed, mouse moved etc.)
     // and call corresponding response functions
     glfwPollEvents();
+}
+
+detail::Display_impl::Display_impl(const char* title, event::Channel& channel)
+    : channel{channel}
+{
+    glfwInit();
+    glfwSetErrorCallback(glfw_error_callback);
+    window = glfwCreateWindow(800, 600, title, nullptr, nullptr);
+    if (!window) {
+        throw Runtime_error {"GLFW Cannot create a window."};
+    }
+    BOLDER_LOG_INFO << "Platform layer with GLFW initialized";
+
+    glfwMakeContextCurrent(window);
+
+    glfwSetWindowUserPointer(window, this);
+    glfwSetCursorPosCallback(window, cursor_pos_callback);
+    glfwSetKeyCallback(window, key_callback);
+    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 }

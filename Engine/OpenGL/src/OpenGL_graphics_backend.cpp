@@ -80,7 +80,8 @@ void check_error() {
 
 }
 
-OpenGL_graphics_backend::OpenGL_graphics_backend()
+OpenGL_graphics_backend::OpenGL_graphics_backend(event::Channel& channel)
+    : Graphics_system{channel}
 {
     load_GL();
 

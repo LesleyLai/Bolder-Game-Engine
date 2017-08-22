@@ -3,13 +3,24 @@
 #include <memory>
 #include "bolder/string_literal.hpp"
 
-namespace bolder { namespace platform {
+namespace bolder {
+
+namespace event {
+    class Channel;
+}
+
+namespace platform {
+
+namespace detail {
+struct Display_impl;
+}
 
 // Display for all the platform. Display can be a window on desktop or fullscreen.
 class Display
 {
 public:
-    Display(const char* title);
+
+    Display(const char* title, event::Channel& channel);
     ~Display();
 
     // Returns a (width, height) pair
@@ -21,8 +32,7 @@ public:
     void update() const;
 
 private:
-    struct Display_impl;
-    std::unique_ptr<Display_impl> impl_;
+    std::unique_ptr<detail::Display_impl> impl_;
 };
 
 }}

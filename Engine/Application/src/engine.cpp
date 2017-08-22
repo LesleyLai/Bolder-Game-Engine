@@ -4,6 +4,7 @@
 #include "bolder/exception.hpp"
 #include "engine.hpp"
 #include "bolder/display.hpp"
+#include "bolder/event.hpp"
 #include "bolder/logger.hpp"
 #include "bolder/opengl_graphics_backend.hpp"
 #include "bolder/graphics_system.hpp"
@@ -22,12 +23,14 @@ namespace {
 namespace bolder {
 namespace detail {
 struct Engine_impl {
+    event::Channel channel;
     platform::Display display;
     std::unique_ptr<graphics::Graphics_system> graphics;
 
     Engine_impl(const char* title)
-        : display{title},
-          graphics{std::make_unique<graphics::GL::OpenGL_graphics_backend>()} {
+        : channel{},
+          display{title, channel},
+          graphics{std::make_unique<graphics::GL::OpenGL_graphics_backend>(channel)} {
 
     }
 
