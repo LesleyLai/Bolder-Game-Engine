@@ -8,10 +8,10 @@
 using namespace bolder;
 
 struct Test_event {
-  int value;
+    int value;
 };
 
-class Test_event_handler : public Event_handler_trait<Test_event> {
+class Test_event_handler : public event::Handler_trait<Test_event> {
 public:
     Test_event_handler(std::stringstream& sstream) : ss_{sstream} {}
 
@@ -25,16 +25,17 @@ private:
 
 TEST_CASE("Event system") {
     std::stringstream ss;
-    Event_handler_raii<Test_event_handler> handler(ss);
+    event::Channel channel;
+    event::Handler_raii<Test_event_handler> handler(channel, ss);
 
     SUBCASE("Broadcasts scoped object") {
         Test_event abc{123};
-        Event_channel::broadcast(abc); // transmit object
+        channel.broadcast(abc); // transmit object
         REQUIRE_EQ(ss.str(), "Event received: 123");
     }
 
     SUBCASE("Broadcasts anonymous object") {
-        Event_channel::broadcast(Test_event{456}); // transmit object
+        channel.broadcast(Test_event{456}); // transmit object
         REQUIRE_EQ(ss.str(), "Event received: 456");
     }
 }

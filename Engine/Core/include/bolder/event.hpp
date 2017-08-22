@@ -16,61 +16,127 @@
 
 #include "bolder/exception.hpp"
 
-namespace bolder {
+namespace bolder { namespace event {
 
 /** @addtogroup event
  * @{
  */
 
 /**
- * @brief A static class of global event channel
+ * @brief Event channel broadcasts events into its corresponding handler
  */
-class Event_channel {
+class Channel {
 public:
     /// Adds an Event_handler to the channel
     template <typename Event, typename Handler>
-    static void add_handler(Handler& handler);
+    void add_handler(Handler& handler);
 
     /// Removes an Event_handler to the channel
     template <typename Event, typename Handler>
-    static void remove_handler(Handler& handler);
+    void remove_handler(Handler& handler);
 
     /// Broadcast an event
     template<class Event>
-    static void broadcast(const Event& event);
+    void broadcast(const Event& event);
 };
 
 /**
- * @class Event_handler_raii
+ * @class Handler_raii
  * @brief A RAII wrapper of an event handler
  *
- * Event_handler_raii automatically adds an event handler into the Event channel
+ * Handler_raii automatically adds an event handler into the Event channel
  * and remove the event handler when out of scope.
  */
 template<class Handler>
-class Event_handler_raii {
+class Handler_raii {
 public:
     template<typename... Args>
-    Event_handler_raii(Args&&... args);
+    Handler_raii(Channel& channel, Args&&... args);
 
-    ~Event_handler_raii();
+    ~Handler_raii();
 
 private:
+    Channel& channel_;
     Handler handler_;
 };
 
 /**
- * @class Event_handler_trait
+ * @class Handler_trait
  * @brief Provides event_type typedef that retrive the corresponding event type
  * of a handler.
  */
 template<typename Event>
-struct Event_handler_trait {
+struct Handler_trait {
     using event_type = Event;
 };
 
 /** @}*/
 
+/** @defgroup event Events
+ * @brief This module provides an event system.
+ * @par Usage
+ * First, we need an event handler that conform to the event::Handler
+ * concept. Event handlers have their corresponding event types, which can be
+ * arbitrary structure with data that the event handlers is interested in. We
+ * add the event handler to event::Channel by its .add() member function or by
+ * event::Handler_raii wrapper. At last, we create and broadcast the event through
+ * event::Channel's broadcast() member; the channel will automatically call
+ * event handlers that interested in the event.
+ * @par Example
+ * @code{.cpp}
+ * #include "bolder/event.hpp"
+ *
+ * #include <iostream>
+ *
+ * using namespace bolder;
+ *
+ * struct Test_event {
+ *     int value;
+ * };
+ *
+ * class Test_event_handler : public event::Handler_trait<Test_event> {
+ * public:
+ *     Test_event_handler(std::stringstream& sstream) : ss_{sstream} {}
+ *
+ *     void operator()(const event_type& evt) {
+ *         std::cout << "Event received: " << evt.value << '\n';
+ *     }
+ * };
+ *
+ * int main() {
+ *     event::Channel channel;
+ *     event::Handler_raii<Test_event_handler> handler(channel);
+ *     channel.broadcast(Test_event{123}); // Prints "Event received: 123"
+ * }
+ * @endcode
+ */
+
+/**
+ * @interface bolder::event::Handler
+ * @ingroup event
+ * @brief Concept of event handler
+ *
+ * Handler is a [concept](https://en.wikipedia.org/wiki/Concepts_(C%2B%2B))
+ * about how to write event handler classes. This concept Specifies that an
+ * instance of the type can be treat as event handler.
+ *
+ * @{
+ * @par Requirements
+ * The type @c T satisfies Handler if
+ *
+ * Given @c handler expression of type T or const T
+ *
+ * The following expressions must be valid and have their specified effects
+ * @code{.cpp}
+ * handler(); // Calles the event handler
+ * @endcode
+ * Also, handler::event_type should returns the handler's corresponding type of
+ * event.
+ *
+ * The simplest way to create an event handler is to create a class that
+ * inherited from Handler_trait; then overload its operator() function.
+ * @}
+ */
 
 namespace detail {
 
@@ -159,31 +225,38 @@ void Internal_static_channel<Event>::broadcast(const Event& event) {
 } // namespace detail
 
 template<typename Event, typename Handler>
-void Event_channel::add_handler(Handler& handler)
+void Channel::add_handler(Handler& handler)
 {
     detail::Internal_static_channel<Event>::instance().add_handler(handler);
 }
 
 template<typename Event, typename Handler>
-void Event_channel::remove_handler(Handler& handler) {
+void Channel::remove_handler(Handler& handler) {
     detail::Internal_static_channel<Event>::instance().remove_handler(handler);
 }
 
 template<class Event>
-void Event_channel::broadcast(const Event& event) {
+void Channel::broadcast(const Event& event) {
     detail::Internal_static_channel<Event>::instance().broadcast(event);
 }
 
+/**
+ * @brief Handler_raii<Handler>::Handler_raii Constructor
+ * @param channel Event channel for the event handler
+ * @param args Arguments forward to the event handler constructor
+ */
 template<class Handler>
 template<typename... Args>
-Event_handler_raii<Handler>::Event_handler_raii(Args&&... args)
-    : handler_{Handler{std::forward<Args>(args)...}} {
-    Event_channel::add_handler<Handler::event_type>(handler_);
+Handler_raii<Handler>::Handler_raii(Channel& channel, Args&&... args)
+    : channel_{channel},
+      handler_{Handler{std::forward<Args>(args)...}} {
+    channel_.add_handler<Handler::event_type>(handler_);
 }
 
+///@brief Handler_raii<Handler>::~Handler_raii Destructor
 template<class Handler>
-Event_handler_raii<Handler>::~Event_handler_raii() {
-    Event_channel::remove_handler<Handler::event_type>(handler_);
+Handler_raii<Handler>::~Handler_raii() {
+    channel_.remove_handler<Handler::event_type>(handler_);
 }
 
-} // namespace bolder
+}} // namespace bolder::event
