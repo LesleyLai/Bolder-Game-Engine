@@ -2,7 +2,7 @@
 
 /**
   * @file event.hpp
-  * @brief File for the event system.
+  * @brief File for the event system module.
   *
   * This file contains the event module that allows for event-response like
   * programming in C++.
@@ -72,7 +72,11 @@ struct Handler_trait {
 
 /** @}*/
 
+/** @defgroup core Core
+ */
+
 /** @defgroup event Events
+ * @ingroup core
  * @brief This module provides an event system.
  * @par Usage
  * First, we need an event handler that conform to the event::Handler

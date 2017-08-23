@@ -31,6 +31,7 @@ struct Program {
     void set_uniform(const char* name, int value) const;
     void set_uniform(const char* name, bool value) const;
     void set_uniform(const char* name, unsigned int value) const;
+    void set_uniform(const char* name, const math::Mat4& value) const;
     ///@}
 
 };

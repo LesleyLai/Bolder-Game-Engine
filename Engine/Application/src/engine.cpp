@@ -6,7 +6,6 @@
 #include "bolder/display.hpp"
 #include "bolder/event.hpp"
 #include "bolder/logger.hpp"
-#include "bolder/opengl_graphics_backend.hpp"
 #include "bolder/graphics_system.hpp"
 
 namespace {
@@ -30,7 +29,7 @@ struct Engine_impl {
     Engine_impl(const char* title)
         : channel{},
           display{title, channel},
-          graphics{std::make_unique<graphics::GL::OpenGL_graphics_backend>(channel)} {
+          graphics{std::make_unique<graphics::Graphics_system>(channel)} {
 
     }
 

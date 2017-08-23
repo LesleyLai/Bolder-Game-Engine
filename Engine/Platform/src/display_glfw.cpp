@@ -5,7 +5,7 @@
 #include "bolder/logger.hpp"
 #include "bolder/event.hpp"
 #include "bolder/exception.hpp"
-#include "bolder/events/window_resize.hpp"
+#include "bolder/events/input_events.hpp"
 #include "display.hpp"
 
 
@@ -37,7 +37,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     auto display = static_cast<detail::Display_impl*>(
                        glfwGetWindowUserPointer(window));
-    display->channel.broadcast(graphics::Window_resize_event{width, height});
+    display->channel.broadcast(event::Window_resize{width, height});
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)

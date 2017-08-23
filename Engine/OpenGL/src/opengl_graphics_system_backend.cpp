@@ -1,13 +1,16 @@
 #include <cmath>
 
-#include "opengl_graphics_backend.hpp"
+#include "bolder/graphics_system.hpp"
+
 #include "opengl_buffer.hpp"
 #include "opengl_shader.hpp"
 #include "opengl_program.hpp"
+#include "opengl_vertex_array.hpp"
 
 #include "bolder/logger.hpp"
 #include "bolder/exception.hpp"
 #include "bolder/file_util.hpp"
+#include "bolder/transform.hpp"
 
 using namespace bolder;
 using namespace bolder::graphics::GL;
@@ -15,6 +18,10 @@ using namespace bolder::graphics::GL;
 /** @defgroup opengl OpenGL
  * @brief This module provides a thin wrapper of OpenGL.
  */
+
+namespace bolder { namespace graphics {
+
+using namespace bolder::graphics::GL;
 
 namespace {
 void load_GL() {
@@ -35,20 +42,20 @@ void load_GL() {
 
 // Returns shader program of the compiled shader
 auto compile_shaders() {
-    auto vertex_shader_source = file_util::load("sprite.vert");
-    const char* vert_src = vertex_shader_source.c_str();
+    auto vert_string = file_util::load("sprite.vert");
+    const char* vert_src = vert_string.c_str();
     Shader vertex_shader {vert_src, Shader::Type::Vertex};
     vertex_shader.compile();
 
-    auto fragment_shader_source = file_util::load("sprite.frag");
-    const char* frag_src = fragment_shader_source.c_str();
+    auto frag_string = file_util::load("sprite.frag");
+    const char* frag_src = frag_string.c_str();
     Shader fragment_shader {frag_src, Shader::Type::Fragment};
     fragment_shader.compile();
 
-    auto program = std::make_unique<Program>();
-    program->attach(vertex_shader);
-    program->attach(fragment_shader);
-    program->link();
+    Program program;
+    program.attach(vertex_shader);
+    program.attach(fragment_shader);
+    program.link();
 
     return program;
 }
@@ -80,43 +87,48 @@ void check_error() {
 
 }
 
-OpenGL_graphics_backend::OpenGL_graphics_backend(event::Channel& channel)
-    : Graphics_system{channel}
+struct Graphics_system::Backend_impl {
+    Vertex_array vao;
+    Index_buffer ibo;
+    Program shader_program;
+
+    Backend_impl(unsigned int indices[])
+        : vao{},
+          ibo{indices, 6},
+          shader_program{compile_shaders()}
+    {
+        vao.bind();
+        shader_program.use();
+    }
+};
+
+void Graphics_system::init_backend()
 {
+
     load_GL();
 
     float triangles[] = {
         0.5f,  0.5f, 0.0f,
         0.5f, -0.5f, 0.0f,
         -0.5f, -0.5f, 0.0f,
-       -0.5f,  0.5f, 0.0f,
+        -0.5f,  0.5f, 0.0f,
     };
 
     unsigned int indices[] = {0, 1, 3,
                               1, 2, 3};
 
-    vao = std::make_unique<Vertex_array>();
-    vao->bind();
+    backend_impl_ = new Backend_impl(indices);
 
     Buffer vbo(triangles, 4 * 3, 3);
-
-
-    vbo.bind();
-    vao->add_buffer(vbo, 0);
-
-    ibo = std::make_unique<Index_buffer>(indices, 6);
-
-    shader_program = compile_shaders();
-    shader_program->use();
-
+    backend_impl_->vao.add_buffer(vbo, 0);
 }
 
-OpenGL_graphics_backend::~OpenGL_graphics_backend()
+void Graphics_system::shutdown_backend()
 {
-
+    delete backend_impl_;
 }
 
-void OpenGL_graphics_backend::render()
+void Graphics_system::render()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -126,20 +138,26 @@ void OpenGL_graphics_backend::render()
     auto time = duration_cast<duration<float, std::ratio<1,3>>>(
                 current.time_since_epoch());
     auto gv = std::sin(time.count());
-    shader_program->set_uniform("gv", gv);
-    shader_program->use();
+    auto projection = math::orthographic(-1, 1, -1, 1, -1, 1);
 
-    vao->bind();
-    ibo->bind();
-    glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(ibo->size()),
+
+    backend_impl_->shader_program.set_uniform("projection", projection);
+    backend_impl_->shader_program.set_uniform("gv", gv);
+    backend_impl_->shader_program.use();
+
+    backend_impl_->vao.bind();
+    backend_impl_->ibo.bind();
+    glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(backend_impl_->ibo.size()),
                    GL_UNSIGNED_INT, nullptr);
-    ibo->unbind();
-    vao->unbind();
+    backend_impl_->ibo.unbind();
+    backend_impl_->vao.unbind();
 
     check_error();
 }
 
-void OpenGL_graphics_backend::set_view_port(int x, int y, int width, int height)
+void Graphics_system::set_view_port(int x, int y, int width, int height)
 {
     glViewport(x, y, width, height);
 }
+
+}} // namespace bolder::graphics

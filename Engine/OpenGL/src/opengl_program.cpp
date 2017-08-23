@@ -64,5 +64,10 @@ void Program::set_uniform(const char* name, unsigned int value) const
     glUniform1ui(glGetUniformLocation(id, name), value);
 }
 
+void Program::set_uniform(const char* name, const math::Mat4& value) const
+{
+    glUniformMatrix4fv(glGetUniformLocation(id, name), 1, GL_FALSE, value.data());
+}
+
 
 }}} // namespace bolder::graphics::GL

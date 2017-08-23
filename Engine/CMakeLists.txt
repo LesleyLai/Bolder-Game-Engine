@@ -6,11 +6,13 @@ add_subdirectory(Core)
 # Graphics Module
 add_subdirectory(Graphics)
 
+option(BOLDER_OPENGL_BACKEND "Generate code for OpenGL graphics backend" ON)
+if (BOLDER_OPENGL_BACKEND)
+    add_subdirectory(OpenGL)
+endif()
+
 # Platform abstruction layer
 add_subdirectory(Platform)
-
-# Thin OpenGL Wrapper
-add_subdirectory(OpenGL)
 
 # Application entry base class
 add_subdirectory(Application)

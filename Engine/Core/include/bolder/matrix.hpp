@@ -50,11 +50,17 @@ public:
         }
     }
 
-
     Vector<T, N>& operator[] (size_t i)
     { return reinterpret_cast<Vector<T, N> &>(elems_[i*N]); }
     const Vector<T, N>& operator[] (size_t i) const
     { return reinterpret_cast<const Vector<T, N> &>(elems_[i*N]); }
+
+    /**
+     * @brief Return a pointer to the underlying data of the matrix
+     */
+    constexpr const T* data() const {
+        return static_cast<const T*>(elems_);
+    }
 
     /**
      * @brief Returns an identity matrix
@@ -63,6 +69,8 @@ public:
     constexpr static Matrix identity() {
         return Matrix{};
     }
+
+
 
 private:
     T elems_[M*N];

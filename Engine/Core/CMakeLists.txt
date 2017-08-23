@@ -35,7 +35,7 @@ target_sources(BolderCore
     "${CORE_INCLUDE_PATH}/bolder/system.hpp"
     "${CORE_SRC_PATH}/system.cpp"
     "${CORE_INCLUDE_PATH}/bolder/event.hpp"
-    "${CORE_INCLUDE_PATH}/bolder/events/window_resize.hpp"
+    "${CORE_INCLUDE_PATH}/bolder/events/input_events.hpp"
     )
 
 target_link_libraries(BolderCore
