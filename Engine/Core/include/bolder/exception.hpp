@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdexcept>
+#include <string>
 
 /**
  * @file exception.hpp
@@ -37,6 +38,7 @@ public:
 struct Runtime_error : Exception {
 public:
     Runtime_error(const char* message) noexcept;
+    Runtime_error(const std::string& message) noexcept;
 };
 
 }

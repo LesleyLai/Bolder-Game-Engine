@@ -8,6 +8,7 @@ add_library (BolderCore STATIC "")
 target_include_directories(BolderCore
     PUBLIC
     ${CORE_INCLUDE_PATH}
+    ${THIRD_PARTY_INCLUDE_PATH}
     PRIVATE
     "${CORE_INCLUDE_PATH}/bolder"
     )
@@ -36,6 +37,8 @@ target_sources(BolderCore
     "${CORE_SRC_PATH}/system.cpp"
     "${CORE_INCLUDE_PATH}/bolder/event.hpp"
     "${CORE_INCLUDE_PATH}/bolder/events/input_events.hpp"
+    "${CORE_INCLUDE_PATH}/bolder/image.hpp"
+    "${CORE_SRC_PATH}/image.cpp"
     )
 
 target_link_libraries(BolderCore

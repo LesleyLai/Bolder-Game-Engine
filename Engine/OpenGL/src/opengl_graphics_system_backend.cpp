@@ -8,6 +8,7 @@
 #include "opengl_vertex_array.hpp"
 #include "opengl_texture.hpp"
 
+#include "bolder/image.hpp"
 #include "bolder/logger.hpp"
 #include "bolder/exception.hpp"
 #include "bolder/file_util.hpp"
@@ -97,7 +98,8 @@ struct Graphics_system::Backend_impl {
     Backend_impl(unsigned int indices[])
         : vao{},
           ibo{indices, 6},
-          shader_program{compile_shaders()}
+          shader_program{compile_shaders()},
+          texture{Image{"textures/container.jpg"}}
     {
         vao.bind();
         shader_program.use();

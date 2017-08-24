@@ -1,10 +1,14 @@
 #pragma once
 
-namespace bolder { namespace graphics { namespace GL {
+namespace bolder {
+
+class Image;
+
+namespace graphics { namespace GL {
 
 class Texture {
 public:
-    Texture();
+    Texture(const Image& image);
 
     void bind() const noexcept;
 
