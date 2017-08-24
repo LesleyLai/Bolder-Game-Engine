@@ -6,6 +6,7 @@
 #include "opengl_shader.hpp"
 #include "opengl_program.hpp"
 #include "opengl_vertex_array.hpp"
+#include "opengl_texture.hpp"
 
 #include "bolder/logger.hpp"
 #include "bolder/exception.hpp"
@@ -91,6 +92,7 @@ struct Graphics_system::Backend_impl {
     Vertex_array vao;
     Index_buffer ibo;
     Program shader_program;
+    Texture texture;
 
     Backend_impl(unsigned int indices[])
         : vao{},
@@ -107,11 +109,12 @@ void Graphics_system::init_backend()
 
     load_GL();
 
-    float triangles[] = {
-        0.5f,  0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f,
-        -0.5f,  0.5f, 0.0f,
+    float vertices[] = {
+        // positions          // texture coords
+         0.5f,  0.5f, 0.0f,   1.0f, 1.0f,   // top right
+         0.5f, -0.5f, 0.0f,   1.0f, 0.0f,   // bottom right
+        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f,   // bottom left
+        -0.5f,  0.5f, 0.0f,   0.0f, 1.0f    // top left
     };
 
     unsigned int indices[] = {0, 1, 3,
@@ -119,8 +122,11 @@ void Graphics_system::init_backend()
 
     backend_impl_ = new Backend_impl(indices);
 
-    Buffer vbo(triangles, 4 * 3, 3);
-    backend_impl_->vao.add_buffer(vbo, 0);
+    constexpr auto buffer_size = sizeof(vertices) / sizeof(float);
+    constexpr auto stride = 5 * sizeof(float);
+    Buffer vbo(vertices, buffer_size);
+    backend_impl_->vao.bind_attributes(vbo, 0, 3, stride, 0 * sizeof(float));
+    backend_impl_->vao.bind_attributes(vbo, 1, 2, stride, 3 * sizeof(float));
 }
 
 void Graphics_system::shutdown_backend()
@@ -134,21 +140,17 @@ void Graphics_system::render()
 
     using namespace std::chrono;
 
-    auto current = high_resolution_clock::now();
-    auto time = duration_cast<duration<float, std::ratio<1,3>>>(
-                current.time_since_epoch());
-    auto gv = std::sin(time.count());
     auto projection = math::orthographic(-1, 1, -1, 1, -1, 1);
 
-
     backend_impl_->shader_program.set_uniform("projection", projection);
-    backend_impl_->shader_program.set_uniform("gv", gv);
     backend_impl_->shader_program.use();
 
     backend_impl_->vao.bind();
     backend_impl_->ibo.bind();
+    backend_impl_->texture.bind();
     glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(backend_impl_->ibo.size()),
                    GL_UNSIGNED_INT, nullptr);
+
     backend_impl_->ibo.unbind();
     backend_impl_->vao.unbind();
 

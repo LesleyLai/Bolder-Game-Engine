@@ -1,6 +1,7 @@
 #include "opengl_program.hpp"
 #include "opengl_shader.hpp"
 #include "bolder/logger.hpp"
+#include "bolder/exception.hpp"
 
 namespace bolder { namespace graphics { namespace GL {
 
@@ -22,8 +23,8 @@ bool bolder::graphics::GL::Program::link()
     if(!success) {
         char info_log[512];
         glGetProgramInfoLog(id, 512, nullptr, info_log);
-        BOLDER_LOG_ERROR << "Shader program linking failed: "
-                         << info_log;
+        throw bolder::Runtime_error{info_log};
+
         return false;
     }
     return true;

@@ -19,17 +19,22 @@ void Vertex_array::unbind() const noexcept
     glBindVertexArray(0);
 }
 
-void Vertex_array::add_buffer(const Buffer& buffer, unsigned int index)
+void Vertex_array::bind_attributes(const Buffer& buffer,
+                                   unsigned int index,
+                                   unsigned int count,
+                                   unsigned int stride,
+                                   std::intptr_t offset)
 {
     bind();
     buffer.bind();
 
     //  Sets the vertex attributes pointers
-    glVertexAttribPointer(index, buffer.components_count(),
+    glVertexAttribPointer(index,
+                          count,
                           GL_FLOAT,
                           GL_FALSE,
-                          /*3 * sizeof(float)*/0,
-                          nullptr);
+                          stride,
+                          reinterpret_cast<const GLvoid*>(offset));
     glEnableVertexAttribArray(index);
 
     buffer.unbind();

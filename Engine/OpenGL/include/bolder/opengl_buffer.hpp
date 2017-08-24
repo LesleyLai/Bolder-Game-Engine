@@ -9,16 +9,13 @@ namespace bolder { namespace graphics { namespace GL {
  */
 class Buffer {
 public:
-    Buffer(float* data, size_t size, int count);
+    Buffer(float* data, size_t size);
 
     void bind() const noexcept;
     void unbind() const noexcept;
 
-    int components_count() const;
-
 private:
     unsigned int id_;
-    int components_count_;
 };
 
 /**

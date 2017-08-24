@@ -24,6 +24,8 @@ target_sources(BolderOpenGL
     "${OPENGL_SRC_PATH}/opengl_shader.cpp"
     "${OPENGL_INCLUDE_PATH}/bolder/opengl_vertex_array.hpp"
     "${OPENGL_SRC_PATH}/opengl_vertex_array.cpp"
+    "${OPENGL_INCLUDE_PATH}/bolder/opengl_texture.hpp"
+    "${OPENGL_SRC_PATH}/opengl_texture.cpp"
     "${THIRD_PARTY_MODULE_PATH}/glad/src/glad.c"
     )
 

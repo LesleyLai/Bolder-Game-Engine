@@ -3,7 +3,7 @@
 
 namespace bolder { namespace graphics { namespace GL {
 
-Buffer::Buffer(float* data, size_t size, int count) : components_count_{count}
+Buffer::Buffer(float* data, size_t size)
 {
     glGenBuffers(1, &id_);
     glBindBuffer(GL_ARRAY_BUFFER, id_);
@@ -21,11 +21,6 @@ void Buffer::bind() const noexcept
 void Buffer::unbind() const noexcept
 {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
-int Buffer::components_count() const
-{
-    return components_count_;
 }
 
 Index_buffer::Index_buffer(uint32_t* data, unsigned int size) : size_{size}
