@@ -5,9 +5,6 @@
 
 #include "glad/glad.h"
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb/stb_image.h"
-
 namespace bolder { namespace graphics { namespace GL {
 
 Texture::Texture(const Image& image)
@@ -18,8 +15,6 @@ Texture::Texture(const Image& image)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    stbi_set_flip_vertically_on_load(true);
 
     auto get_image_format = [](const Image& image) {
         auto unsupport_channel_num = [](int channels) {

@@ -17,6 +17,8 @@ target_sources(BolderGraphics
     "${GRAPHICS_INCLUDE_PATH}/bolder/graphics_system.hpp"
     "${GRAPHICS_SRC_PATH}/graphics_system.cpp"
     "${GRAPHICS_INCLUDE_PATH}/bolder/sprite.hpp"
+    "${GRAPHICS_INCLUDE_PATH}/bolder/image.hpp"
+    "${GRAPHICS_SRC_PATH}/image.cpp"
     )
 
 target_link_libraries(BolderGraphics

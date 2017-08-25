@@ -17,7 +17,7 @@ target_include_directories (BolderOpenGLTest
 
 add_test(NAME BolderOpenGLTest COMMAND BolderOpenGLTest)
 
-target_link_libraries(BolderOpenGLTest BolderOpenGL)
+target_link_libraries(BolderOpenGLTest BolderOpenGL glfw)
 
 # Turn on CMake testing capabilities
 enable_testing()

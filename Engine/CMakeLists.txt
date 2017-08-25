@@ -1,5 +1,8 @@
 include(../scripts/cmake/compiler.cmake)
 
+# Utilities
+add_subdirectory(Utilities)
+
 # Engine core functionalities
 add_subdirectory(Core)
 

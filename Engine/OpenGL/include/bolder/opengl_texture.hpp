@@ -1,10 +1,10 @@
 #pragma once
 
-namespace bolder {
+namespace bolder { namespace graphics {
 
 class Image;
 
-namespace graphics { namespace GL {
+namespace GL {
 
 class Texture {
 public:

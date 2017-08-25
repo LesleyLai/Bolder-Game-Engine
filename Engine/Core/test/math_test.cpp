@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "doctest.h"
 #include "bolder/math.hpp"
 

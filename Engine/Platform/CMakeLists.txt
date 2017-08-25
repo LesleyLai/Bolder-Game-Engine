@@ -17,10 +17,19 @@ target_include_directories(BolderPlatform
     ${PLATFORM_INCLUDE_PATH}
     PRIVATE
     ${PLATFORM_INCLUDE_PATH}/bolder
-    ${THIRD_PARTY_INCLUDE_PATH}
     )
 
-target_link_libraries (BolderPlatform BolderCore ${THIRD_PARTY_LIBS})
+
+
+if (WIN32)
+    target_link_libraries (BolderPlatform glfw)
+elseif(UNIX)
+    target_link_libraries (BolderPlatform glfw)
+else()
+  message(FATAL_ERROR "Unsupported platform." )
+endif()
+
+target_link_libraries (BolderPlatform BolderCore)
 
 # IDE specific
 set_property(TARGET BolderPlatform PROPERTY FOLDER Layers)
