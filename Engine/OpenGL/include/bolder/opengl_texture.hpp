@@ -6,9 +6,9 @@ class Image;
 
 namespace GL {
 
-class Texture {
+class Texture2d {
 public:
-    Texture(const Image& image);
+    Texture2d(const Image& image);
 
     void bind() const noexcept;
 

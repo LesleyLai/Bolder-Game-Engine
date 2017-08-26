@@ -7,7 +7,7 @@
 
 namespace bolder { namespace graphics { namespace GL {
 
-Texture::Texture(const Image& image)
+Texture2d::Texture2d(const Image& image)
 {
     glGenTextures(1, &id_);
     bind();
@@ -43,7 +43,7 @@ Texture::Texture(const Image& image)
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 
-void Texture::bind() const noexcept
+void Texture2d::bind() const noexcept
 {
     glBindTexture(GL_TEXTURE_2D, id_);
 }

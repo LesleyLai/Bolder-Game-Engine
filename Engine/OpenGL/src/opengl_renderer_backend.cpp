@@ -1,6 +1,6 @@
 #include <cmath>
 
-#include "bolder/graphics_system.hpp"
+#include "bolder/renderer.hpp"
 
 #include "opengl_buffer.hpp"
 #include "opengl_shader.hpp"
@@ -89,11 +89,11 @@ void check_error() {
 
 }
 
-struct Graphics_system::Backend_impl {
+struct Renderer::Backend_impl {
     Vertex_array vao;
     Index_buffer ibo;
     Program shader_program;
-    Texture texture;
+    Texture2d texture;
 
     Backend_impl(unsigned int indices[])
         : vao{},
@@ -106,7 +106,7 @@ struct Graphics_system::Backend_impl {
     }
 };
 
-void Graphics_system::init_backend()
+void Renderer::init_backend()
 {
 
     load_GL();
@@ -131,12 +131,12 @@ void Graphics_system::init_backend()
     backend_impl_->vao.bind_attributes(vbo, 1, 2, stride, 3 * sizeof(float));
 }
 
-void Graphics_system::shutdown_backend()
+void Renderer::shutdown_backend()
 {
     delete backend_impl_;
 }
 
-void Graphics_system::render()
+void Renderer::render()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -159,7 +159,7 @@ void Graphics_system::render()
     check_error();
 }
 
-void Graphics_system::set_view_port(int x, int y, int width, int height)
+void Renderer::set_view_port(int x, int y, int width, int height)
 {
     glViewport(x, y, width, height);
 }

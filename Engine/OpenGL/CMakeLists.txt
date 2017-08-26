@@ -5,7 +5,7 @@ set (OPENGL_INCLUDE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/include")
 add_library (BolderOpenGL
     "${OPENGL_INCLUDE_PATH}/bolder/opengl_buffer.hpp"
     "${OPENGL_SRC_PATH}/opengl_buffer.cpp"
-    "${OPENGL_SRC_PATH}/opengl_graphics_system_backend.cpp"
+    "${OPENGL_SRC_PATH}/opengl_renderer_backend.cpp"
     "${OPENGL_INCLUDE_PATH}/bolder/opengl_program.hpp"
     "${OPENGL_SRC_PATH}/opengl_program.cpp"
     "${OPENGL_INCLUDE_PATH}/bolder/opengl_shader.hpp"

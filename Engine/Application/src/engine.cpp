@@ -6,7 +6,7 @@
 #include "bolder/display.hpp"
 #include "bolder/event.hpp"
 #include "bolder/logger.hpp"
-#include "bolder/graphics_system.hpp"
+#include "bolder/renderer.hpp"
 
 namespace {
     // Check if fps is too low and report to logger
@@ -24,12 +24,12 @@ namespace detail {
 struct Engine_impl {
     event::Channel channel;
     platform::Display display;
-    std::unique_ptr<graphics::Graphics_system> graphics;
+    std::unique_ptr<graphics::Renderer> graphics;
 
     Engine_impl(const char* title)
         : channel{},
           display{title, channel},
-          graphics{std::make_unique<graphics::Graphics_system>(channel)} {
+          graphics{std::make_unique<graphics::Renderer>(channel)} {
 
     }
 

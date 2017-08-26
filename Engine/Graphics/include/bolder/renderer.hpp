@@ -8,11 +8,11 @@ namespace bolder { namespace graphics {
 /**
  * @brief Represents a base class of render API backends
  */
-class Graphics_system  : public System
+class Renderer : public System
 {
 public:
-    Graphics_system(event::Channel& channel);
-    ~Graphics_system();
+    Renderer(event::Channel& channel);
+    ~Renderer();
 
     /// Initialization function defined by graphics backend
     void init_backend();

@@ -14,8 +14,8 @@ target_include_directories(BolderGraphics
 
 target_sources(BolderGraphics
     PRIVATE
-    "${GRAPHICS_INCLUDE_PATH}/bolder/graphics_system.hpp"
-    "${GRAPHICS_SRC_PATH}/graphics_system.cpp"
+    "${GRAPHICS_INCLUDE_PATH}/bolder/renderer.hpp"
+    "${GRAPHICS_SRC_PATH}/renderer.cpp"
     "${GRAPHICS_INCLUDE_PATH}/bolder/sprite.hpp"
     "${GRAPHICS_INCLUDE_PATH}/bolder/image.hpp"
     "${GRAPHICS_SRC_PATH}/image.cpp"
