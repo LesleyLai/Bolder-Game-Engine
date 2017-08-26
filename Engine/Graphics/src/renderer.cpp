@@ -1,42 +1,41 @@
 #include "renderer.hpp"
+#include "backend.hpp"
 #include "bolder/event.hpp"
 #include "bolder/events/input_events.hpp"
 
 namespace bolder { namespace graphics {
 
-using namespace bolder::event;
-
 namespace {
-class Window_resize_handler : public event::Handler_trait<Window_resize> {
+class Window_resize_handler : public event::Handler_trait<event::Window_resize> {
 public:
-    Window_resize_handler(Renderer& system) : system_{system} {}
+    Window_resize_handler() {}
 
-    void operator()(const Window_resize& event) {
-        system_.set_view_port(0, 0, event.x, event.y);
+    void operator()(const event::Window_resize& event) {
+        backend::set_view_port(0, 0, event.x, event.y);
     }
-
-private:
-    Renderer& system_;
 };
 }
 
 struct Renderer::Impl {
-    Handler_raii<Window_resize_handler> window_resize_handler;
+    event::Handler_raii<Window_resize_handler> window_resize_handler;
 
-    Impl(event::Channel& channel,
-         Renderer& system) : window_resize_handler{channel, system} {}
+    Impl(event::Channel& channel) : window_resize_handler{channel} {}
 };
 
 Renderer::Renderer(event::Channel& channel)
     : System{channel},
-      impl_{std::make_unique<Impl>(channel, *this)}
+      impl_{std::make_unique<Impl>(channel)}
 {
-    init_backend();
+    backend::init();
 }
 
 Renderer::~Renderer()
 {
-    shutdown_backend();
+}
+
+void Renderer::render()
+{
+    backend::render();
 }
 
 }}

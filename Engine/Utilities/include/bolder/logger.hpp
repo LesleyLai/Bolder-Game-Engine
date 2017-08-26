@@ -7,6 +7,8 @@
   * This file contains the Logger module.
   * global_log is the global logger defined in this module. There are also
   * Global logging macros to use the global_log with shorthand notation.
+  *
+  * @todo Asynchronous logging
   */
 
 #include <chrono>

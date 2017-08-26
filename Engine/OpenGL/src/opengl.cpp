@@ -1,6 +1,6 @@
 #include <cmath>
 
-#include "bolder/renderer.hpp"
+#include "bolder/backend.hpp"
 
 #include "opengl_buffer.hpp"
 #include "opengl_shader.hpp"
@@ -14,16 +14,13 @@
 #include "bolder/file_util.hpp"
 #include "bolder/transform.hpp"
 
-using namespace bolder;
-using namespace bolder::graphics::GL;
-
 /** @defgroup opengl OpenGL
- * @brief This module provides a thin wrapper of OpenGL.
+ * @brief This module provides the graphics backend that use OpenGL.
  */
 
-namespace bolder { namespace graphics {
+namespace bolder { namespace graphics { namespace backend {
 
-using namespace bolder::graphics::GL;
+using namespace GL;
 
 namespace {
 void load_GL() {
@@ -89,13 +86,13 @@ void check_error() {
 
 }
 
-struct Renderer::Backend_impl {
+struct Context {
     Vertex_array vao;
     Index_buffer ibo;
     Program shader_program;
     Texture2d texture;
 
-    Backend_impl(unsigned int indices[])
+    Context(unsigned int indices[])
         : vao{},
           ibo{indices, 6},
           shader_program{compile_shaders()},
@@ -106,9 +103,9 @@ struct Renderer::Backend_impl {
     }
 };
 
-void Renderer::init_backend()
-{
+static Context* context = nullptr;
 
+void init() {
     load_GL();
 
     float vertices[] = {
@@ -122,21 +119,16 @@ void Renderer::init_backend()
     unsigned int indices[] = {0, 1, 3,
                               1, 2, 3};
 
-    backend_impl_ = new Backend_impl(indices);
-
+    // Todo: remove dynamic memory allocation
+    context = new Context {indices};
     constexpr auto buffer_size = sizeof(vertices) / sizeof(float);
     constexpr auto stride = 5 * sizeof(float);
     Buffer vbo(vertices, buffer_size);
-    backend_impl_->vao.bind_attributes(vbo, 0, 3, stride, 0 * sizeof(float));
-    backend_impl_->vao.bind_attributes(vbo, 1, 2, stride, 3 * sizeof(float));
+    context->vao.bind_attributes(vbo, 0, 3, stride, 0 * sizeof(float));
+    context->vao.bind_attributes(vbo, 1, 2, stride, 3 * sizeof(float));
 }
 
-void Renderer::shutdown_backend()
-{
-    delete backend_impl_;
-}
-
-void Renderer::render()
+void render()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -144,24 +136,24 @@ void Renderer::render()
 
     auto projection = math::orthographic(-1, 1, -1, 1, -1, 1);
 
-    backend_impl_->shader_program.set_uniform("projection", projection);
-    backend_impl_->shader_program.use();
+    context->shader_program.set_uniform("projection", projection);
+    context->shader_program.use();
 
-    backend_impl_->vao.bind();
-    backend_impl_->ibo.bind();
-    backend_impl_->texture.bind();
-    glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(backend_impl_->ibo.size()),
+    context->vao.bind();
+    context->ibo.bind();
+    context->texture.bind();
+    glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(context->ibo.size()),
                    GL_UNSIGNED_INT, nullptr);
 
-    backend_impl_->ibo.unbind();
-    backend_impl_->vao.unbind();
+    context->ibo.unbind();
+    context->vao.unbind();
 
     check_error();
 }
 
-void Renderer::set_view_port(int x, int y, int width, int height)
+void set_view_port(int x, int y, int width, int height)
 {
     glViewport(x, y, width, height);
 }
 
-}} // namespace bolder::graphics
+}}} // namespace bolder::graphics::backend

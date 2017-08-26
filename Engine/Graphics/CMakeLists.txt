@@ -16,14 +16,13 @@ target_sources(BolderGraphics
     PRIVATE
     "${GRAPHICS_INCLUDE_PATH}/bolder/renderer.hpp"
     "${GRAPHICS_SRC_PATH}/renderer.cpp"
+    "${GRAPHICS_INCLUDE_PATH}/bolder/backend.hpp"
     "${GRAPHICS_INCLUDE_PATH}/bolder/sprite.hpp"
     "${GRAPHICS_INCLUDE_PATH}/bolder/image.hpp"
     "${GRAPHICS_SRC_PATH}/image.cpp"
     )
 
-target_link_libraries(BolderGraphics
-    BolderCore
-)
+target_link_libraries(BolderGraphics BolderCore)
 
 # IDE specific
 set_property(TARGET BolderGraphics PROPERTY FOLDER Layers)
