@@ -3,6 +3,7 @@
 #include <memory>
 #include "bolder/system.hpp"
 
+
 namespace bolder { namespace graphics {
 
 /**

@@ -7,13 +7,21 @@
 
 namespace bolder { namespace graphics { namespace backend {
 
+struct Context;
+
 /// Initialize the graphics backend if it is not already initialized yet
 void init();
 
-void render();
+void render(const Context& context);
 
 /// Sets the viewport
 void set_view_port(int x, int y, int width, int height);
+
+/// Create a backend::Context
+Context* create_context();
+
+/// destory a backend::Context
+void destory_context(Context* context);
 
 //Vertex_buffer_handle Create_vertex_buffer(unsigned int vertex_Count,
 //                                      unsigned int stride,

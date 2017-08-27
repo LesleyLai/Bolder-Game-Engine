@@ -106,11 +106,37 @@ struct Context {
     }
 };
 
-static Context* context = nullptr;
-
 void init() {
     load_GL();
+}
 
+void render(const Context& context)
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    auto projection = math::orthographic(-1, 1, -1, 1, -1, 1);
+
+    context.shader_program.set_uniform("projection", projection);
+    context.shader_program.use();
+
+    context.vao.bind();
+    context.ibo.bind();
+    context.texture.bind();
+    glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(context.ibo.size()),
+                   GL_UNSIGNED_INT, nullptr);
+
+    context.ibo.unbind();
+    context.vao.unbind();
+
+    check_error();
+}
+
+void set_view_port(int x, int y, int width, int height)
+{
+    glViewport(x, y, width, height);
+}
+
+Context* create_context() {
     float vertices[] = {
         // positions          // texture coords
          0.5f,  0.5f, 0.0f,   1.0f, 1.0f,   // top right
@@ -122,39 +148,17 @@ void init() {
     unsigned int indices[] = {0, 1, 3,
                               1, 2, 3};
 
-    // Todo: remove dynamic memory allocation
-    context = new Context {indices};
+    auto context = new Context(indices);
     constexpr auto buffer_size = sizeof(vertices) / sizeof(float);
     constexpr auto stride = 5 * sizeof(float);
     Buffer vbo(vertices, buffer_size);
     context->vao.bind_attributes(vbo, 0, 3, stride, 0 * sizeof(float));
     context->vao.bind_attributes(vbo, 1, 2, stride, 3 * sizeof(float));
+    return context;
 }
 
-void render()
-{
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    auto projection = math::orthographic(-1, 1, -1, 1, -1, 1);
-
-    context->shader_program.set_uniform("projection", projection);
-    context->shader_program.use();
-
-    context->vao.bind();
-    context->ibo.bind();
-    context->texture.bind();
-    glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(context->ibo.size()),
-                   GL_UNSIGNED_INT, nullptr);
-
-    context->ibo.unbind();
-    context->vao.unbind();
-
-    check_error();
-}
-
-void set_view_port(int x, int y, int width, int height)
-{
-    glViewport(x, y, width, height);
+void destory_context(Context* context) {
+    delete context;
 }
 
 }}} // namespace bolder::graphics::backend
