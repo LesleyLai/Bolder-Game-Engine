@@ -5,6 +5,9 @@
  * @brief Interface to graphics backend
  */
 
+#include "draw_call.hpp"
+#include "resource_handles.hpp"
+
 namespace bolder { namespace graphics { namespace backend {
 
 struct Context;
@@ -12,7 +15,10 @@ struct Context;
 /// Initialize the graphics backend if it is not already initialized yet
 void init();
 
-void render(const Context& context);
+/// Clear the screen
+void clear();
+
+void render(const Context& context, Draw_call draw_call);
 
 /// Sets the viewport
 void set_view_port(int x, int y, int width, int height);
@@ -32,10 +38,10 @@ void destory_context(Context* context);
 
 //void Destroy_vertex_buffer(Vertex_buffer_handle handle);
 
-//Index_buffer_handle Create_index_buffer(unsigned int index_count,
-//                                    Index_buffer::Format format,
-//                                    const void* initial_data);
+Index_buffer_handle create_index_buffer(Context* context,
+                                        size_t indices_count, uint32 data[]);
 
-//void DestroyIndexBuffer(Index_buffer_handle handle);
+void destroy_index_buffer(Context* context, Index_buffer_handle handle);
+
 
 }}} // namespace bolder::graphics::backend

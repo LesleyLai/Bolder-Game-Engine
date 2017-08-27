@@ -49,9 +49,9 @@ public:
      * @return A pointer to underlying variable that a handle refer to;
      * nullptr if the handle is no longer valid.
      */
-    const value_type* operator[](Handle handle) {
-        const auto index = handle.index;
-        if (handle.generation != handles_[index].generation) {
+    const value_type* operator[](Handle handle) const {
+        const auto index = handle.index();
+        if (handle.generation() != handles_[index].generation) {
             return nullptr;
         }
 
@@ -77,7 +77,7 @@ Handle Handle_manager<Handle, T, capacity>::add(T elem) {
     const auto index = first_free_entry_;
     const auto generation = handles_[index].generation;
     first_free_entry_ = handles_[index].next_free_index;
-    actives_[index] = elem;
+    actives_[index] = true;
     elems_[index] = elem;
     ++size_;
     return Handle{index, generation};
@@ -85,10 +85,10 @@ Handle Handle_manager<Handle, T, capacity>::add(T elem) {
 
 template<typename Handle, typename T, int capacity>
 void Handle_manager<Handle, T, capacity>::remove(Handle handle) {
-    const auto index = handle.index;
+    const auto index = handle.index();
     if (actives_[index] == false) {
         throw Resource_error{Handle_error_type::null_entry};
-    } else if (handles_[index].generation != handle.generation) {
+    } else if (handles_[index].generation != handle.generation()) {
         throw Resource_error{Handle_error_type::invalid_handle};
     }
 

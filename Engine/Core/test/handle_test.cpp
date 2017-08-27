@@ -35,7 +35,7 @@ TEST_CASE("One entry handle manager") {
         auto handle2 = handles.add(1);
 
         SUBCASE("Handles returned for same spot are different") {
-            REQUIRE_NE(handle.generation, handle2.generation);
+            REQUIRE_NE(handle.generation(), handle2.generation());
         }
 
         SUBCASE("Throw exception when remove entry with invalid handle") {

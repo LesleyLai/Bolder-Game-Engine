@@ -3,6 +3,7 @@ set (OPENGL_SRC_PATH "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 add_library (BolderOpenGL
     "${OPENGL_SRC_PATH}/opengl.cpp"
+    "${OPENGL_SRC_PATH}/index_buffer.hpp"
     "${OPENGL_SRC_PATH}/opengl_buffer.hpp"
     "${OPENGL_SRC_PATH}/opengl_buffer.cpp"
     "${OPENGL_SRC_PATH}/opengl_program.hpp"

@@ -9,17 +9,19 @@ target_include_directories(BolderGraphics
     PUBLIC
     ${GRAPHICS_INCLUDE_PATH}
     PRIVATE
-    "${GRAPHICS_INCLUDE_PATH}/bolder"
+    "${GRAPHICS_INCLUDE_PATH}/bolder/graphics"
     )
 
 target_sources(BolderGraphics
     PRIVATE
-    "${GRAPHICS_INCLUDE_PATH}/bolder/renderer.hpp"
+    "${GRAPHICS_INCLUDE_PATH}/bolder/graphics/draw_call.hpp"
+    "${GRAPHICS_INCLUDE_PATH}/bolder/graphics/renderer.hpp"
     "${GRAPHICS_SRC_PATH}/renderer.cpp"
-    "${GRAPHICS_INCLUDE_PATH}/bolder/backend.hpp"
-    "${GRAPHICS_INCLUDE_PATH}/bolder/sprite.hpp"
-    "${GRAPHICS_INCLUDE_PATH}/bolder/image.hpp"
+    "${GRAPHICS_INCLUDE_PATH}/bolder/graphics/backend.hpp"
+    "${GRAPHICS_INCLUDE_PATH}/bolder/graphics/sprite.hpp"
+    "${GRAPHICS_INCLUDE_PATH}/bolder/graphics/image.hpp"
     "${GRAPHICS_SRC_PATH}/image.cpp"
+    "${GRAPHICS_INCLUDE_PATH}/bolder/graphics/resource_handles.hpp"
     )
 
 target_link_libraries(BolderGraphics BolderCore)

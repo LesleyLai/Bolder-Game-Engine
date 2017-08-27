@@ -38,16 +38,29 @@ struct Handle {
     static constexpr auto index_bits = N;
     static constexpr auto generation_bits = 32 - N;
 
-    const uint32 index : index_bits;
-    const uint32 generation : generation_bits;
+    /// Default constructor creates a handle with an invalid generation
+    Handle() {
+        --generation_;
+    }
+
+    uint32 index() const {
+        return index_;
+    }
+
+    uint32 generation() const{
+        return generation_;
+    }
 
 private:
+    uint32 index_ : index_bits;
+    uint32 generation_ : generation_bits;
+
     template<typename Handle, typename T, int capacity>
     friend class Handle_manager;
 
     // Prevent outside code from creating handles
     Handle(uint32 index, uint32 generation)
-        : index{index}, generation{generation}
+        : index_{index}, generation_{generation}
     {}
 };
 

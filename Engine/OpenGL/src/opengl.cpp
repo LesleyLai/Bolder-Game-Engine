@@ -1,19 +1,22 @@
 #include <array>
+#include <atomic>
 #include <cmath>
 
-#include "bolder/backend.hpp"
+#include "bolder/graphics/backend.hpp"
 
 #include "opengl_buffer.hpp"
 #include "opengl_shader.hpp"
 #include "opengl_program.hpp"
 #include "opengl_vertex_array.hpp"
 #include "opengl_texture.hpp"
+#include "index_buffer.hpp"
 
-#include "bolder/image.hpp"
+#include "bolder/graphics/image.hpp"
 #include "bolder/logger.hpp"
 #include "bolder/exception.hpp"
 #include "bolder/file_util.hpp"
 #include "bolder/transform.hpp"
+#include "bolder/handle_manager.hpp"
 
 /** @defgroup opengl OpenGL
  * @brief This module provides the graphics backend that use OpenGL.
@@ -22,25 +25,9 @@
 namespace bolder { namespace graphics { namespace backend {
 
 using namespace GL;
-//using ID = GLuint; // ID for resources
+using namespace resource;
 
 namespace {
-
-void load_GL() {
-    if(!gladLoadGL()) {
-        throw Runtime_error {"Cannot load Opengl."};
-    }
-
-    if (!GLAD_GL_VERSION_3_0) {
-        BOLDER_LOG_ERROR << "The system do not support OpenGL 3.0 or "
-                            "later version.";
-    }
-
-    BOLDER_LOG_INFO << "OpenGL "  << glGetString(GL_VERSION);
-    BOLDER_LOG_INFO << "GLSL " << glGetString(GL_SHADING_LANGUAGE_VERSION);
-
-    glClearColor(0, 0, 1, 1);
-}
 
 // Returns shader program of the compiled shader
 auto compile_shaders() {
@@ -90,45 +77,63 @@ void check_error() {
 }
 
 struct Context {
+    Handle_manager<Index_buffer_handle, Index_buffer> ibos;
+
     Vertex_array vao;
-    Index_buffer ibo;
     Program shader_program;
     Texture2d texture;
 
-    Context(unsigned int indices[])
-        : vao{},
-          ibo{indices, 6},
-          shader_program{compile_shaders()},
+    Context()
+        : shader_program{compile_shaders()},
           texture{Image{"textures/container.jpg"}}
     {
-        vao.bind();
-        shader_program.use();
     }
 };
 
 void init() {
-    load_GL();
+    static std::atomic_bool have_load {false};
+    if (have_load) return;
+    have_load = true;
+
+    if(!gladLoadGL()) {
+        throw Runtime_error {"Cannot load Opengl."};
+    }
+
+    if (!GLAD_GL_VERSION_3_0) {
+        BOLDER_LOG_ERROR << "The system do not support OpenGL 3.0 or "
+                            "later version.";
+    }
+
+    BOLDER_LOG_INFO << "OpenGL "  << glGetString(GL_VERSION);
+    BOLDER_LOG_INFO << "GLSL " << glGetString(GL_SHADING_LANGUAGE_VERSION);
+
+    glClearColor(0, 0, 1, 1);
 }
 
-void render(const Context& context)
-{
+void clear() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void render(const Context& context, Draw_call draw_call)
+{
+    check_error();
 
     auto projection = math::orthographic(-1, 1, -1, 1, -1, 1);
 
     context.shader_program.set_uniform("projection", projection);
+
     context.shader_program.use();
 
-    context.vao.bind();
-    context.ibo.bind();
-    context.texture.bind();
-    glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(context.ibo.size()),
-                   GL_UNSIGNED_INT, nullptr);
+    auto ibo = context.ibos[draw_call.ibo_handle];
 
-    context.ibo.unbind();
+    context.vao.bind();
+    ibo->bind();
+    context.texture.bind();
+    glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(ibo->size),
+                   GL_UNSIGNED_INT, nullptr);
+    ibo->unbind();
     context.vao.unbind();
 
-    check_error();
 }
 
 void set_view_port(int x, int y, int width, int height)
@@ -145,10 +150,7 @@ Context* create_context() {
         -0.5f,  0.5f, 0.0f,   0.0f, 1.0f    // top left
     };
 
-    unsigned int indices[] = {0, 1, 3,
-                              1, 2, 3};
-
-    auto context = new Context(indices);
+    auto context = new Context();
     constexpr auto buffer_size = sizeof(vertices) / sizeof(float);
     constexpr auto stride = 5 * sizeof(float);
     Buffer vbo(vertices, buffer_size);
@@ -159,6 +161,17 @@ Context* create_context() {
 
 void destory_context(Context* context) {
     delete context;
+}
+
+Index_buffer_handle create_index_buffer(Context* context,
+                                        size_t indices_count, uint32 data[]) {
+    Index_buffer ibo;
+    ibo.init(data, indices_count);
+    return context->ibos.add(ibo);
+}
+
+void Destroy_index_buffer(Context* context, Index_buffer_handle handle) {
+    context->ibos.remove(handle);
 }
 
 }}} // namespace bolder::graphics::backend

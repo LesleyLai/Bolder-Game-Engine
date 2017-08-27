@@ -6,7 +6,7 @@
 #include "bolder/display.hpp"
 #include "bolder/event.hpp"
 #include "bolder/logger.hpp"
-#include "bolder/renderer.hpp"
+#include "bolder/graphics/renderer.hpp"
 
 namespace {
     // Check if fps is too low and report to logger

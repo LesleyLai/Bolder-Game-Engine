@@ -1,6 +1,7 @@
 #pragma once
-#include <cstddef>
-#include <cstdint>
+#include "glad/glad.h"
+
+#include "bolder/integer.hpp"
 
 namespace bolder { namespace graphics { namespace GL {
 
@@ -16,23 +17,6 @@ public:
 
 private:
     unsigned int id_;
-};
-
-/**
- * @brief An OpenGL Vertex Buffer Object
- */
-class Index_buffer {
-public:
-    Index_buffer(uint32_t* data, unsigned int size);
-
-    void bind() const noexcept;
-    void unbind() const noexcept;
-
-    unsigned int size() const;
-
-private:
-    unsigned int id_;
-    unsigned int size_;
 };
 
 

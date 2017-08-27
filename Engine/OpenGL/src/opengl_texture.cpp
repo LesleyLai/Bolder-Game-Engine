@@ -1,6 +1,6 @@
 #include <string>
 
-#include "bolder/image.hpp"
+#include "bolder/graphics/image.hpp"
 #include "opengl_texture.hpp"
 
 #include "glad/glad.h"

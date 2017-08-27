@@ -3,7 +3,6 @@
 #include <memory>
 #include "bolder/system.hpp"
 
-
 namespace bolder { namespace graphics {
 
 /**
@@ -18,6 +17,7 @@ public:
     void render();
 
 private:
+
     // Implimentation details used cross all graphics backends
     struct Impl;
     std::unique_ptr<Impl> impl_;
