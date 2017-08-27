@@ -18,8 +18,10 @@ target_sources(BolderCore
     "${CORE_SRC_PATH}/system.cpp"
     "${CORE_INCLUDE_PATH}/bolder/event.hpp"
     "${CORE_INCLUDE_PATH}/bolder/events/input_events.hpp"
-    "${CORE_INCLUDE_PATH}/bolder/resource.hpp"
-    "${CORE_SRC_PATH}/resource.cpp"
+    "${CORE_INCLUDE_PATH}/bolder/resource_error.hpp"
+    "${CORE_SRC_PATH}/resource_error.cpp"
+    "${CORE_INCLUDE_PATH}/bolder/handle.hpp"
+    "${CORE_INCLUDE_PATH}/bolder/handle_manager.hpp"
     )
 
 target_link_libraries(BolderCore

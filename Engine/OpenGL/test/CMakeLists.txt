@@ -13,6 +13,7 @@ target_include_directories (BolderOpenGLTest
     PRIVATE
     ${TEST_THIRD_PARTY_INCLUDE_PATH}
     "${THIRD_PARTY_MODULE_PATH}/glad/include"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../src"
     )
 
 add_test(NAME BolderOpenGLTest COMMAND BolderOpenGLTest)

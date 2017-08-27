@@ -4,6 +4,8 @@
 
 namespace bolder { namespace graphics { namespace GL {
 
+
+
 Vertex_array::Vertex_array()
 {
     glGenVertexArrays(1, &id_);

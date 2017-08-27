@@ -1,3 +1,4 @@
+#include <array>
 #include <cmath>
 
 #include "bolder/backend.hpp"
@@ -21,8 +22,10 @@
 namespace bolder { namespace graphics { namespace backend {
 
 using namespace GL;
+//using ID = GLuint; // ID for resources
 
 namespace {
+
 void load_GL() {
     if(!gladLoadGL()) {
         throw Runtime_error {"Cannot load Opengl."};
@@ -131,8 +134,6 @@ void init() {
 void render()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    using namespace std::chrono;
 
     auto projection = math::orthographic(-1, 1, -1, 1, -1, 1);
 

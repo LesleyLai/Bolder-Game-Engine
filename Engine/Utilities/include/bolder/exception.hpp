@@ -37,6 +37,7 @@ public:
 
 struct Runtime_error : Exception {
 public:
+    Runtime_error() noexcept;
     Runtime_error(const char* message) noexcept;
     Runtime_error(const std::string& message) noexcept;
 };

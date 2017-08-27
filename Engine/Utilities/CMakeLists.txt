@@ -24,6 +24,7 @@ add_library (BolderUtil STATIC
     "${UTIL_INCLUDE_PATH}/bolder/vector.hpp"
     "${UTIL_SRC_PATH}/vector.cpp"
     "${UTIL_INCLUDE_PATH}/bolder/byte.hpp"
+    "${UTIL_INCLUDE_PATH}/bolder/integer.hpp"
 )
 
 target_include_directories(BolderUtil
@@ -32,5 +33,11 @@ target_include_directories(BolderUtil
     PRIVATE
     "${UTIL_INCLUDE_PATH}/bolder"
     )
+
+#test
+if(BOLDER_WITH_TESTS)
+    enable_testing ()
+    add_subdirectory (test)
+endif()
 
 target_link_libraries(BolderUtil stb)

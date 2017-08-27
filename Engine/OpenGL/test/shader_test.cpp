@@ -1,5 +1,5 @@
-#include "bolder/opengl_program.hpp"
-#include "bolder/opengl_shader.hpp"
+#include "opengl_program.hpp"
+#include "opengl_shader.hpp"
 #include "doctest.h"
 
 using namespace bolder::graphics::GL;
