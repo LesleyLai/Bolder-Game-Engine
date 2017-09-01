@@ -2,8 +2,10 @@
 
 #include <cstdint>
 
+#include "glad/glad.h"
+
 namespace bolder { namespace graphics { namespace GL {
-class Buffer;
+struct Vertex_buffer;
 
 class Vertex_array {
 public:
@@ -20,10 +22,9 @@ public:
      * @param stride the byte offset between consecutive generic vertex attributes.
      * @param offset a byte offset of the first component of the first generic vertex attribute in the buffer
      */
-    void bind_attributes(const Buffer& buffer,
+    void bind_attributes(const Vertex_buffer& buffer,
                          unsigned int index,
-                         unsigned int count,
-                         unsigned int stride,
+                         GLint count,
                          std::intptr_t offset);
 private:
     unsigned int id_;

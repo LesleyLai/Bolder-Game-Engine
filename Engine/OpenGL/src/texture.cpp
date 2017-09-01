@@ -1,15 +1,13 @@
 #include <string>
 
 #include "bolder/graphics/image.hpp"
-#include "opengl_texture.hpp"
-
-#include "glad/glad.h"
+#include "texture.hpp"
 
 namespace bolder { namespace graphics { namespace GL {
 
-Texture2d::Texture2d(const Image& image)
+void Texture2d::init(const Image& image, bool use_mipmap)
 {
-    glGenTextures(1, &id_);
+    glGenTextures(1, &id);
     bind();
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -40,12 +38,10 @@ Texture2d::Texture2d(const Image& image)
 
     glTexImage2D(GL_TEXTURE_2D, 0, format, image.width(), image.height(),
                  0, static_cast<GLenum>(format), GL_UNSIGNED_BYTE, image.data());
-    glGenerateMipmap(GL_TEXTURE_2D);
-}
 
-void Texture2d::bind() const noexcept
-{
-    glBindTexture(GL_TEXTURE_2D, id_);
+    if (use_mipmap) {
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
 }
 
 }}} // namespace bolder::graphics::GL

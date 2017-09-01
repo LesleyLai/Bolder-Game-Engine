@@ -4,14 +4,13 @@
 
 #include "bolder/graphics/backend.hpp"
 
-#include "opengl_buffer.hpp"
 #include "opengl_shader.hpp"
 #include "opengl_program.hpp"
 #include "opengl_vertex_array.hpp"
-#include "opengl_texture.hpp"
+#include "texture.hpp"
 #include "index_buffer.hpp"
+#include "vertex_buffer.hpp"
 
-#include "bolder/graphics/image.hpp"
 #include "bolder/logger.hpp"
 #include "bolder/exception.hpp"
 #include "bolder/file_util.hpp"
@@ -49,45 +48,46 @@ auto compile_shaders() {
     return program;
 }
 
-void check_error() {
+#ifndef NDEBUG
+void check_gl_error() {
     auto error = glGetError();
-    if (error != GL_NO_ERROR) {
-        auto error_string_from_enum = [](GLenum error) {
-            switch(error) {
-            case GL_INVALID_OPERATION:
-                return "Invalid operation";
-            case GL_INVALID_ENUM:
-                return "Invalid enum";
-            case GL_INVALID_VALUE:
-                return "Invalid value";
-            case GL_OUT_OF_MEMORY:
-                return "Out of memory";
-            case GL_INVALID_FRAMEBUFFER_OPERATION:
-                return "Invalid framebuffer operation";
-            default:
-                return "unknown error";
-            }
-        };
+    if (error == GL_NO_ERROR) return;
 
-        const char* error_string = error_string_from_enum(error);
-        BOLDER_LOG_ERROR << "OpenGL: " << error_string;
-    }
+    auto error_string_from_enum = [](GLenum error) {
+        switch(error) {
+        case GL_INVALID_OPERATION:
+            return "Invalid operation";
+        case GL_INVALID_ENUM:
+            return "Invalid enum";
+        case GL_INVALID_VALUE:
+            return "Invalid value";
+        case GL_OUT_OF_MEMORY:
+            return "Out of memory";
+        case GL_INVALID_FRAMEBUFFER_OPERATION:
+            return "Invalid framebuffer operation";
+        default:
+            return "unknown error";
+        }
+    };
+
+    const char* error_string = error_string_from_enum(error);
+    BOLDER_LOG_ERROR << "OpenGL: " << error_string;
 }
+#endif
 
 }
 
 struct Context {
     Handle_manager<Index_buffer_handle, Index_buffer> ibos;
+    Handle_manager<Vertex_buffer_handle, Vertex_buffer> vbos;
+    Handle_manager<Texture_handle, Texture2d> textures_;
 
     Vertex_array vao;
     Program shader_program;
-    Texture2d texture;
 
     Context()
-        : shader_program{compile_shaders()},
-          texture{Image{"textures/container.jpg"}}
-    {
-    }
+        : shader_program{compile_shaders()}
+    {    }
 };
 
 void init() {
@@ -106,34 +106,35 @@ void init() {
 
     BOLDER_LOG_INFO << "OpenGL "  << glGetString(GL_VERSION);
     BOLDER_LOG_INFO << "GLSL " << glGetString(GL_SHADING_LANGUAGE_VERSION);
-
-    glClearColor(0, 0, 1, 1);
 }
 
 void clear() {
+    glClearColor(0, 0, 1, 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void render(const Context& context, Draw_call draw_call)
 {
-    check_error();
-
     auto projection = math::orthographic(-1, 1, -1, 1, -1, 1);
 
+    context.shader_program.use();
     context.shader_program.set_uniform("projection", projection);
 
-    context.shader_program.use();
-
-    auto ibo = context.ibos[draw_call.ibo_handle];
+    auto ibo = *context.ibos[draw_call.ibo_handle];
+    auto texture = *context.textures_[draw_call.texture_handle];
 
     context.vao.bind();
-    ibo->bind();
-    context.texture.bind();
-    glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(ibo->size),
+    ibo.bind();
+    texture.bind();
+    glDrawElements(GL_TRIANGLES, static_cast<GLsizei>(ibo.size),
                    GL_UNSIGNED_INT, nullptr);
-    ibo->unbind();
+    ibo.unbind();
+    texture.unbind();
     context.vao.unbind();
 
+#ifndef NDEBUG
+    check_gl_error();
+#endif
 }
 
 void set_view_port(int x, int y, int width, int height)
@@ -142,25 +143,29 @@ void set_view_port(int x, int y, int width, int height)
 }
 
 Context* create_context() {
-    float vertices[] = {
-        // positions          // texture coords
-         0.5f,  0.5f, 0.0f,   1.0f, 1.0f,   // top right
-         0.5f, -0.5f, 0.0f,   1.0f, 0.0f,   // bottom right
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f,   // bottom left
-        -0.5f,  0.5f, 0.0f,   0.0f, 1.0f    // top left
-    };
-
     auto context = new Context();
-    constexpr auto buffer_size = sizeof(vertices) / sizeof(float);
-    constexpr auto stride = 5 * sizeof(float);
-    Buffer vbo(vertices, buffer_size);
-    context->vao.bind_attributes(vbo, 0, 3, stride, 0 * sizeof(float));
-    context->vao.bind_attributes(vbo, 1, 2, stride, 3 * sizeof(float));
     return context;
 }
 
 void destory_context(Context* context) {
     delete context;
+}
+
+Vertex_buffer_handle create_vertex_buffer(Context* context,
+                                          uint32 vertex_count,
+                                          uint32 stride,
+                                          const float* data) {
+    Vertex_buffer vbo;
+    vbo.init(data, vertex_count, static_cast<GLsizei>(stride));
+
+    // Todo: generalize vao binding stuff
+    context->vao.bind_attributes(vbo, 0, 3, 0 * sizeof(float));
+    context->vao.bind_attributes(vbo, 1, 2, 3 * sizeof(float));
+    return context->vbos.add(vbo);
+}
+
+void destroy_vertex_buffer(Context* context, Vertex_buffer_handle handle) {
+    context->vbos.remove(handle);
 }
 
 Index_buffer_handle create_index_buffer(Context* context,
@@ -172,6 +177,18 @@ Index_buffer_handle create_index_buffer(Context* context,
 
 void Destroy_index_buffer(Context* context, Index_buffer_handle handle) {
     context->ibos.remove(handle);
+}
+
+Texture_handle create_texture2d(Context* context,
+                                const Image& image,
+                                bool use_mipmap) {
+    Texture2d texture;
+    texture.init(image, use_mipmap);
+    return context->textures_.add(texture);
+}
+
+void destory_texture2d(Context* context, Texture_handle handle) {
+    context->textures_.remove(handle);
 }
 
 }}} // namespace bolder::graphics::backend

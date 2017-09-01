@@ -237,8 +237,9 @@ void Log_print_policy(const Info& info)
         }
     };
 
-    output_stream()
-            << info.logger_name << " " << info.level << " " << info.msg << "\n";
+    output_stream() << info.logger_name << " "
+                    << info.level << " "
+                    << info.msg << std::endl;
 }
 
 

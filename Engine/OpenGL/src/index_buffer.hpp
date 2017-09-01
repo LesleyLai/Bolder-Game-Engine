@@ -8,6 +8,9 @@ namespace bolder { namespace graphics { namespace GL {
 
 // An OpenGL Vertex Buffer Object
 struct Index_buffer {
+    unsigned int id;
+    unsigned int size;
+
     void init(uint32* data, unsigned int size_in) {
         size = size_in;
         glGenBuffers(1, &id);
@@ -25,9 +28,6 @@ struct Index_buffer {
     void unbind() const noexcept {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
-
-    unsigned int id;
-    unsigned int size;
 };
 
 }}}

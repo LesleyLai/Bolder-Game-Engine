@@ -1,10 +1,7 @@
 #include "opengl_vertex_array.hpp"
-#include "opengl_buffer.hpp"
-#include "glad/glad.h"
+#include "vertex_buffer.hpp"
 
 namespace bolder { namespace graphics { namespace GL {
-
-
 
 Vertex_array::Vertex_array()
 {
@@ -21,10 +18,9 @@ void Vertex_array::unbind() const noexcept
     glBindVertexArray(0);
 }
 
-void Vertex_array::bind_attributes(const Buffer& buffer,
+void Vertex_array::bind_attributes(const Vertex_buffer& buffer,
                                    unsigned int index,
-                                   unsigned int count,
-                                   unsigned int stride,
+                                   GLint count,
                                    std::intptr_t offset)
 {
     bind();
@@ -35,7 +31,7 @@ void Vertex_array::bind_attributes(const Buffer& buffer,
                           count,
                           GL_FLOAT,
                           GL_FALSE,
-                          stride,
+                          buffer.stride,
                           reinterpret_cast<const GLvoid*>(offset));
     glEnableVertexAttribArray(index);
 
