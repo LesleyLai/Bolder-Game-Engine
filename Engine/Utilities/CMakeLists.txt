@@ -39,5 +39,3 @@ if(BOLDER_WITH_TESTS)
     enable_testing ()
     add_subdirectory (test)
 endif()
-
-target_link_libraries(BolderUtil stb)

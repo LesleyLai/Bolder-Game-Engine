@@ -254,13 +254,13 @@ template<typename... Args>
 Handler_raii<Handler>::Handler_raii(Channel& channel, Args&&... args)
     : channel_{channel},
       handler_{Handler{std::forward<Args>(args)...}} {
-    channel_.add_handler<Handler::event_type>(handler_);
+    channel_.add_handler<typename Handler::event_type>(handler_);
 }
 
 ///@brief Handler_raii<Handler>::~Handler_raii Destructor
 template<class Handler>
 Handler_raii<Handler>::~Handler_raii() {
-    channel_.remove_handler<Handler::event_type>(handler_);
+    channel_.remove_handler<typename Handler::event_type>(handler_);
 }
 
 }} // namespace bolder::event

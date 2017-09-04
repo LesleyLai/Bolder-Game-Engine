@@ -1,9 +1,5 @@
 add_executable (BolderCoreTest "")
 
-target_include_directories (BolderCoreTest
-    PRIVATE
-    ${TEST_THIRD_PARTY_INCLUDE_PATH})
-
 target_sources(BolderCoreTest
     PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/entity_test.cpp"
@@ -14,7 +10,7 @@ target_sources(BolderCoreTest
 
 add_test(NAME BolderCoreTest COMMAND BolderCoreTest)
 
-target_link_libraries(BolderCoreTest BolderCore)
+target_link_libraries(BolderCoreTest BolderCore BolderTestLib)
 
 # Turn on CMake testing capabilities
 enable_testing()

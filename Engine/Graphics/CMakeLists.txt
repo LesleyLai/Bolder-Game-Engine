@@ -24,7 +24,8 @@ target_sources(BolderGraphics
     "${GRAPHICS_INCLUDE_PATH}/bolder/graphics/resource_handles.hpp"
     )
 
-target_link_libraries(BolderGraphics BolderCore)
+target_link_libraries(BolderGraphics BolderCore STB)
+target_link_libraries(BolderGraphics BolderOpenGL)
 
 # IDE specific
 set_property(TARGET BolderGraphics PROPERTY FOLDER Layers)

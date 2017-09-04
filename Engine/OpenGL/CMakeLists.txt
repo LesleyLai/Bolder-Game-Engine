@@ -21,5 +21,4 @@ target_include_directories (BolderOpenGL
     "${THIRD_PARTY_MODULE_PATH}/glad/include"
     )
 
-# Platform layer
 target_link_libraries (BolderOpenGL BolderGraphics)
