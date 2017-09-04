@@ -23,9 +23,3 @@ target_include_directories (BolderOpenGL
 
 # Platform layer
 target_link_libraries (BolderOpenGL BolderGraphics)
-
-#test
-if(BOLDER_WITH_TESTS)
-    enable_testing ()
-    add_subdirectory (test)
-endif()
