@@ -161,6 +161,7 @@ Vertex_buffer_handle create_vertex_buffer(Context* context,
     // Todo: generalize vao binding stuff
     context->vao.bind_attributes(vbo, 0, 3, 0 * sizeof(float));
     context->vao.bind_attributes(vbo, 1, 2, 3 * sizeof(float));
+
     return context->vbos.add(vbo);
 }
 
@@ -169,7 +170,7 @@ void destroy_vertex_buffer(Context* context, Vertex_buffer_handle handle) {
 }
 
 Index_buffer_handle create_index_buffer(Context* context,
-                                        size_t indices_count, uint32 data[]) {
+                                        uint32 indices_count, uint32 data[]) {
     Index_buffer ibo;
     ibo.init(data, indices_count);
     return context->ibos.add(ibo);

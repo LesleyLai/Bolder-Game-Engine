@@ -48,8 +48,10 @@ struct Renderer::Impl {
         };
         constexpr auto vertices_count = sizeof(vertices) / sizeof(float);
         constexpr auto stride = 5 * sizeof(float);
-        vbo = backend::create_vertex_buffer(context, vertices_count, stride, vertices);
-
+        vbo = backend::create_vertex_buffer(context,
+                                            vertices_count,
+                                            stride,
+                                            vertices);
     }
 
     ~Impl() {

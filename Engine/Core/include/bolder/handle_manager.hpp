@@ -28,10 +28,10 @@ class Handle_manager {
                   "capacity bigger then max value of handle index");
 public:
     using value_type = T;
-    using size_type = size_t;
+    using size_type = uint32;
 
     Handle_manager() {
-        size_t next = 1;
+        size_type next = 1u;
         std::generate(handles_.begin(), handles_.end(), [&next]() {
             detail::Handle_entry<Handle> entry {next, 0};
             ++next;

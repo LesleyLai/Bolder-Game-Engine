@@ -27,7 +27,10 @@ public:
      */
     explicit constexpr Matrix(std::initializer_list<T> initList) {
         constexpr const auto size = M*N;
-        const auto min = std::min(size, initList.size());
+        //const auto min = std::min(size, initList.size());
+        const auto list_size = initList.size();
+        const auto min = size < list_size ? size : list_size;
+
         auto iter = initList.begin();
         for (auto i = 0u; i != min; ++i) {
             elems_[i] = *iter;

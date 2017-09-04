@@ -50,7 +50,7 @@ void destroy_vertex_buffer(Context* context, Vertex_buffer_handle handle);
 
 
 Index_buffer_handle create_index_buffer(Context* context,
-                                        size_t indices_count, uint32 data[]);
+                                        uint32 indices_count, uint32 data[]);
 
 void destroy_index_buffer(Context* context, Index_buffer_handle handle);
 
