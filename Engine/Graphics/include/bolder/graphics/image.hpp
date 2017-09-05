@@ -7,6 +7,9 @@ namespace bolder { namespace graphics {
 
 class Image {
 public:
+    /// Default constructor
+    Image() {}
+
     /// Create an image from file
     Image(const char* filename);
     ~Image();
@@ -31,8 +34,8 @@ public:
 
 
 private:
-    int width_;
-    int height_;
+    int width_ = 0;
+    int height_ = 0;
     int components_count_;
     Byte* data_;
 };

@@ -30,7 +30,7 @@ class Handle_manager;
  *
  * @see Handle_manager about how to manage underlying resource using handles.
  */
-template <std::size_t N>
+template <uint8 N>
 struct Handle {
     static_assert(N < 32, "Bits for index cannot be equal to or greater than"
                           " the bit for the whole handle.");

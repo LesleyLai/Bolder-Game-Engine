@@ -27,5 +27,11 @@ target_sources(BolderGraphics
 target_link_libraries(BolderGraphics BolderCore STB)
 target_link_libraries(BolderGraphics BolderOpenGL)
 
+#test
+if(BOLDER_WITH_TESTS)
+    enable_testing ()
+    add_subdirectory (test)
+endif()
+
 # IDE specific
 set_property(TARGET BolderGraphics PROPERTY FOLDER Layers)
